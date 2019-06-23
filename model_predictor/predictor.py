@@ -38,7 +38,9 @@ class Predictor:
         with tf.variable_scope(name):
             self.nn = tf.keras.models.Sequential()
             self.nn.add(tf.keras.layers.InputLayer(input_shape=(input_frames,num_feats,), batch_size = batch_size))
+            # tf.keras.layers.CuDNNLSTM is GPU optimised, switch to LSTM if using CPU
             self.nn.add(tf.keras.layers.CuDNNLSTM(n_state))
+            # self.nn.add(tf.keras.layers.LSTM(n_state))
             self.nn.add(tf.keras.layers.Dense(n_state))
 
             # Predicting 1 frame: 5 frames input, property_combination + state
@@ -159,23 +161,60 @@ def train_sequense(epochs, save_model, training_sequenses):
 
     #plt.show()
 
-def data_loader():
-    with open('trails_data.json') as json_file:  
-        training_data = json.load(json_file)
-    # remove two outliers from training_data [685] & [692]
-    return np.array(training_data[:685]+training_data[686:692]+training_data[693:])
+def data_loader(train):
+    if train:
+        with open('data/trails_data.json') as json_file:  
+            training_data = json.load(json_file)
+        # remove two outliers from training_data [685] & [692]
+        return np.array(training_data[:685]+training_data[686:692]+training_data[693:])
+    else:
+        with open('data/test_data.json') as json_file:  
+            test_data = json.load(json_file)
+        return np.array(test_data)
 
-def new_model_predictor():
-    tf.reset_default_graph()
-    sess = tf.InteractiveSession()
-    keras.backend.set_session(sess)
+# def new_model_predictor():
+#     num_feats=22
+#     n_state =16
+#     input_frames = 5
 
-    model_predictor_in_use = Predictor("predictor", num_feats, n_state, False)
+#     tf.reset_default_graph()
+#     sess = tf.InteractiveSession()
+#     keras.backend.set_session(sess)
 
-    sess.run(tf.global_variables_initializer())
-    model_predictor_in_use.saver.restore(sess, "./chechpoints/model_LSTM.ckpt")
+#     model_predictor_in_use = Predictor("predictor", num_feats, n_state, input_frames, False)
 
-    return model_predictor_in_use
+#     sess.run(tf.global_variables_initializer())
+#     model_predictor_in_use.saver.restore(sess, "./chechpoints/model_LSTM.ckpt")
+
+#     return model_predictor_in_use
+
+def passive_test(test_sequenses):
+    for i in range(1,3):
+        model_predictor_trained.saver.restore(sess, "./chechpoints/LSTM_{}0_epochs.ckpt".format(i))
+        print('Model trained with {}0 epochs successfully loaded'.format(i))
+        epoch_loss = np.zeros(len(test_sequenses))
+        for s_idx, sequence in enumerate(test_sequenses):
+            sequence = np.reshape(sequence, (1, -1, num_feats))
+            num = len(sequence) // (input_frames+1)
+            num = 3
+            sequence_loss = np.zeros(num)
+            for n in range(num):
+                begin = n*(input_frames+1)
+                input = sequence[:,begin:begin+input_frames,:]
+                label = sequence[:,begin+input_frames,-16:]
+                # print('shape of input:')
+                # print(input.shape)
+                # print('shape of label:')
+                # print(label.shape)
+                prediction = sess.run([model_predictor_trained.prediction], {model_predictor_trained.state_t: input})
+                print('shape of prediction:')
+                print(prediction.shape)
+                sequence_loss[num] = np.mean(np.square(np.subtract(label, prediction)))
+            epoch_loss[s_idx] = np.mean(sequence_loss)
+        epoch_loss_mean = np.mean(epoch_loss)
+        print("[End of testing model trained with {}0 epochs] mean loss = {:.4f}\t ".format(
+            i, epoch_loss_mean)+ time.strftime("%H:%M:%S", time.localtime()))
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
@@ -184,25 +223,40 @@ if __name__ == "__main__":
                         help='number of epochs to train', default=50)
     
     parser.add_argument('--save_model', type=bool, action='store', help='save trained model or not', default=True)
-    # parser.add_argument('--action_length', type=int, action='store',
-    #                     help='time frames for each action', default=5)
+    parser.add_argument('--train', type=bool, action='store',
+                        help='if to train a model', default=False)
     args = parser.parse_args()
 
     num_feats=22
     n_state =16
-    truncated_backprop_length = 5
-    batch_size = 3
     input_frames = 5
-
 
     tf.reset_default_graph()
     sess = tf.InteractiveSession()
     keras.backend.set_session(sess)
 
-    model_predictor = Predictor("predictor", num_feats, n_state, input_frames, True)
+    if args.train:
+        truncated_backprop_length = 5
+        batch_size = 3
 
-    sess.run(tf.global_variables_initializer())
+        model_predictor = Predictor("predictor", num_feats, n_state, input_frames, True)
 
-    training_sequenses = data_loader()
+        sess.run(tf.global_variables_initializer())
 
-    train_sequense(args.epochs, args.save_model, training_sequenses)
+        training_sequenses = data_loader(args.train)
+
+        train_sequense(args.epochs, args.save_model, training_sequenses)
+    else:
+        # truncated_backprop_length = 1
+        # batch_size = 1
+        print('Begin predictor model testing...')
+        tf.reset_default_graph()
+        sess = tf.InteractiveSession()
+        keras.backend.set_session(sess)
+
+        model_predictor_trained = Predictor("predictor", num_feats, n_state, input_frames, False)
+
+        sess.run(tf.global_variables_initializer())
+        # model_predictor_in_use.saver.restore(sess, "./chechpoints/model_LSTM.ckpt")
+        test_sequenses = data_loader(args.train)
+        passive_test(test_sequenses)
