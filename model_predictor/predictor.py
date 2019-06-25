@@ -174,7 +174,7 @@ def data_loader(train):
             test_data = json.load(json_file)
         return np.array(test_data)
 
-
+# Predict next 1 frame given 5 frames from test set
 def passive_test(test_sequenses):
     for i in range(1,6):
         model_predictor_trained.saver.restore(sess, "./chechpoints/LSTM_{}0_epochs.ckpt".format(i))
@@ -281,8 +281,6 @@ if __name__ == "__main__":
 
         train_sequense(args.epochs, args.save_model, training_sequenses)
     else:
-        # truncated_backprop_length = 1
-        # batch_size = 1
         print('Begin predictor model testing...')
         tf.reset_default_graph()
         sess = tf.InteractiveSession()
@@ -291,7 +289,6 @@ if __name__ == "__main__":
         model_predictor_trained = Predictor("predictor", num_feats, n_state, input_frames, False)
 
         sess.run(tf.global_variables_initializer())
-        # model_predictor_in_use.saver.restore(sess, "./chechpoints/model_LSTM.ckpt")
         test_sequenses = data_loader(args.train)
     # Long_term_passive_test will test predictions based on 0 - 5 predicted frames
         # passive_test(test_sequenses)
