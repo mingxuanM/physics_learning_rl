@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
 predictor.py
@@ -7,7 +6,6 @@ import sys
 sys.path.append('../simulator/')
 import argparse
 import json
-# from config import *
 import numpy as np
 # import matplotlib.pyplot as plt
 import tensorflow as tf
@@ -39,8 +37,12 @@ class Predictor:
             self.nn = tf.keras.models.Sequential()
             self.nn.add(tf.keras.layers.InputLayer(input_shape=(input_frames,num_feats,), batch_size = batch_size))
             # tf.keras.layers.CuDNNLSTM is GPU optimised, switch to LSTM if using CPU
+         #    if train:
+	        #     self.nn.add(tf.keras.layers.CuDNNLSTM(n_state))
+	        # else:
+	        #     self.nn.add(tf.keras.layers.LSTM(n_state, recurrent_activation='sigmoid'))
             self.nn.add(tf.keras.layers.CuDNNLSTM(n_state))
-            # self.nn.add(tf.keras.layers.LSTM(n_state))
+            # self.nn.add(tf.keras.layers.LSTM(n_state, recurrent_activation='sigmoid'))
             self.nn.add(tf.keras.layers.Dense(n_state))
 
             # Predicting 1 frame: 5 frames input, property_combination + state
@@ -172,49 +174,81 @@ def data_loader(train):
             test_data = json.load(json_file)
         return np.array(test_data)
 
-# def new_model_predictor():
-#     num_feats=22
-#     n_state =16
-#     input_frames = 5
-
-#     tf.reset_default_graph()
-#     sess = tf.InteractiveSession()
-#     keras.backend.set_session(sess)
-
-#     model_predictor_in_use = Predictor("predictor", num_feats, n_state, input_frames, False)
-
-#     sess.run(tf.global_variables_initializer())
-#     model_predictor_in_use.saver.restore(sess, "./chechpoints/model_LSTM.ckpt")
-
-#     return model_predictor_in_use
 
 def passive_test(test_sequenses):
-    for i in range(1,3):
+    for i in range(1,6):
         model_predictor_trained.saver.restore(sess, "./chechpoints/LSTM_{}0_epochs.ckpt".format(i))
         print('Model trained with {}0 epochs successfully loaded'.format(i))
         epoch_loss = np.zeros(len(test_sequenses))
         for s_idx, sequence in enumerate(test_sequenses):
             sequence = np.reshape(sequence, (1, -1, num_feats))
-            num = len(sequence) // (input_frames+1)
-            num = 3
+            num = (sequence.shape[1]-1) // input_frames
             sequence_loss = np.zeros(num)
             for n in range(num):
-                begin = n*(input_frames+1)
-                input = sequence[:,begin:begin+input_frames,:]
-                label = sequence[:,begin+input_frames,-16:]
-                # print('shape of input:')
-                # print(input.shape)
-                # print('shape of label:')
-                # print(label.shape)
-                prediction = sess.run([model_predictor_trained.prediction], {model_predictor_trained.state_t: input})
-                print('shape of prediction:')
-                print(prediction.shape)
-                sequence_loss[num] = np.mean(np.square(np.subtract(label, prediction)))
+                begin = n*input_frames
+                inputs = sequence[:,begin:begin+input_frames,:]
+                label = np.reshape(sequence[:,begin+input_frames,-16:],(1,1,n_state))
+                prediction = np.array(sess.run([model_predictor_trained.prediction], {model_predictor_trained.state_t: inputs}))
+                sequence_loss[n] = np.mean(np.square(np.subtract(label, prediction)))
             epoch_loss[s_idx] = np.mean(sequence_loss)
         epoch_loss_mean = np.mean(epoch_loss)
         print("[End of testing model trained with {}0 epochs] mean loss = {:.4f}\t ".format(
             i, epoch_loss_mean)+ time.strftime("%H:%M:%S", time.localtime()))
 
+# Use predicted frames to predict more frames
+# Use 0 - 5 predicted frames
+def long_term_passive_test(test_sequenses):
+    for i in range(1,6):
+        model_predictor_trained.saver.restore(sess, "./chechpoints/LSTM_{}0_epochs.ckpt".format(i))
+        print('Model trained with {}0 epochs successfully loaded'.format(i))
+        epoch_loss = np.zeros((len(test_sequenses),6))
+        for s_idx, sequence in enumerate(test_sequenses):
+            sequence = np.reshape(sequence, (1, -1, num_feats))
+            num = (sequence.shape[1] - 6) // input_frames
+            sequence_loss = np.zeros((num,6))
+            for n in range(num):
+                predicted = np.zeros((1,6,num_feats))
+                end = n*input_frames + input_frames
+                for predicted_frames in range(6):
+                    begin = n*input_frames + predicted_frames
+                    inputs = np.concatenate((sequence[:,begin:end,:],predicted[:,:predicted_frames,:]), axis=1)
+                    label = np.reshape(sequence[:,end+predicted_frames,-16:],(1,1,n_state))
+                    # shape of prediction: [1,1,n_state]
+                    prediction = np.array(sess.run([model_predictor_trained.prediction], {model_predictor_trained.state_t: inputs}))
+                    predicted[0,predicted_frames] = np.concatenate((np.zeros(6),prediction[0,0]), axis=0)
+                    sequence_loss[n,predicted_frames] = np.mean(np.square(np.subtract(label, prediction)))
+            epoch_loss[s_idx] = np.mean(sequence_loss, axis=0)
+        epoch_loss_mean = np.mean(epoch_loss, axis=0)
+        print('''[End of testing model trained with {}0 epochs] mean loss:\n
+            0 predicted frames = {:.4f}\n 
+            1 predicted frames = {:.4f}\n 
+            2 predicted frames = {:.4f}\n 
+            3 predicted frames = {:.4f}\n
+            4 predicted frames = {:.4f}\n 
+            5 predicted frames = {:.4f}\n   
+            '''.format(
+            i, epoch_loss_mean[0],epoch_loss_mean[1],epoch_loss_mean[2],epoch_loss_mean[3],epoch_loss_mean[4],epoch_loss_mean[5]
+            ) + time.strftime("%H:%M:%S", time.localtime()))
+
+# Use first 5 frames from first 10 sequences in test set to generate 60 frames of trajectories
+def generate_trajectories(test_sequenses, trajectory_len):
+    for i in range(1,6):
+        model_predictor_trained.saver.restore(sess, "./chechpoints/LSTM_{}0_epochs.ckpt".format(i))
+        print('Model trained with {}0 epochs successfully loaded'.format(i))
+        for s_idx, sequence in enumerate(test_sequenses[:10]):
+            trajectory = np.zeros((trajectory_len+5,n_state))
+            sequence = np.reshape(sequence, (1, -1, num_feats))
+            sequence = sequence[:,:5,:]
+            trajectory[:5] = sequence[0,:,-16:]
+            for n in range(trajectory_len):
+                predict_idx = n % 5
+                # Concatenate input array from sequence array splited at predict_idx
+                inputs = np.concatenate((sequence[:,predict_idx:,:],sequence[:,:predict_idx,:]), axis=1)
+                prediction = np.array(sess.run([model_predictor_trained.prediction], {model_predictor_trained.state_t: inputs}))
+                sequence[0,predict_idx] = np.concatenate((np.zeros(6),prediction[0,0]), axis=0)
+                trajectory[n+5] = prediction[0,0]
+            with open('generated_trajectories/{}0epochs_sequence{}.json'.format(i,s_idx), 'w') as outfile:
+                json.dump(trajectory.tolist(), outfile, ensure_ascii=False, indent=2)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
@@ -259,4 +293,8 @@ if __name__ == "__main__":
         sess.run(tf.global_variables_initializer())
         # model_predictor_in_use.saver.restore(sess, "./chechpoints/model_LSTM.ckpt")
         test_sequenses = data_loader(args.train)
-        passive_test(test_sequenses)
+    # Long_term_passive_test will test predictions based on 0 - 5 predicted frames
+        # passive_test(test_sequenses)
+        # long_term_passive_test(test_sequenses)
+    # Generate 60 frames long trajectories given first 5 frames
+        generate_trajectories(test_sequenses[:10],60)
