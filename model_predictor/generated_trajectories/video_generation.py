@@ -1,7 +1,10 @@
 import numpy as np
 import math
-import gizeh as gz
+import gizeh as gz 
+# conda install cairo
+# pip install gizeh
 import moviepy.editor as mpy
+# conda install moviepy
 import time
 from functools import partial
 import json
@@ -83,7 +86,6 @@ if __name__ == "__main__":
         for s_idx in range(10):
             with open('{}0epochs_sequence{}.json'.format(i,s_idx)) as json_file:  
                 sequence = json.load(json_file)
-                # print(data.keys())
 
             # with open('../data/test_data.json') as json_file:  
             #     sequence = json.load(json_file)

@@ -59,9 +59,13 @@ class Predictor:
 
             self.batch_labels = tf.placeholder(
                  tf.float32, [batch_size, truncated_backprop_length, n_state])
-        
-            self.batch_losses = tf.reduce_mean(tf.squared_difference(self.batch_predictions, self.batch_labels), axis=[0,1])
 
+            # TODO When doing tf.squared_difference, theta need to be modified if larger than pi
+            # Mean loss over batch and truncated_backprop_length for each 16 elements [16]
+            self.batch_losses = tf.reduce_mean(tf.squared_difference(self.batch_predictions, self.batch_labels), axis=[0,1])
+            
+            self.loss_weight = tf.placeholder(tf.float32, [n_state])
+            self.weitghted_batch_losses = tf.math.multiply(self.batch_losses, self.loss_weight)
         self.weights = tf.get_collection(
             tf.GraphKeys.TRAINABLE_VARIABLES, scope=name)
 
@@ -81,14 +85,17 @@ def train_iteration(batch_sequence):
         labels[t] = batch_sequence[:,t+input_frames,-16:]
 
     labels_feed = np.swapaxes(labels,0,1)
-    _train_step, _batch_losses = sess.run([model_predictor.train_step, model_predictor.batch_losses], {model_predictor.batch_labels: labels_feed, model_predictor.training_states: inputs})
+    _train_step, _weitghted_batch_losses, _batch_losses = sess.run(
+        [model_predictor.train_step, model_predictor.weitghted_batch_losses, model_predictor.batch_losses], 
+        {model_predictor.batch_labels: labels_feed, model_predictor.training_states: inputs, model_predictor.loss_weight:loss_weight}
+        )
     return _batch_losses
 
 # Top level training over epochs
 # training_sequense in [batch_size*-1*num_feats]
 def train_sequense(epochs, save_model, training_sequenses):
     # mean losses during each epoch
-    training_losses = []
+    # training_losses = []
     training_losses_time = []
     for i in range(epochs):
         epoch_loss = []
@@ -108,15 +115,18 @@ def train_sequense(epochs, save_model, training_sequenses):
                 # if sequence_idx >= 100:
                 #     print('batch loss of {}\t: '.format(batch_idx))
                 #     print(batch_loss)
-            mean_sequence_loss = np.mean(sequence_loss)
-            print('Training sequence {}\t finished, loss: {:.4f}\t '.format(sequence_idx, mean_sequence_loss))
+            # Mean loss over a sequence for each 16 elements
+            mean_sequence_loss = np.mean(sequence_loss, axis=0)
+            print('Training sequence {}\t finished, loss: {}\t '.format(sequence_idx, str(mean_sequence_loss)))
             epoch_loss.append(mean_sequence_loss)
-
-        training_losses.append(np.mean(epoch_loss))
-        training_losses_time.append('epoch {}\t, '.format(i) + time.strftime("%H:%M:%S", time.localtime()) + ', loss: ' + str(np.mean(epoch_loss)))
-        # TODO currently storing mean loss, need losses for 14 variables
-        print("[End of epoch {}\t] mean loss = {:.4f}\t ".format(
-            i, training_losses[-1])+ time.strftime("%H:%M:%S", time.localtime()))
+        # Mean loss over sequences in one epoch for each 16 elements
+        mean_epoch_loss = np.mean(epoch_loss, axis=0)
+        # training_losses.append(mean_epoch_loss)
+        training_losses_time.append('epoch {}\t, '.format(i) + time.strftime("%H:%M:%S", time.localtime()) + ', loss: ' + str(mean_epoch_loss))
+        # TODO currently storing mean loss, need losses for 16 variables
+        print("[End of epoch {}\t] ".format(
+            i) + time.strftime("%H:%M:%S", time.localtime() + ', Mean squared loss for 16 elements:'))
+        print(mean_epoch_loss)
         if i%10==0:
             save_path = model_predictor.saver.save(sess, "./chechpoints/LSTM_{}_epochs.ckpt".format(i))
             print("Model saved in path: %s" % save_path)
@@ -163,17 +173,6 @@ def train_sequense(epochs, save_model, training_sequenses):
 
     #plt.show()
 
-def data_loader(train):
-    if train:
-        with open('data/trails_data.json') as json_file:  
-            training_data = json.load(json_file)
-        # remove two outliers from training_data [685] & [692]
-        return np.array(training_data[:685]+training_data[686:692]+training_data[693:])
-    else:
-        with open('data/test_data.json') as json_file:  
-            test_data = json.load(json_file)
-        return np.array(test_data)
-
 # Predict next 1 frame given 5 frames from test set
 def passive_test(test_sequenses):
     for i in range(1,6):
@@ -189,11 +188,14 @@ def passive_test(test_sequenses):
                 inputs = sequence[:,begin:begin+input_frames,:]
                 label = np.reshape(sequence[:,begin+input_frames,-16:],(1,1,n_state))
                 prediction = np.array(sess.run([model_predictor_trained.prediction], {model_predictor_trained.state_t: inputs}))
-                sequence_loss[n] = np.mean(np.square(np.subtract(label, prediction)))
-            epoch_loss[s_idx] = np.mean(sequence_loss)
-        epoch_loss_mean = np.mean(epoch_loss)
-        print("[End of testing model trained with {}0 epochs] mean loss = {:.4f}\t ".format(
-            i, epoch_loss_mean)+ time.strftime("%H:%M:%S", time.localtime()))
+                # sequence_loss[n] = np.mean(np.square(np.subtract(label, prediction)))
+                # Add squared loss of one test batch (16 elements)
+                sequence_loss[n] = np.reshape(np.square(np.subtract(label, prediction)), n_state)
+            epoch_loss[s_idx] = np.mean(sequence_loss,axis=0)
+        epoch_loss_mean = np.mean(epoch_loss,axis=0)
+        print("[End of testing model trained with {}0 epochs] ".format(
+            i)+ time.strftime("%H:%M:%S", time.localtime() + ', Mean squared loss for 16 elements:'))
+        print(str(epoch_loss_mean)+'/n')
 
 # Use predicted frames to predict more frames
 # Use 0 - 5 predicted frames
@@ -201,11 +203,11 @@ def long_term_passive_test(test_sequenses):
     for i in range(1,6):
         model_predictor_trained.saver.restore(sess, "./chechpoints/LSTM_{}0_epochs.ckpt".format(i))
         print('Model trained with {}0 epochs successfully loaded'.format(i))
-        epoch_loss = np.zeros((len(test_sequenses),6))
+        epoch_loss = np.zeros((len(test_sequenses),6,n_state))
         for s_idx, sequence in enumerate(test_sequenses):
             sequence = np.reshape(sequence, (1, -1, num_feats))
             num = (sequence.shape[1] - 6) // input_frames
-            sequence_loss = np.zeros((num,6))
+            sequence_loss = np.zeros((num,6,n_state))
             for n in range(num):
                 predicted = np.zeros((1,6,num_feats))
                 end = n*input_frames + input_frames
@@ -216,18 +218,18 @@ def long_term_passive_test(test_sequenses):
                     # shape of prediction: [1,1,n_state]
                     prediction = np.array(sess.run([model_predictor_trained.prediction], {model_predictor_trained.state_t: inputs}))
                     predicted[0,predicted_frames] = np.concatenate((np.zeros(6),prediction[0,0]), axis=0)
-                    sequence_loss[n,predicted_frames] = np.mean(np.square(np.subtract(label, prediction)))
+                    sequence_loss[n,predicted_frames] = np.reshape(np.square(np.subtract(label, prediction)), n_state)
             epoch_loss[s_idx] = np.mean(sequence_loss, axis=0)
         epoch_loss_mean = np.mean(epoch_loss, axis=0)
         print('''[End of testing model trained with {}0 epochs] mean loss:\n
-            0 predicted frames = {:.4f}\n 
-            1 predicted frames = {:.4f}\n 
-            2 predicted frames = {:.4f}\n 
-            3 predicted frames = {:.4f}\n
-            4 predicted frames = {:.4f}\n 
-            5 predicted frames = {:.4f}\n   
+            0 predicted frames = {}\n 
+            1 predicted frames = {}\n 
+            2 predicted frames = {}\n 
+            3 predicted frames = {}\n
+            4 predicted frames = {}\n 
+            5 predicted frames = {}\n   
             '''.format(
-            i, epoch_loss_mean[0],epoch_loss_mean[1],epoch_loss_mean[2],epoch_loss_mean[3],epoch_loss_mean[4],epoch_loss_mean[5]
+            i, str(epoch_loss_mean[0]),str(epoch_loss_mean[1]),str(epoch_loss_mean[2]),str(epoch_loss_mean[3]),str(epoch_loss_mean[4]),str(epoch_loss_mean[5])
             ) + time.strftime("%H:%M:%S", time.localtime()))
 
 # Use first 5 frames from first 10 sequences in test set to generate 60 frames of trajectories
@@ -235,20 +237,83 @@ def generate_trajectories(test_sequenses, trajectory_len):
     for i in range(1,6):
         model_predictor_trained.saver.restore(sess, "./chechpoints/LSTM_{}0_epochs.ckpt".format(i))
         print('Model trained with {}0 epochs successfully loaded'.format(i))
-        for s_idx, sequence in enumerate(test_sequenses[:10]):
+        for s_idx, sequence in enumerate(test_sequenses):
             trajectory = np.zeros((trajectory_len+5,n_state))
-            sequence = np.reshape(sequence, (1, -1, num_feats))
-            sequence = sequence[:,:5,:]
-            trajectory[:5] = sequence[0,:,-16:]
+            sequence_ = sequence.copy()
+            sequence_ = np.reshape(sequence_, (1, 5, num_feats))
+            for t in range(5):
+                trajectory[t] = sequence_[0,t,-16:]
             for n in range(trajectory_len):
                 predict_idx = n % 5
                 # Concatenate input array from sequence array splited at predict_idx
-                inputs = np.concatenate((sequence[:,predict_idx:,:],sequence[:,:predict_idx,:]), axis=1)
+                inputs = np.concatenate((sequence_[:,predict_idx:,:],sequence_[:,:predict_idx,:]), axis=1)
                 prediction = np.array(sess.run([model_predictor_trained.prediction], {model_predictor_trained.state_t: inputs}))
-                sequence[0,predict_idx] = np.concatenate((np.zeros(6),prediction[0,0]), axis=0)
+                sequence_[0,predict_idx] = np.concatenate((np.zeros(6),prediction[0,0]), axis=0)
                 trajectory[n+5] = prediction[0,0]
             with open('generated_trajectories/{}0epochs_sequence{}.json'.format(i,s_idx), 'w') as outfile:
                 json.dump(trajectory.tolist(), outfile, ensure_ascii=False, indent=2)
+
+
+# Load data from json files, 
+# convert vx,vy into velocity magnitude & angle
+# [x,y,xv,yv] -> [x,y,r,theta]
+# data/trails_data.json and data/test_data.json use [x,y,xv,yv]
+# data/trails_data_transformed.json and data/test_data_transformed.json use [x,y,r,theta]
+def Transform_data_loader(train):
+    if train:
+        with open('data/trails_data.json') as json_file:  
+            data = json.load(json_file)
+            # remove two outliers from training_data [685] & [692]
+            data = data[:685]+data[686:692]+data[693:]
+    else:
+        with open('data/test_data.json') as json_file:  
+            data = json.load(json_file)
+    
+    data = np.array(data)
+    i = 0
+    for s in data:
+        j = 0
+        for f in s:
+            if i == 100 and j == 100:
+                print(data[100,100])
+            for obj in range(4):
+                vx, vy = f[6+2+obj*4], f[6+3+obj*4]
+                f[6+2+obj*4] = np.sqrt(vx**2 + vy**2)
+                if vx == 0:
+                    if vy != 0:
+                        f[6+3+obj*4] = np.pi/2 if vy > 0 else np.pi*3/2
+                    else:
+                        f[6+3+obj*4] = 0
+                else:
+                    f[6+3+obj*4] = np.arctan(vy/vx)
+            if i == 100 and j == 100:
+                print(data[100,100])
+            j += 1
+        i += 1
+    if train:
+        with open('data/trails_data_transformed.json', 'w') as outfile:
+            json.dump(data.tolist(), outfile, ensure_ascii=False, indent=2)
+        print('Transformed training data saved')
+    else:
+        with open('data/test_data_transformed.json', 'w') as outfile:
+            json.dump(data.tolist(), outfile, ensure_ascii=False, indent=2)
+        print('Transformed test data saved')
+   
+
+    return data
+
+
+# Load transformed data sets
+def data_loader(train):
+    if train:
+        with open('data/trails_data_transformed.json') as json_file:  
+            data = json.load(json_file)
+    else:
+        with open('data/test_data_transformed.json') as json_file:  
+            data = json.load(json_file)
+    
+    return np.array(data)
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
@@ -269,6 +334,8 @@ if __name__ == "__main__":
     sess = tf.InteractiveSession()
     keras.backend.set_session(sess)
 
+    loss_weight = np.zeros(n_state)
+
     if args.train:
         truncated_backprop_length = 5
         batch_size = 3
@@ -282,16 +349,17 @@ if __name__ == "__main__":
         train_sequense(args.epochs, args.save_model, training_sequenses)
     else:
         print('Begin predictor model testing...')
-        tf.reset_default_graph()
-        sess = tf.InteractiveSession()
-        keras.backend.set_session(sess)
+        # tf.reset_default_graph()
+        # sess = tf.InteractiveSession()
+        # keras.backend.set_session(sess)
 
         model_predictor_trained = Predictor("predictor", num_feats, n_state, input_frames, False)
 
         sess.run(tf.global_variables_initializer())
+
         test_sequenses = data_loader(args.train)
     # Long_term_passive_test will test predictions based on 0 - 5 predicted frames
-        # passive_test(test_sequenses)
+        passive_test(test_sequenses)
         # long_term_passive_test(test_sequenses)
-    # Generate 60 frames long trajectories given first 5 frames
-        generate_trajectories(test_sequenses[:10],60)
+    # Generate 60 frames long trajectories given first 5 frames in first 10 test cases
+        # generate_trajectories(test_sequenses[:10,:5,:],60)
