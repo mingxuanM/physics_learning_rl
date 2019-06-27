@@ -17,6 +17,6 @@ def std_div():
             std_yv.append(np.std(lsclips[p][t]['o1.vy'] + lsclips[p][t]['o2.vy'] + lsclips[p][t]['o3.vy'] + lsclips[p][t]['o4.vy']))
     return np.mean(std_x), np.mean(std_xv), np.mean(std_y), np.mean(std_yv)
 # mean standard deviation for x is: 1.6973236662957578
-# mean standard deviation for xv is: 1.7830307647729327
 # mean standard deviation for y is: 1.0517453222060384
+# mean standard deviation for xv is: 1.7830307647729327
 # mean standard deviation for yv is: 1.81123320699984
