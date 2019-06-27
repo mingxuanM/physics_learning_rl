@@ -84,7 +84,7 @@ if __name__ == "__main__":
 
     for i in range(1,6):
         for s_idx in range(10):
-            with open('{}0epochs_sequence{}.json'.format(i,s_idx)) as json_file:  
+            with open('generated_trajectories_fullinput/{}0epochs_sequence{}.json'.format(i,s_idx)) as json_file:  
                 sequence = json.load(json_file)
 
             # with open('../data/test_data.json') as json_file:  
@@ -97,5 +97,5 @@ if __name__ == "__main__":
             # 60 frames per second
             duration = len(sequence)/60 # seconds
             clip = mpy.VideoClip(frame, duration=duration)
-            writename = 'videos/{}0epochs_sequence{}.mp4'.format(i, s_idx)
+            writename = 'generated_trajectories_fullinput/videos/{}0epochs_sequence{}.mp4'.format(i, s_idx)
             clip.write_videofile(writename, fps=24)

@@ -66,11 +66,12 @@ class Predictor:
             
             self.loss_weight = tf.placeholder(tf.float32, [n_state])
             self.weitghted_batch_losses = tf.math.multiply(self.batch_losses, self.loss_weight)
+
         self.weights = tf.get_collection(
             tf.GraphKeys.TRAINABLE_VARIABLES, scope=name)
 
         self.train_step = tf.train.AdamOptimizer(
-                1e-4).minimize(self.batch_losses, var_list=self.weights)
+                1e-4).minimize(self.weitghted_batch_losses, var_list=self.weights)
 
         self.saver = tf.train.Saver()
 
@@ -110,7 +111,13 @@ def train_sequense(epochs, save_model, training_sequenses):
             for batch_idx in range(total_batches):
                 start = batch_idx * truncated_backprop_length
                 end = start + truncated_backprop_length + input_frames
-                batch_loss = train_iteration(training_sequense[:,start:end,:])
+                batch_loss_ = train_iteration(training_sequense[:,start:end,:])
+                batch_loss = np.array([
+                    np.mean([batch_loss_[0],batch_loss_[4],batch_loss_[8],batch_loss_[12]]), # x
+                    np.mean([batch_loss_[1],batch_loss_[5],batch_loss_[9],batch_loss_[13]]), # y
+                    np.mean([batch_loss_[2],batch_loss_[6],batch_loss_[10],batch_loss_[14]]), # vx
+                    np.mean([batch_loss_[3],batch_loss_[7],batch_loss_[11],batch_loss_[15]])  # vy
+                ])
                 sequence_loss.append(batch_loss)
                 # if sequence_idx >= 100:
                 #     print('batch loss of {}\t: '.format(batch_idx))
@@ -178,11 +185,11 @@ def passive_test(test_sequenses):
     for i in range(1,6):
         model_predictor_trained.saver.restore(sess, "./chechpoints/LSTM_{}0_epochs.ckpt".format(i))
         print('Model trained with {}0 epochs successfully loaded'.format(i))
-        epoch_loss = np.zeros(len(test_sequenses))
+        epoch_loss = np.zeros((len(test_sequenses),4))
         for s_idx, sequence in enumerate(test_sequenses):
             sequence = np.reshape(sequence, (1, -1, num_feats))
             num = (sequence.shape[1]-1) // input_frames
-            sequence_loss = np.zeros(num)
+            sequence_loss = np.zeros((num,4))
             for n in range(num):
                 begin = n*input_frames
                 inputs = sequence[:,begin:begin+input_frames,:]
@@ -190,11 +197,17 @@ def passive_test(test_sequenses):
                 prediction = np.array(sess.run([model_predictor_trained.prediction], {model_predictor_trained.state_t: inputs}))
                 # sequence_loss[n] = np.mean(np.square(np.subtract(label, prediction)))
                 # Add squared loss of one test batch (16 elements)
-                sequence_loss[n] = np.reshape(np.square(np.subtract(label, prediction)), n_state)
+                batch_loss_ = np.reshape(np.square(np.subtract(label, prediction)), n_state)
+                sequence_loss[n] = np.array([
+                    np.mean([batch_loss_[0],batch_loss_[4],batch_loss_[8],batch_loss_[12]]), # x
+                    np.mean([batch_loss_[1],batch_loss_[5],batch_loss_[9],batch_loss_[13]]), # y
+                    np.mean([batch_loss_[2],batch_loss_[6],batch_loss_[10],batch_loss_[14]]), # vx
+                    np.mean([batch_loss_[3],batch_loss_[7],batch_loss_[11],batch_loss_[15]])  # vy
+                ])
             epoch_loss[s_idx] = np.mean(sequence_loss,axis=0)
         epoch_loss_mean = np.mean(epoch_loss,axis=0)
         print("[End of testing model trained with {}0 epochs] ".format(
-            i)+ time.strftime("%H:%M:%S", time.localtime() + ', Mean squared loss for 16 elements:'))
+            i)+ time.strftime("%H:%M:%S", time.localtime()) + ', Mean squared loss for [x,y,xv,yv]:')
         print(str(epoch_loss_mean)+'/n')
 
 # Use predicted frames to predict more frames
@@ -203,11 +216,11 @@ def long_term_passive_test(test_sequenses):
     for i in range(1,6):
         model_predictor_trained.saver.restore(sess, "./chechpoints/LSTM_{}0_epochs.ckpt".format(i))
         print('Model trained with {}0 epochs successfully loaded'.format(i))
-        epoch_loss = np.zeros((len(test_sequenses),6,n_state))
+        epoch_loss = np.zeros((len(test_sequenses),6,4))
         for s_idx, sequence in enumerate(test_sequenses):
             sequence = np.reshape(sequence, (1, -1, num_feats))
             num = (sequence.shape[1] - 6) // input_frames
-            sequence_loss = np.zeros((num,6,n_state))
+            sequence_loss = np.zeros((num,6,4))
             for n in range(num):
                 predicted = np.zeros((1,6,num_feats))
                 end = n*input_frames + input_frames
@@ -218,7 +231,13 @@ def long_term_passive_test(test_sequenses):
                     # shape of prediction: [1,1,n_state]
                     prediction = np.array(sess.run([model_predictor_trained.prediction], {model_predictor_trained.state_t: inputs}))
                     predicted[0,predicted_frames] = np.concatenate((np.zeros(6),prediction[0,0]), axis=0)
-                    sequence_loss[n,predicted_frames] = np.reshape(np.square(np.subtract(label, prediction)), n_state)
+                    batch_loss_ = np.reshape(np.square(np.subtract(label, prediction)), n_state)
+                    sequence_loss[n,predicted_frames] = np.array([
+                        np.mean([batch_loss_[0],batch_loss_[4],batch_loss_[8],batch_loss_[12]]), # x
+                        np.mean([batch_loss_[1],batch_loss_[5],batch_loss_[9],batch_loss_[13]]), # y
+                        np.mean([batch_loss_[2],batch_loss_[6],batch_loss_[10],batch_loss_[14]]), # vx
+                        np.mean([batch_loss_[3],batch_loss_[7],batch_loss_[11],batch_loss_[15]])  # vy
+                    ])
             epoch_loss[s_idx] = np.mean(sequence_loss, axis=0)
         epoch_loss_mean = np.mean(epoch_loss, axis=0)
         print('''[End of testing model trained with {}0 epochs] mean loss:\n
@@ -306,10 +325,10 @@ def Transform_data_loader(train):
 # Load transformed data sets
 def data_loader(train):
     if train:
-        with open('data/trails_data_transformed.json') as json_file:  
+        with open('data/trails_data.json') as json_file:  
             data = json.load(json_file)
     else:
-        with open('data/test_data_transformed.json') as json_file:  
+        with open('data/test_data.json') as json_file:  
             data = json.load(json_file)
     
     return np.array(data)
@@ -334,7 +353,7 @@ if __name__ == "__main__":
     sess = tf.InteractiveSession()
     keras.backend.set_session(sess)
 
-    loss_weight = np.zeros(n_state)
+    loss_weight = np.ones(n_state)
 
     if args.train:
         truncated_backprop_length = 5
@@ -359,7 +378,7 @@ if __name__ == "__main__":
 
         test_sequenses = data_loader(args.train)
     # Long_term_passive_test will test predictions based on 0 - 5 predicted frames
-        passive_test(test_sequenses)
-        # long_term_passive_test(test_sequenses)
+        # passive_test(test_sequenses)
+        long_term_passive_test(test_sequenses)
     # Generate 60 frames long trajectories given first 5 frames in first 10 test cases
         # generate_trajectories(test_sequenses[:10,:5,:],60)
