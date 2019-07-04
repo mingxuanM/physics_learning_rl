@@ -98,3 +98,6 @@ if __name__ == '__main__':
     Worst_case_baseline(data)
     # Worst case baseline loss: [5.73467882 2.21698449 6.72088708 6.80948858]
 
+    # 40 epochs reduced input model: [0.00147525 0.0013423  0.33779012 0.29830249]
+    # 40 epochs full input model: [0.00370258 0.00293012 0.24513803 0.25428428]
+
