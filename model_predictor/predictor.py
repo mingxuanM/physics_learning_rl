@@ -135,7 +135,7 @@ def train_sequense(exp_name, epochs, save_model, training_sequenses):
         print("[End of epoch {}\t] ".format(
             i) + time.strftime("%H:%M:%S", time.localtime()) + ', Mean squared loss for 16 elements:')
         print(mean_epoch_loss)
-        if i%10==0:
+        if i%10==0 and i>0:
             save_path = model_predictor.saver.save(sess, "./chechpoints/{}_{}_epochs.ckpt".format(exp_name, i))
             print("Model saved in path: %s" % save_path)
 #---------
