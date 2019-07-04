@@ -41,8 +41,9 @@ class Predictor:
 	        #     self.nn.add(tf.keras.layers.CuDNNLSTM(n_state))
 	        # else:
 	        #     self.nn.add(tf.keras.layers.LSTM(n_state, recurrent_activation='sigmoid'))
-            self.nn.add(tf.keras.layers.CuDNNLSTM(n_state))
+            self.nn.add(tf.keras.layers.CuDNNLSTM(num_feats))
             # self.nn.add(tf.keras.layers.LSTM(n_state, recurrent_activation='sigmoid'))
+            # self.nn.add(tf.keras.layers.Dense(num_feats, activation='relu'))
             self.nn.add(tf.keras.layers.Dense(n_state))
 
             # Predicting 1 frame: 5 frames input, property_combination + state
@@ -71,7 +72,7 @@ class Predictor:
             tf.GraphKeys.TRAINABLE_VARIABLES, scope=name)
 
         self.train_step = tf.train.AdamOptimizer(
-                1e-4).minimize(self.weitghted_batch_losses, var_list=self.weights)
+                1e-3).minimize(self.weitghted_batch_losses, var_list=self.weights)
 
         self.saver = tf.train.Saver()
 
@@ -94,7 +95,7 @@ def train_iteration(batch_sequence):
 
 # Top level training over epochs
 # training_sequense in [batch_size*-1*num_feats]
-def train_sequense(epochs, save_model, training_sequenses):
+def train_sequense(exp_name, epochs, save_model, training_sequenses):
     # mean losses during each epoch
     # training_losses = []
     training_losses_time = []
@@ -132,10 +133,10 @@ def train_sequense(epochs, save_model, training_sequenses):
         training_losses_time.append('epoch {}\t, '.format(i) + time.strftime("%H:%M:%S", time.localtime()) + ', loss: ' + str(mean_epoch_loss))
         # TODO currently storing mean loss, need losses for 16 variables
         print("[End of epoch {}\t] ".format(
-            i) + time.strftime("%H:%M:%S", time.localtime() + ', Mean squared loss for 16 elements:'))
+            i) + time.strftime("%H:%M:%S", time.localtime()) + ', Mean squared loss for 16 elements:')
         print(mean_epoch_loss)
         if i%10==0:
-            save_path = model_predictor.saver.save(sess, "./chechpoints/LSTM_{}_epochs.ckpt".format(i))
+            save_path = model_predictor.saver.save(sess, "./chechpoints/{}_{}_epochs.ckpt".format(exp_name, i))
             print("Model saved in path: %s" % save_path)
 #---------
         # plt.figure(1)
@@ -165,15 +166,15 @@ def train_sequense(epochs, save_model, training_sequenses):
         # fig = plt.gcf()
         # fig.savefig('RQN_{}_cum_reward.png'.format(name))
 #---------
-    exp_name = '50_epochs'
+    # exp_name = '50_epochs'
     if save_model:
         model_json = model_predictor.nn.to_json()
-        with open('LSTM_{}.json'.format(exp_name), 'w') as json_file:
+        with open('{}.json'.format(exp_name), 'w') as json_file:
             json_file.write(model_json)
-        save_path = model_predictor.saver.save(sess, "./chechpoints/LSTM_{}.ckpt".format(exp_name))
+        save_path = model_predictor.saver.save(sess, "./chechpoints/{}_50_epochs.ckpt".format(exp_name))
         print("Model saved in path: %s" % save_path)
         # np.savetxt('LSTM_{}.txt'.format(exp_name), (training_losses_time))
-        with open('LSTM_{}.txt'.format(exp_name), 'w') as f:
+        with open('{}.txt'.format(exp_name), 'w') as f:
             for line in training_losses_time:
                 f.write("%s\n" % line)
         print("Training details saved!")
@@ -327,6 +328,7 @@ def data_loader(train):
     if train:
         with open('data/trails_data.json') as json_file:  
             data = json.load(json_file)
+            data = data[:685]+data[686:692]+data[693:]
     else:
         with open('data/test_data.json') as json_file:  
             data = json.load(json_file)
@@ -354,6 +356,7 @@ if __name__ == "__main__":
     keras.backend.set_session(sess)
 
     loss_weight = np.ones(n_state)
+    exp_name = '2_layer_full'
 
     if args.train:
         truncated_backprop_length = 5
@@ -365,7 +368,7 @@ if __name__ == "__main__":
 
         training_sequenses = data_loader(args.train)
 
-        train_sequense(args.epochs, args.save_model, training_sequenses)
+        train_sequense(exp_name, args.epochs, args.save_model, training_sequenses)
     else:
         print('Begin predictor model testing...')
         # tf.reset_default_graph()
@@ -379,6 +382,6 @@ if __name__ == "__main__":
         test_sequenses = data_loader(args.train)
     # Long_term_passive_test will test predictions based on 0 - 5 predicted frames
         # passive_test(test_sequenses)
-        long_term_passive_test(test_sequenses)
+        long_term_passive_test(exp_name, test_sequenses)
     # Generate 60 frames long trajectories given first 5 frames in first 10 test cases
         # generate_trajectories(test_sequenses[:10,:5,:],60)
