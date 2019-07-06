@@ -21,18 +21,18 @@ import time
 # num_feats=32
 num_feats=22
 n_state =16
-truncated_backprop_length = 5
+# truncated_backprop_length = 5
 input_frames = 5
-batch_size = 3
+batch_size = 10
 
 class Predictor:
-    def __init__(self, name='predictor', num_feats=22, n_state=16, input_frames=5, train=True):
+    def __init__(self, lr=1e-4, name='predictor', num_feats=22, n_state=16, input_frames=5, train=True):
         if not train:
             batch_size = 1
-            truncated_backprop_length = 1
+            # truncated_backprop_length = 1
         else:
-            batch_size = 3
-            truncated_backprop_length = 5
+            batch_size = 20
+            # truncated_backprop_length = 5
         with tf.variable_scope(name):
             self.nn = tf.keras.models.Sequential()
             self.nn.add(tf.keras.layers.InputLayer(input_shape=(input_frames,num_feats,), batch_size = batch_size))
@@ -50,20 +50,25 @@ class Predictor:
             self.state_t = tf.placeholder(
                 tf.float32, [batch_size, input_frames, num_feats])
             # one frame prediction of one batch
-            self.prediction = self.nn(self.state_t)
+            self.prediction = self.nn(self.state_t) + self.state_t[:,-1,-n_state:]
 
             # Training truncated_backprop_length frames
+            # self.training_states = tf.placeholder(
+            #     tf.float32, [truncated_backprop_length, batch_size, input_frames, num_feats])
             self.training_states = tf.placeholder(
-                tf.float32, [truncated_backprop_length, batch_size, input_frames, num_feats])
-            training_states_series = tf.unstack(self.training_states, axis=0)
-            self.batch_predictions = tf.stack([self.nn(training_state) for training_state in training_states_series], axis=1)
+                tf.float32, [batch_size, input_frames, num_feats])
+            # training_states_series = tf.unstack(self.training_states, axis=0)
+            # self.batch_predictions = tf.stack([self.nn(training_state) for training_state in training_states_series], axis=1)
+            self.batch_predictions = self.nn(self.training_states) + self.training_states[:,-1,-n_state:]
 
+            # self.batch_labels = tf.placeholder(
+            #      tf.float32, [batch_size, truncated_backprop_length, n_state])
             self.batch_labels = tf.placeholder(
-                 tf.float32, [batch_size, truncated_backprop_length, n_state])
+                 tf.float32, [batch_size, n_state])
 
             # TODO When doing tf.squared_difference, theta need to be modified if larger than pi
             # Mean loss over batch and truncated_backprop_length for each 16 elements [16]
-            self.batch_losses = tf.reduce_mean(tf.squared_difference(self.batch_predictions, self.batch_labels), axis=[0,1])
+            self.batch_losses = tf.reduce_mean(tf.squared_difference(self.batch_predictions, self.batch_labels), axis=0)
             
             self.loss_weight = tf.placeholder(tf.float32, [n_state])
             self.weitghted_batch_losses = tf.math.multiply(self.batch_losses, self.loss_weight)
@@ -72,24 +77,26 @@ class Predictor:
             tf.GraphKeys.TRAINABLE_VARIABLES, scope=name)
 
         self.train_step = tf.train.AdamOptimizer(
-                1e-3).minimize(self.weitghted_batch_losses, var_list=self.weights)
+                lr).minimize(self.weitghted_batch_losses, var_list=self.weights)
 
         self.saver = tf.train.Saver()
 
 
 # run one batch, truncated_backprop_length frames
-# batch_sequence: [batch_size, truncated_backprop_length + input_frames, num_feats]
+# batch_sequence: [batch_size, input_frames+1, num_feats]
 def train_iteration(batch_sequence):   
-    labels = np.zeros((truncated_backprop_length, batch_size, n_state))
-    inputs = np.zeros((truncated_backprop_length, batch_size, input_frames, num_feats))
-    for t in range(truncated_backprop_length):
-        inputs[t] = batch_sequence[:,t:(t+input_frames),:]
-        labels[t] = batch_sequence[:,t+input_frames,-16:]
+    # labels = np.zeros((truncated_backprop_length, batch_size, n_state))
+    # inputs = np.zeros((truncated_backprop_length, batch_size, input_frames, num_feats))
+    labels = batch_sequence[:,-1,-16:]
+    inputs = batch_sequence[:,:-1,:]
+    # for t in range(truncated_backprop_length):
+    #     inputs[t] = batch_sequence[:,t:(t+input_frames),:]
+    #     labels[t] = batch_sequence[:,t+input_frames,-16:]
 
-    labels_feed = np.swapaxes(labels,0,1)
+    # labels_feed = np.swapaxes(labels,0,1)
     _train_step, _weitghted_batch_losses, _batch_losses = sess.run(
         [model_predictor.train_step, model_predictor.weitghted_batch_losses, model_predictor.batch_losses], 
-        {model_predictor.batch_labels: labels_feed, model_predictor.training_states: inputs, model_predictor.loss_weight:loss_weight}
+        {model_predictor.batch_labels: labels, model_predictor.training_states: inputs, model_predictor.loss_weight:loss_weight}
         )
     return _batch_losses
 
@@ -107,11 +114,14 @@ def train_sequense(exp_name, epochs, save_model, training_sequenses):
             excessed = int(_training_sequense.shape[0] % batch_size)
             _training_sequense = _training_sequense[:-excessed,:]
             training_sequense = np.reshape(_training_sequense, (batch_size, -1, num_feats))
-            total_batches = (training_sequense.shape[1]-input_frames)//truncated_backprop_length
+            # total_batches = (training_sequense.shape[1]-input_frames)//truncated_backprop_length
+            total_batches = training_sequense.shape[1]-input_frames
             # run batch loop
             for batch_idx in range(total_batches):
-                start = batch_idx * truncated_backprop_length
-                end = start + truncated_backprop_length + input_frames
+                # start = batch_idx * truncated_backprop_length
+                # end = start + truncated_backprop_length + input_frames
+                start = batch_idx
+                end = start + input_frames + 1
                 batch_loss_ = train_iteration(training_sequense[:,start:end,:])
                 batch_loss = np.array([
                     np.mean([batch_loss_[0],batch_loss_[4],batch_loss_[8],batch_loss_[12]]), # x
@@ -125,7 +135,7 @@ def train_sequense(exp_name, epochs, save_model, training_sequenses):
                 #     print(batch_loss)
             # Mean loss over a sequence for each 16 elements
             mean_sequence_loss = np.mean(sequence_loss, axis=0)
-            print('Training sequence {}\t finished, loss: {}\t '.format(sequence_idx, str(mean_sequence_loss)))
+            # print('Training sequence {}\t finished, loss: {}\t '.format(sequence_idx, str(mean_sequence_loss)))
             epoch_loss.append(mean_sequence_loss)
         # Mean loss over sequences in one epoch for each 16 elements
         mean_epoch_loss = np.mean(epoch_loss, axis=0)
@@ -133,8 +143,10 @@ def train_sequense(exp_name, epochs, save_model, training_sequenses):
         training_losses_time.append('epoch {}\t, '.format(i) + time.strftime("%H:%M:%S", time.localtime()) + ', loss: ' + str(mean_epoch_loss))
         # TODO currently storing mean loss, need losses for 16 variables
         print("[End of epoch {}\t] ".format(
-            i) + time.strftime("%H:%M:%S", time.localtime()) + ', Mean squared loss for 16 elements:')
+            i) + time.strftime("%H:%M:%S", time.localtime()) + ', Mean squared loss for 4 elements:')
         print(mean_epoch_loss)
+        print('Weighted average loss:{}'.format(
+            mean_epoch_loss[0]*1.6973/6.3432 + mean_epoch_loss[1]*1.0517/6.3432 + mean_epoch_loss[2]*1.7830/6.3432 + mean_epoch_loss[3]*1.8112/6.3432))
         if i%10==0 and i>0:
             save_path = model_predictor.saver.save(sess, "./chechpoints/{}_{}_epochs.ckpt".format(exp_name, i))
             print("Model saved in path: %s" % save_path)
@@ -182,9 +194,9 @@ def train_sequense(exp_name, epochs, save_model, training_sequenses):
     #plt.show()
 
 # Predict next 1 frame given 5 frames from test set
-def passive_test(test_sequenses):
+def passive_test(exp_name, test_sequenses):
     for i in range(1,6):
-        model_predictor_trained.saver.restore(sess, "./chechpoints/LSTM_{}0_epochs.ckpt".format(i))
+        model_predictor_trained.saver.restore(sess, "./chechpoints/{}_{}0_epochs.ckpt".format(exp_name, i))
         print('Model trained with {}0 epochs successfully loaded'.format(i))
         epoch_loss = np.zeros((len(test_sequenses),4))
         for s_idx, sequence in enumerate(test_sequenses):
@@ -213,9 +225,9 @@ def passive_test(test_sequenses):
 
 # Use predicted frames to predict more frames
 # Use 0 - 5 predicted frames
-def long_term_passive_test(test_sequenses):
+def long_term_passive_test(exp_name, test_sequenses):
     for i in range(1,6):
-        model_predictor_trained.saver.restore(sess, "./chechpoints/LSTM_{}0_epochs.ckpt".format(i))
+        model_predictor_trained.saver.restore(sess, "./chechpoints/{}_{}0_epochs.ckpt".format(exp_name,i))
         print('Model trained with {}0 epochs successfully loaded'.format(i))
         epoch_loss = np.zeros((len(test_sequenses),6,4))
         for s_idx, sequence in enumerate(test_sequenses):
@@ -330,7 +342,7 @@ def data_loader(train):
             data = json.load(json_file)
             data = data[:685]+data[686:692]+data[693:]
     else:
-        with open('data/test_data.json') as json_file:  
+        with open('data/test_data_js.json') as json_file:  
             data = json.load(json_file)
     
     return np.array(data)
@@ -343,8 +355,16 @@ if __name__ == "__main__":
                         help='number of epochs to train', default=50)
     
     parser.add_argument('--save_model', type=bool, action='store', help='save trained model or not', default=True)
+    
     parser.add_argument('--train', type=bool, action='store',
                         help='if to train a model', default=False)
+    
+    parser.add_argument('--lr', type=float, action='store',
+                        help='learning rate for Adam optimiser', default=1e-4)
+
+    parser.add_argument('--loss_weight', type=int, action='store',
+                        help='type of weighted average loss, taking value 0,1,2', default=0)
+
     args = parser.parse_args()
 
     num_feats=22
@@ -355,14 +375,26 @@ if __name__ == "__main__":
     sess = tf.InteractiveSession()
     keras.backend.set_session(sess)
 
-    loss_weight = np.ones(n_state)
-    exp_name = '2_layer_full'
+    if args.loss_weight == 0:
+        loss_weight = np.ones(n_state)
+    elif args.loss_weight == 1:
+        loss_weight = np.array([1.6973/6.3432, 1.0517/6.3432, 1.7830/6.3432, 1.8112/6.3432, 
+                                1.6973/6.3432, 1.0517/6.3432, 1.7830/6.3432, 1.8112/6.3432, 
+                                1.6973/6.3432, 1.0517/6.3432, 1.7830/6.3432, 1.8112/6.3432,
+                                1.6973/6.3432, 1.0517/6.3432, 1.7830/6.3432, 1.8112/6.3432])                        
+    else:
+        loss_weight = np.array([6.3432/1.6973, 6.3432/1.0517, 6.3432/1.7830, 6.3432/1.8112, 
+                                6.3432/1.6973, 6.3432/1.0517, 6.3432/1.7830, 6.3432/1.8112, 
+                                6.3432/1.6973, 6.3432/1.0517, 6.3432/1.7830, 6.3432/1.8112,
+                                6.3432/1.6973, 6.3432/1.0517, 6.3432/1.7830, 6.3432/1.8112])
+
+    exp_name = 'additive_F_{:1.0e}_{}'.format(args.lr,str(args.loss_weight))
 
     if args.train:
-        truncated_backprop_length = 5
-        batch_size = 3
+        # truncated_backprop_length = 5
+        batch_size = 20
 
-        model_predictor = Predictor("predictor", num_feats, n_state, input_frames, True)
+        model_predictor = Predictor(args.lr, "predictor", num_feats, n_state, input_frames, True)
 
         sess.run(tf.global_variables_initializer())
 
@@ -375,13 +407,13 @@ if __name__ == "__main__":
         # sess = tf.InteractiveSession()
         # keras.backend.set_session(sess)
 
-        model_predictor_trained = Predictor("predictor", num_feats, n_state, input_frames, False)
+        model_predictor_trained = Predictor(args.lr, "predictor", num_feats, n_state, input_frames, False)
 
         sess.run(tf.global_variables_initializer())
 
         test_sequenses = data_loader(args.train)
     # Long_term_passive_test will test predictions based on 0 - 5 predicted frames
-        # passive_test(test_sequenses)
-        long_term_passive_test(exp_name, test_sequenses)
+        passive_test(exp_name, test_sequenses)
+        # long_term_passive_test(exp_name, test_sequenses)
     # Generate 60 frames long trajectories given first 5 frames in first 10 test cases
         # generate_trajectories(test_sequenses[:10,:5,:],60)
