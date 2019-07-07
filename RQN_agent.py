@@ -3,13 +3,10 @@
 """
 RQN.py
 """
-import sys
-sys.path.append('../simulator/')
 import argparse
-from environment import physic_env
-from config import *
+from interaction_env import interaction_env
 import numpy as np
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 import tensorflow as tf
 import keras
 import keras.layers as L
@@ -176,12 +173,9 @@ if __name__ == "__main__":
     sess = tf.InteractiveSession()
     keras.backend.set_session(sess)
 
-    # initialize the environment
-    new_env = physic_env(train_cond, mass_list, force_list,
-                         init_mouse, T, args.mode, prior, reward_stop)
-
+    env = interaction_env()
     # initialize q agent and target network
-    agent = q_agent("agent", num_feats, n_actions, epsilon)
-    target_network = q_agent("target_network", num_feats, n_actions, epsilon)
+    agent = q_agent("agent", num_feats, n_actions)
+    target_network = q_agent("target_network", num_feats, n_actions)
     # train
     train_loop(args)
