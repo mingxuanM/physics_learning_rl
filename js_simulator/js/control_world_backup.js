@@ -131,15 +131,13 @@ function Run() {
 
 	/////////////////////////
 	//Loop through simulation
-	for (frame = 0; frame<10; frame++)
+	for (frame = 0; frame<cond.timeout; frame++)
 	{
 		onEF();
 	}
-}
 
 
 
-function Destory(){
     //End of simulation stuff...
     //Destroy bodies
     for (var i = 0; i < bodies.length; i++) {
@@ -276,14 +274,6 @@ function getSensorContact(contact) {
   }
 }
 
-function action_forward(){
-	control_path // get new control path
-	frames = [];
-	for (var frame = 0; frame<control_path.obj.length; frame++)
-	{
-		frames[frame] = onEF();
-	}
-}
 
 function onEF() {
   //Step the world forward
@@ -298,11 +288,6 @@ function onEF() {
   data.physics.mouse.x.push(xPos);
   data.physics.mouse.y.push(yPos);
 
-  frame_data = [0,0,0,0,xPos,yPos]
-  if (control_path.obj[frame] != 0){
-    frame_data[control_path.obj[frame]-1] = 1
-  }
-  
   for (var i = 0; i < bodies.length; i++) {
     
     if (bodies[i].m_userData.bodyType === "dynamic")
@@ -312,19 +297,15 @@ function onEF() {
 	    var name = body.m_userData.name;//
 
 		data.physics[name].x.push(Math.round(p.x * 100000) / 100000);
-		frame_data.push(Math.round(p.x * 100000) / 100000);
 		data.physics[name].y.push(Math.round(p.y * 100000) / 100000);
-		frame_data.push(Math.round(p.y * 100000) / 100000);
 		data.physics[name].vx.push(Math.round(body.m_linearVelocity.x * 100000) / 100000);
-		frame_data.push(Math.round(body.m_linearVelocity.x * 100000) / 100000);
 		data.physics[name].vy.push(Math.round(body.m_linearVelocity.y * 100000) / 100000);
-		frame_data.push(Math.round(body.m_linearVelocity.y * 100000) / 100000);
 		data.physics[name].rotation.push(Math.round(body.GetAngle() * 100000) / 100000);
 		// bodies[i].SetAngle(0)
 		// bodies[i].m_angularVelocity = 0
 		// print(bodies[i].m_angularVelocity)
     }
-  }
+}
 
   //////////////////////////////
   //Update the controlled object
@@ -359,7 +340,7 @@ function onEF() {
         }
 
     }
-  return frame_data
+
 
 }
 
