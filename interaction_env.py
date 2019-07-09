@@ -14,7 +14,7 @@ class Interaction_env:
 # Class instance varialbes:
 # 1. self.timesteps: current time steps, increment after each action, 
 #   used to retrieve trajectories data from JS context
-# 2. self.state: latest state (10 frames) {'frames':[10,22], 'object', 'velocity'} 
+# 2. self.state: latest state (10 frames) {'last_trajectory':[10,22], 'object', 'velocity'} 
 #   (velocity is the final velocity from last action)
 # 3. self.context: js environment
 # 4. self.cond: a dictionary stores {'starting locations', 'starting velocities', 'local forces', 'mass'}
@@ -40,9 +40,9 @@ class Interaction_env:
         js_file = open("./js/control_world.js",'r')
         js = js_file.read()
         self.context.eval_js(js)
-        self.state['object'] = 0
+        self.state['caught_object'] = 0
         self.cond = {}
-        predictor = Predictor(lr=1e-4, name='predictor', num_feats=22, n_state=16, input_frames=5, train=True)
+        self.predictor = Predictor(lr=1e-4, name='predictor', num_feats=22, n_state=16, input_frames=5, train=True)
 
     def reset(self):
         world_setup = rd.sample(self.world_setup, 1)[0]
@@ -79,9 +79,9 @@ class Interaction_env:
         # Feed control path to js context      
         self.context.set_globals(control_path=path)
         # Build js environment, get trajectory for the first 10 frames
-        trajectory = context.eval_js("Run();")
-        self.state['frames'] = trajectory
-# TODO each frame in trajectory need one more element for caught object 
+        trajectory = context.eval_js("Run();") # [10,22]
+        trajectory = json.loads(trajectory) # Convert to python object
+        self.state['last_trajectory'] = trajectory
 
         return trajectory
 
@@ -89,77 +89,65 @@ class Interaction_env:
         # see if the target object is caught
         # if not, set target_object to 0 (not draging it in JS context)
         target_object = actionID // (16*(1+1+1) + 1) # taking value 0,1,2,3,4
-        if self.state['object'] != target_object:
-            self.state['object'] = 0
-            target_object = 0
+        if self.state['caught_object'] != target_object:
+            self.state['caught_object'] = 0
+            # target_object = 0
         actionID %= (16*(1+1+1) + 1)
         # Generate control path from action space given actionID
-        control_path_ = action_generation(actionID, target_object)
+        control_path_ = action_generation(actionID, self.state['caught_object'])
         
         # Feed control path to js context      
         self.context.set_globals(control_path=control_path_)
 
         # Run the simulation
-        trajectory = context.eval_js("action_forward();")
+        trajectory = context.eval_js("action_forward();") # [10,22]
         trajectory = json.loads(trajectory) # Convert to python object
-        reward, is_done = self.reward_cal(trajectory, target_object)
-# TODO each frame in trajectory need one more element for caught object 
+        reward, is_done, just_caught = self.reward_cal(trajectory, target_object)
         # Update self.state
-        self.state['frames'] = []
+        self.state['last_trajectory'] = trajectory
+        return trajectory, reward, is_done, just_caught
 
-        return trajectory, reward, is_done
-
-    # Calculate reward given trajectory of one action length
+    # Calculate reward given trajectory [10:22] of one action length
     def reward_cal(self, trajectory, target_object):
-        objs = trajectory["co"]
-        mouseX = trajectory["mouse"]['x']
-        mouseY = trajectory["mouse"]['y']
-
-        o1x= trajectory["o1"]['x']
-        o1y= trajectory["o1"]['y']
-        o1vx= trajectory["o1"]['vx']
-        o1vy= trajectory["o1"]['vy']
-
-        o2x= trajectory["o2"]['x']
-        o2y= trajectory["o2"]['y']
-        o2vx= trajectory["o2"]['vx']
-        o2vy= trajectory["o2"]['vy']
-
-        o3x= trajectory["o3"]['x']
-        o3y= trajectory["o3"]['y']
-        o3vx= trajectory["o3"]['vx']
-        o3vy= trajectory["o3"]['vy']
-
-        o4x= trajectory["o4"]['x']
-        o4y= trajectory["o4"]['y']
-        o4vx= trajectory["o4"]['vx']
-        o4vy= trajectory["o4"]['vy']
+        
         reward = 0
         is_done = False
-        # see if target_object has been caught
-        if target_object != self.state['object']:
+        just_caught = 0
+        # if agent is not targeting any object
+        if target_object == 0:
+            return 0, False
+        # if target_object has not been caught
+        elif target_object != self.state['caught_object']:
             # reward for catching
-            pass
-            if caught:
-                self.state['object'] = target_object
+            caught = False
+            init_distance = self.state['last_trajectory'][-1]
+            init_distance = ((init_distance[4] - init_distance[6+(target_object-1)*4])**2 + (init_distance[5] - init_distance[7+(target_object-1)*4])**2)**0.5
+            for f in range(action_length):
+                distance = ((trajectory[f][4] - trajectory[f][6+(target_object-1)*4])**2 + (trajectory[f][5] - trajectory[f][7+(target_object-1)*4])**2)**0.5
+                reward += max(init_distance - distance, 0)
+                # ball radius = 0.125
+                if distance <= 0.125:
+                    self.state['caught_object'] = target_object
+                    just_caught = target_object
+                    reward += 5
         else:
             # reward for decrease predictor loss
             pass
-        return reward, is_done
+        return reward, is_done, just_caught
 
     # Calculate control path in 10 frames (1/60s per frame), v in meter/s
     def action_generation(self, actionID, target_object):
         # target_object = actionID // (16*(1+1+1) + 1)
         # # see if the target object co is caught
         # # if not, set co to 0 (not draging it)
-        # if self.state['object'] != target_object:
-        #     self.state['object'] = 0
+        # if self.state['caught_object'] != target_object:
+        #     self.state['caught_object'] = 0
         #     target_object = 0
         # actionID %= (16*(1+1+1) + 1)
         control_path = {'x':[], 'y':[], 'obj':[target_object]*action_length}
         v = self.state['velocity']
-        last_mouse_x = self.state['frames']['mouse']['x'][-1]
-        last_mouse_y = self.state['frames']['mouse']['y'][-1]
+        last_mouse_x = self.state['last_trajectory']['mouse']['x'][-1]
+        last_mouse_y = self.state['last_trajectory']['mouse']['y'][-1]
         if actionID < 16*(1+1+1):
             directions_tan_ = directions_tan[actionID // 3]
             acceleration_ = acceleration[actionID % 3]
