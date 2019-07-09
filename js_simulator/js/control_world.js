@@ -2,7 +2,7 @@
 var world;
 var bodies = []; // instances of b2Body (from Box2D)
 var maxSpeed = 30; //A cap on the speed of the objects so things don't get out of control.
-var frame = 0;
+// var frame = 0;
 
 var xPos = 0;
 var yPos = 0;
@@ -131,10 +131,12 @@ function Run() {
 
 	/////////////////////////
 	//Loop through simulation
-	for (frame = 0; frame<10; frame++)
+	init_frames = []
+	for (var frame = 0; frame<10; frame++)
 	{
-		onEF();
+		init_frames.push(onEF());
 	}
+	return JSON.stringify(init_frames);
 }
 
 
@@ -245,11 +247,6 @@ function createBox(w, h, x, y, type, density, damping, friction, restitution, us
 }
 
 
-
-
-
-
-
 function getSensorContact(contact) {
   var fixtureA = contact.GetFixtureA();
   var fixtureB = contact.GetFixtureB();
@@ -277,15 +274,16 @@ function getSensorContact(contact) {
 }
 
 function action_forward(){
-	control_path // get new control path
+	// Set new control path in interaction_environment
 	frames = [];
 	for (var frame = 0; frame<control_path.obj.length; frame++)
 	{
-		frames[frame] = onEF();
+		frames.push(onEF(frame));
 	}
+	return JSON.stringify(frames);
 }
 
-function onEF() {
+function onEF(frame) {
   //Step the world forward
   world.Step(stepSize, 3, 3);
   world.ClearForces();

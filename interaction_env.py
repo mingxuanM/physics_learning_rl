@@ -22,11 +22,11 @@ class Interaction_env:
         self.timesteps = 0
         # Read in world_setup
         with open('./json/world_setup.json') as data_file:    
-            world_setup = json.load(data_file)
+            self.world_setup = json.load(data_file)
 
         # Read in starting_state
         with open('./json/starting_state.json') as data_file:    
-            starting_state = json.load(data_file)
+            self.starting_state = json.load(data_file)
 
         # Create js environment
         self.context = pyduktape.DuktapeContext()
@@ -40,9 +40,13 @@ class Interaction_env:
         js_file = open("./js/control_world.js",'r')
         js = js_file.read()
         self.context.eval_js(js)
+        self.state['object'] = 0
+        self.cond = {}
+        predictor = Predictor(lr=1e-4, name='predictor', num_feats=22, n_state=16, input_frames=5, train=True)
 
-        world_setup = rd.sample(world_setup, 1)[0]
-        starting_state = rd.sample(starting_state, 1)[0]
+    def reset(self):
+        world_setup = rd.sample(self.world_setup, 1)[0]
+        starting_state = rd.sample(self.starting_state, 1)[0]
 
         # Set starting conditions
         self.cond = {'sls':[{'x':starting_state[0], 'y':starting_state[1]}, {'x':starting_state[4], 'y':starting_state[5]},
@@ -65,17 +69,21 @@ class Interaction_env:
         else:
             cond['mass'] = [1,1,1,1]
 
-        self.context.set_globals(cond=cond)
-        self.cond['timeout']= 10
+        # # Set timeout
+        # self.cond['timeout']= 10
+
+        self.context.set_globals(cond=self.cond)
+        
         # initial control path for the first 10 frames
         path = {'x':[0]*10, 'y':[0]*10, 'obj':[0]*10}
-        # Build js environment
+        # Feed control path to js context      
+        self.context.set_globals(control_path=path)
+        # Build js environment, get trajectory for the first 10 frames
         trajectory = context.eval_js("Run();")
-        trajectory = trajectory['physics']
         self.state['frames'] = trajectory
-        self.state['object'] = 0
+# TODO each frame in trajectory need one more element for caught object 
 
-        predictor = Predictor(lr=1e-4, name='predictor', num_feats=22, n_state=16, input_frames=5, train=True)
+        return trajectory
 
     def act(self, actionID):
         # see if the target object is caught
@@ -92,11 +100,10 @@ class Interaction_env:
         self.context.set_globals(control_path=control_path_)
 
         # Run the simulation
-        trajectory = context.eval_js("onEF();")
-        trajectory = json.loads(trajectory) #Convert to python object
-        trajectory = trajectory['physics']
+        trajectory = context.eval_js("action_forward();")
+        trajectory = json.loads(trajectory) # Convert to python object
         reward, is_done = self.reward_cal(trajectory, target_object)
-
+# TODO each frame in trajectory need one more element for caught object 
         # Update self.state
         self.state['frames'] = []
 

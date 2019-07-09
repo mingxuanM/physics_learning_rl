@@ -14,6 +14,7 @@ import time
 
 n_actions = (16*(1+1+1) + 1) * 5
 action_length = 10 # frames
+RQN_num_feats = 23 # 4+2 mouse + 4*4 + 1 caught object
 
 # Workflow:
 # learning_agent.get_action(state_t) -> action -> 
@@ -22,7 +23,7 @@ action_length = 10 # frames
 # learning_agent.train_step(state_t, action, target) -> loss
 
 class Q_agent:
-    def __init__(self, name, n_actions, qlearning_gamma, input_frames=10, num_feats=22, epsilon=0.8):
+    def __init__(self, name, n_actions, qlearning_gamma, input_frames=10, num_feats=23, epsilon=0.8):
         self.n_actions = n_actions
         self.qlearning_gamma = qlearning_gamma
         self.epsilon = epsilon
@@ -106,17 +107,17 @@ def train_iteration(t_max, train=False):
     print('[beginning of session] ' + time.strftime("%H:%M:%S", time.localtime()))
     session_reward = []
     td_loss = []
-    s = environment.reset() # first 10 frames
+    s = environment.reset() # first 10 frames * 23 num_feats
     t = 0
     while t < t_max:
         a = learning_agent.get_action(s)
         trajectory, reward, is_done = environment.act(a)
-        s_next = trajectory
+        s_next = trajectory # 10 frames * 23 num_feats
         if train:
             target = target_agent.get_target(s_next, reward, is_done)
             loss = learning_agent.train_network(s, a, target)
+            td_loss.append(loss)
         session_reward.append(reward)
-        td_loss.append(loss)
         s = s_next
         if is_done:
             break
@@ -132,7 +133,7 @@ def train_loop(args):
         session_reward, td_loss = train_iteration(500, True)
         session_reward_mean = np.mean(session_reward)
         td_loss_mean = np.mean(td_loss)
-        print("epoch {}\t mean reward = {:.4f}\t mean loss = {:.4f}\t total reward = {:.4f}\t epsilon = {:.4f}".format(
+        print("Session {}\t finished: mean reward = {:.4f}\t mean loss = {:.4f}\t total reward = {:.4f}\t epsilon = {:.4f}".format(
             i, session_reward_mean, td_loss_mean, np.sum(session_reward),learning_agent.epsilon))
         rewards.append(session_reward_mean)
         loss.append(td_loss_mean)
@@ -170,7 +171,7 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    total_feats = 22
+    total_feats = 23
     n_state = 16
     input_frames = 5
     epsilon_decay = 0.9
