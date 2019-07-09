@@ -221,7 +221,10 @@ def passive_test(exp_name, test_sequenses):
         epoch_loss_mean = np.mean(epoch_loss,axis=0)
         print("[End of testing model trained with {}0 epochs] ".format(
             i)+ time.strftime("%H:%M:%S", time.localtime()) + ', Mean squared loss for [x,y,xv,yv]:')
-        print(str(epoch_loss_mean)+'/n')
+        print(str(epoch_loss_mean))
+        print('Weighted average loss:{}'.format(
+            epoch_loss_mean[0]*1.6973/6.3432 + epoch_loss_mean[1]*1.0517/6.3432 + epoch_loss_mean[2]*1.7830/6.3432 + epoch_loss_mean[3]*1.8112/6.3432))
+
 
 # Use predicted frames to predict more frames
 # Use 0 - 5 predicted frames
