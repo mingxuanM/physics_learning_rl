@@ -81,7 +81,7 @@ class Q_agent:
         return _loss
 
     # sample action for a given state
-    #TODO if agent just caught object in last action, it has to target that object in the next action
+    # if agent just caught object in last action, it has to target that object in the next action
     def get_action(self, state_t, just_caught_object):
         thre = np.random.rand()
         if thre < self.epsilon:

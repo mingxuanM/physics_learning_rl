@@ -82,7 +82,7 @@ class Predictor:
         self.saver = tf.train.Saver()
 
 
-# run one batch, truncated_backprop_length frames
+# run one batch
 # batch_sequence: [batch_size, input_frames+1, num_feats]
 def train_iteration(batch_sequence):   
     # labels = np.zeros((truncated_backprop_length, batch_size, n_state))
@@ -268,25 +268,47 @@ def long_term_passive_test(exp_name, test_sequenses):
             ) + time.strftime("%H:%M:%S", time.localtime()))
 
 # Use first 5 frames from first 10 sequences in test set to generate 60 frames of trajectories
-def generate_trajectories(test_sequenses, trajectory_len):
-    for i in range(1,6):
-        model_predictor_trained.saver.restore(sess, "./chechpoints/LSTM_{}0_epochs.ckpt".format(i))
-        print('Model trained with {}0 epochs successfully loaded'.format(i))
-        for s_idx, sequence in enumerate(test_sequenses):
-            trajectory = np.zeros((trajectory_len+5,n_state))
-            sequence_ = sequence.copy()
-            sequence_ = np.reshape(sequence_, (1, 5, num_feats))
-            for t in range(5):
-                trajectory[t] = sequence_[0,t,-16:]
-            for n in range(trajectory_len):
-                predict_idx = n % 5
-                # Concatenate input array from sequence array splited at predict_idx
-                inputs = np.concatenate((sequence_[:,predict_idx:,:],sequence_[:,:predict_idx,:]), axis=1)
-                prediction = np.array(sess.run([model_predictor_trained.prediction], {model_predictor_trained.state_t: inputs}))
-                sequence_[0,predict_idx] = np.concatenate((np.zeros(6),prediction[0,0]), axis=0)
-                trajectory[n+5] = prediction[0,0]
-            with open('generated_trajectories/{}0epochs_sequence{}.json'.format(i,s_idx), 'w') as outfile:
-                json.dump(trajectory.tolist(), outfile, ensure_ascii=False, indent=2)
+def generate_trajectories(exp_name, trajectory_len=60):
+    # for i in range(1,6):
+    with open('data/special_test_cases.json') as json_file:  
+        special_cases = json.load(json_file)
+    i=4
+    model_predictor_trained.saver.restore(sess, "./chechpoints/{}_{}0_epochs.ckpt".format(exp_name, i))
+    print('Model trained with {}0 epochs successfully loaded'.format(i))
+    for s_idx, sequence in enumerate(special_cases):
+        trajectory = np.zeros((trajectory_len+5,n_state))
+        sequence_ = sequence.copy()
+        sequence_ = np.reshape(sequence_, (1, 5, num_feats))
+        for t in range(5):
+            trajectory[t] = sequence_[0,t,-16:]
+        for n in range(trajectory_len):
+            predict_idx = n % 5
+            # Concatenate input array from sequence array splited at predict_idx
+            inputs = np.concatenate((sequence_[:,predict_idx:,:],sequence_[:,:predict_idx,:]), axis=1)
+            prediction = np.array(sess.run([model_predictor_trained.prediction], {model_predictor_trained.state_t: inputs}))
+            sequence_[0,predict_idx] = np.concatenate((np.zeros(6),prediction[0,0]), axis=0)
+            trajectory[n+5] = prediction[0]
+        with open('generated_trajectories/{}0_epochs_case_{}.json'.format(i,s_idx), 'w') as outfile:
+            json.dump(trajectory.tolist(), outfile, ensure_ascii=False, indent=2)
+        print('generated trajectory of special case {} saved'.format(s_idx))
+
+    # s_idx = 1
+    # sequence = special_cases[1]     
+    # trajectory = np.zeros((trajectory_len+5,n_state))
+    # sequence_ = sequence.copy()
+    # sequence_ = np.reshape(sequence_, (1, 5, num_feats))
+    # for t in range(5):
+    #     trajectory[t] = sequence_[0,t,-16:]
+    # for n in range(trajectory_len):
+    #     predict_idx = n % 5
+    #     # Concatenate input array from sequence array splited at predict_idx
+    #     inputs = np.concatenate((sequence_[:,predict_idx:,:],sequence_[:,:predict_idx,:]), axis=1)
+    #     prediction = np.array(sess.run([model_predictor_trained.prediction], {model_predictor_trained.state_t: inputs}))
+    #     sequence_[0,predict_idx] = np.concatenate((np.zeros(6),prediction[0,0]), axis=0)
+    #     trajectory[n+5] = prediction[0]
+    # with open('generated_trajectories/{}0_epochs_case_{}.json'.format(i,s_idx), 'w') as outfile:
+    #     json.dump(trajectory.tolist(), outfile, ensure_ascii=False, indent=2)
+    # print('generated trajectory of special case {} saved'.format(s_idx))
 
 
 # Load data from json files, 
@@ -414,9 +436,9 @@ if __name__ == "__main__":
 
         sess.run(tf.global_variables_initializer())
 
-        test_sequenses = data_loader(args.train)
+        # test_sequenses = data_loader(args.train)
     # Long_term_passive_test will test predictions based on 0 - 5 predicted frames
-        passive_test(exp_name, test_sequenses)
+        # passive_test(exp_name, test_sequenses)
         # long_term_passive_test(exp_name, test_sequenses)
     # Generate 60 frames long trajectories given first 5 frames in first 10 test cases
-        # generate_trajectories(test_sequenses[:10,:5,:],60)
+        generate_trajectories(exp_name)

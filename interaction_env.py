@@ -131,7 +131,7 @@ class Interaction_env:
                     just_caught = target_object
                     reward += 5
         else:
-            # reward for decrease predictor loss
+            # TODO reward for decrease predictor loss
             pass
         return reward, is_done, just_caught
 

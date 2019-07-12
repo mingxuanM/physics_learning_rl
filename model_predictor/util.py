@@ -55,6 +55,7 @@ def Worst_case_baseline(data):
         epoch_loss[s_idx] = np.mean(sequence_loss, axis=0)
     final_loss = np.mean(epoch_loss, axis=0)
     print('Worst case baseline loss: '+ str(final_loss))
+    print('weighted average: '+ str(final_loss[0]*1.6973/6.3432 + final_loss[1]*1.0517/6.3432 + final_loss[2]*1.7830/6.3432 + final_loss[3]*1.8112/6.3432))
 
  
 
@@ -84,19 +85,28 @@ def Infinite_inertia_case_baseline(data):
         epoch_loss[s_idx] = np.mean(sequence_loss, axis=0)
     final_loss = np.mean(epoch_loss, axis=0)
     print('Infinite inertia baseline loss: '+ str(final_loss))
+    print('weighted average: '+ str(final_loss[0]*1.6973/6.3432 + final_loss[1]*1.0517/6.3432 + final_loss[2]*1.7830/6.3432 + final_loss[3]*1.8112/6.3432))
 
 
 if __name__ == '__main__':
     # load training data
-    with open('data/trails_data.json') as json_file:  
+    # with open('data/trails_data.json') as json_file:  
+    with open('data/test_data_js.json') as json_file: 
         data = json.load(json_file)
         # remove two outliers from training_data [685] & [692]
         data = np.array(data[:685]+data[686:692]+data[693:])
     print('training data loaded')
     Infinite_inertia_case_baseline(data)
-    # Infinite inertia baseline loss: [0.00092996 0.00093225 0.31726211 0.42942083]
+    # Infinite inertia baseline loss, training set: [0.00092996 0.00093225 0.31726211 0.42942083]
+    #   weighted average: 0.21219640210918775
+    # Infinite inertia baseline loss, test set: [0.0015752  0.00151848 0.56136155 0.75724643]
+    #   weighted average: 0.37468516680670216
+
     Worst_case_baseline(data)
-    # Worst case baseline loss: [5.73467882 2.21698449 6.72088708 6.80948858]
+    # Worst case baseline loss, training set: [5.73467882 2.21698449 6.72088708 6.80948858]
+    #   weighted average: 5.735553085044614
+    # Worst case baseline loss, test set:  [7.16837586  2.57957311 11.34820187 11.10042121]
+    #   weighted average: 8.70518795433364
 
     # 40 epochs reduced input model: [0.00147525 0.0013423  0.33779012 0.29830249]
     # 40 epochs full input model: [0.00370258 0.00293012 0.24513803 0.25428428]
