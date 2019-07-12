@@ -12,8 +12,8 @@ import keras
 import keras.layers as L
 import time
 
-n_actions = (16*(1+1+1) + 1) * 5
-action_length = 10 # frames
+n_actions = 4*2 # 4 directions * 2 if click
+action_length = 5 # frames
 RQN_num_feats = 22 # 4 caught object + 2 mouse + 4*4
 
 # Workflow:
@@ -23,7 +23,7 @@ RQN_num_feats = 22 # 4 caught object + 2 mouse + 4*4
 # learning_agent.train_step(state_t, action, target) -> loss
 
 class Q_agent:
-    def __init__(self, name, n_actions, qlearning_gamma, input_frames=10, num_feats=22, epsilon=0.8):
+    def __init__(self, name, n_actions, qlearning_gamma, input_frames=action_length, num_feats=22, epsilon=0.8):
         self.n_actions = n_actions
         self.qlearning_gamma = qlearning_gamma
         self.epsilon = epsilon
@@ -81,18 +81,14 @@ class Q_agent:
         return _loss
 
     # sample action for a given state
-    # if agent just caught object in last action, it has to target that object in the next action
-    def get_action(self, state_t, just_caught_object):
+    def get_action(self, state_t):
         thre = np.random.rand()
         if thre < self.epsilon:
             action = np.random.choice(n_actions, 1)[0]
         else:
             sess = tf.get_default_session()
             q_values = sess.run(self.prediction, {self.state_t: state_t})
-            if just_caught_object == 0:
-                action = np.argmax(q_values)
-            else:
-                action = np.argmax(q_values[0, 49*just_caught_object : 49*just_caught_object+49])+49*just_caught_object
+            action = np.argmax(q_values)
         return action
     
     def set_epsilon(self, epsilon_):
@@ -113,10 +109,9 @@ def train_iteration(t_max, train=False):
     td_loss = []
     s = environment.reset() # first 10 frames * 22 num_feats
     t = 0
-    just_caught_object = 0 # the object that caught in last action, 0 if has not or already caught one
     while t < t_max:
-        a = learning_agent.get_action(s, just_caught_object)
-        trajectory, reward, is_done, just_caught_object = environment.act(a)
+        a = learning_agent.get_action(s)
+        trajectory, reward, is_done = environment.act(a)
         s_next = trajectory # 10 frames * 22 num_feats
         if train:
             target = target_agent.get_target(s_next, reward, is_done)

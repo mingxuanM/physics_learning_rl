@@ -13,6 +13,10 @@ var data = {
   setup: {}
 };
 
+// if the mouse caught anything during last action
+// 1-4 for 1-4 object, 0 for None
+var caught_object = 0; 
+
 /////////////////////////////
 //Set fixed/randomised properties
 /////////////////////////////
@@ -132,7 +136,7 @@ function Run() {
 	/////////////////////////
 	//Loop through simulation
 	init_frames = []
-	for (var frame = 0; frame<10; frame++)
+	for (var frame = 0; frame < cond.timeout; frame++)
 	{
 		init_frames.push(onEF());
 	}
@@ -276,7 +280,9 @@ function getSensorContact(contact) {
 function action_forward(){
 	// Set new control path in interaction_environment
 	frames = [];
-	for (var frame = 0; frame<control_path.obj.length; frame++)
+	if_click = control_path.click
+
+	for (var frame = 0; frame<cond.timeout; frame++)
 	{
 		frames.push(onEF(frame));
 	}
@@ -296,10 +302,7 @@ function onEF(frame) {
   data.physics.mouse.x.push(xPos);
   data.physics.mouse.y.push(yPos);
 
-  frame_data = [0,0,0,0,xPos,yPos]
-  if (control_path.obj[frame] != 0){
-    frame_data[control_path.obj[frame]-1] = 1
-  }
+  frame_data = [0,0,0,0,xPos,yPos] // mouse data for pyhon environment
   
   for (var i = 0; i < bodies.length; i++) {
     
@@ -307,7 +310,34 @@ function onEF(frame) {
     {
 	    var body = bodies[i];
 	    var p = body.GetPosition();
-	    var name = body.m_userData.name;//
+		var name = body.m_userData.name;
+		// if it's the first frame of an action, see if mouse can catch anything
+		if (frame == 0)
+		{	
+			if (caught_object == 0 & control_path.click)
+			{
+				x=Math.round(p.x * 100000) / 100000;
+				y=Math.round(p.y * 100000) / 100000;
+				if ( ((xPos-x)^2+(yPos-y)^2)^0.5 <= 0.125)
+				{
+					caught_object = i+1;
+				}
+			} 
+			else if (caught_object > 0 & !control_path.click)
+			{
+				caught_object = 0;
+			}
+
+			if (caught_object > 0)
+			{
+				for (var i = 0; i < cond.timeout; i++) 
+				{
+					control_path.obj[i] = caught_object;
+				}
+			}
+			
+		}
+
 
 		data.physics[name].x.push(Math.round(p.x * 100000) / 100000);
 		frame_data.push(Math.round(p.x * 100000) / 100000);
@@ -322,6 +352,10 @@ function onEF(frame) {
 		// bodies[i].m_angularVelocity = 0
 		// print(bodies[i].m_angularVelocity)
     }
+  }
+  // Update mouse data if is controlling
+  if (control_path.obj[frame] != 0){
+    frame_data[control_path.obj[frame]-1] = 1;
   }
 
   //////////////////////////////
