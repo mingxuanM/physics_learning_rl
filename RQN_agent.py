@@ -1,19 +1,33 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-RQN.py
+RQN_agent.py
+RL training process
+Q_agent: RL agent class, contains all networks and training function.
+    get_q_value()
+    get_target()
+    train_network()
+    get_action()
+    set_epsilon()
+
+Interaction_env: the environment class that the agent interacts with.
+    reset()
+    act()
+    reward_cal()
+    action_generation()
+
 """
 import argparse
 from interaction_env import Interaction_env
 import numpy as np
 # import matplotlib.pyplot as plt
 import tensorflow as tf
-import keras
-import keras.layers as L
+# import keras
+# import keras.layers as L
 import time
 
 n_actions = 4*2 # 4 directions * 2 if click
-action_length = 5 # frames
+action_length = 10 # frames
 RQN_num_feats = 22 # 4 caught object + 2 mouse + 4*4
 
 # Workflow:
@@ -180,7 +194,7 @@ if __name__ == "__main__":
 
     tf.reset_default_graph()
     sess = tf.InteractiveSession()
-    keras.backend.set_session(sess)
+    # keras.backend.set_session(sess)
     # initialize interaction_env
     environment = Interaction_env()
     # initialize learning_agent and target_agent

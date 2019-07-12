@@ -9,8 +9,8 @@ import json
 import numpy as np
 # import matplotlib.pyplot as plt
 import tensorflow as tf
-import keras
-import keras.layers as L
+# import keras
+# import keras.layers as L
 import time
 
 
@@ -33,6 +33,7 @@ class Predictor:
         else:
             batch_size = 20
             # truncated_backprop_length = 5
+        self.input_frames = input_frames
         with tf.variable_scope(name):
             self.nn = tf.keras.models.Sequential()
             self.nn.add(tf.keras.layers.InputLayer(input_shape=(input_frames,num_feats,), batch_size = batch_size))
@@ -398,7 +399,7 @@ if __name__ == "__main__":
 
     tf.reset_default_graph()
     sess = tf.InteractiveSession()
-    keras.backend.set_session(sess)
+    # keras.backend.set_session(sess)
 
     if args.loss_weight == 0:
         loss_weight = np.ones(n_state)
