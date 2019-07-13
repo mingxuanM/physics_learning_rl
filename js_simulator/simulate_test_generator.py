@@ -37,7 +37,7 @@ context.eval_js(js)
 
 #Load the js script
 ################
-js_file = open("./js/control_world.js",'r')
+js_file = open("./js/control_world_backup.js",'r')
 js = js_file.read()
 context.eval_js(js)
 
@@ -51,7 +51,11 @@ for i in range(500):
 
     # Choose a starting condition at random from participant data
     world_setup_ = rd.sample(world_setup, 1)[0]
-    control_path_ = rd.sample(control_path, 1)[0]
+    # 80% to generate a passive episode
+    is_passive = rd.random()
+    is_passive = is_passive <= 0.8
+    if not is_passive:
+        control_path_ = rd.sample(control_path, 1)[0]
     starting_state_ = rd.sample(starting_state, 1)[0]
     
     # setup = trial['setup']
@@ -64,10 +68,15 @@ for i in range(500):
     #     'svs':[{'x':start['o1.vx'], 'y':start['o1.vy']}, {'x':start['o2.vx'], 'y':start['o2.vy']},
     #         {'x':start['o3.vx'], 'y':start['o3.vy']}, {'x':start['o4.vx'], 'y':start['o4.vy']}]
     #     }
+    # cond = {'sls':[{'x':starting_state_[0], 'y':starting_state_[1]}, {'x':starting_state_[4], 'y':starting_state_[5]},
+    #                {'x':starting_state_[8], 'y':starting_state_[9]}, {'x':starting_state_[12], 'y':starting_state_[13]}],
+    #         'svs':[{'x':starting_state_[2], 'y':starting_state_[3]}, {'x':starting_state_[6], 'y':starting_state_[7]},
+    #                {'x':starting_state_[10], 'y':starting_state_[11]}, {'x':starting_state_[14], 'y':starting_state_[15]}]
+    #         }
     cond = {'sls':[{'x':starting_state_[0], 'y':starting_state_[1]}, {'x':starting_state_[4], 'y':starting_state_[5]},
                    {'x':starting_state_[8], 'y':starting_state_[9]}, {'x':starting_state_[12], 'y':starting_state_[13]}],
-            'svs':[{'x':starting_state_[2], 'y':starting_state_[3]}, {'x':starting_state_[6], 'y':starting_state_[7]},
-                   {'x':starting_state_[10], 'y':starting_state_[11]}, {'x':starting_state_[14], 'y':starting_state_[15]}]
+            'svs':[{'x':rd.uniform(-10.0, 10.0), 'y':rd.uniform(-10.0, 10.0)}, {'x':rd.uniform(-10.0, 10.0), 'y':rd.uniform(-10.0, 10.0)},
+                   {'x':rd.uniform(-10.0, 10.0), 'y':rd.uniform(-10.0, 10.0)}, {'x':rd.uniform(-10.0, 10.0), 'y':rd.uniform(-10.0, 10.0)}]
             }
 
     # Set local forces
@@ -75,10 +84,19 @@ for i in range(500):
     #         [0.0, 0.0, float(setup['lf4']),float(setup['lf5'])],
     #         [0.0, 0.0, 0.0, float(setup['lf6'])],
     #         [0.0, 0.0, 0.0, 0.0]]
-    cond['lf'] = [[0.0,float(world_setup_[0]), float(world_setup_[1]), float(world_setup_[2])],
-            [0.0, 0.0, float(world_setup_[3]), float(world_setup_[4])],
-            [0.0, 0.0, 0.0, float(world_setup_[5])],
-            [0.0, 0.0, 0.0, 0.0]]
+    
+    # 40% to have no local forces
+    no_force = rd.random()
+    if no_force <= 0.4:
+        cond['lf'] = [[0.0,0.0,0.0,0.0],
+                [0.0,0.0,0.0,0.0],
+                [0.0,0.0,0.0,0.0],
+                [0.0,0.0,0.0,0.0]]
+    else:
+        cond['lf'] = [[0.0,float(world_setup_[0]), float(world_setup_[1]), float(world_setup_[2])],
+                [0.0, 0.0, float(world_setup_[3]), float(world_setup_[4])],
+                [0.0, 0.0, 0.0, float(world_setup_[5])],
+                [0.0, 0.0, 0.0, 0.0]]
 
     # Set mass
     if world_setup_[6]=='A':
@@ -92,9 +110,14 @@ for i in range(500):
     # path = {'x':[1]*onset['frame'][0],
     # 'y':[1]*onset['frame'][0],
     # 'obj':[0]*onset['frame'][0]}
-    path = {'x':[x/100 for x in control_path_['x']],
-    'y':[y/100 for y in control_path_['y']],
-    'obj':control_path_['obj']}
+    if is_passive:
+        path = {'x':[0]*500,
+            'y':[0]*500,
+            'obj':[0]*500}
+    else:
+        path = {'x':[x/100 for x in control_path_['x']],
+            'y':[y/100 for y in control_path_['y']],
+            'obj':control_path_['obj']}
 
     cond['timeout']=min(len(path['x']), 1000)
 
@@ -127,7 +150,7 @@ for i in range(500):
     print('trail {} generated'.format(i))
     #Save data
     ##########
-with open('./test_data_js.json', 'w') as fp:
+with open('./extend_training_data_js.json', 'w') as fp:
     json.dump(test_data, fp, sort_keys=True, indent=4)
 
 
