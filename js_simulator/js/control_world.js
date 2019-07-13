@@ -138,11 +138,127 @@ function Run() {
 	init_frames = []
 	for (var frame = 0; frame < cond.timeout; frame++)
 	{
-		init_frames.push(onEF());
+		init_frames.push(onEF(frame));
 	}
 	return JSON.stringify(init_frames);
 }
 
+
+function action_forward(){
+	// Set new control path in interaction_environment
+	frames = [];
+
+	for (var frame = 0; frame<cond.timeout; frame++)
+	{
+		frames.push(onEF(frame));
+	}
+	return JSON.stringify(frames);
+}
+
+function onEF(frame) {
+  //Step the world forward
+  world.Step(stepSize, 3, 3);
+  world.ClearForces();
+
+  xPos = control_path.x[frame];//e.target.mouseX;
+  yPos = control_path.y[frame];//e.target.mouseY;
+
+  data.physics.co.push(control_path.obj[frame]);
+  data.physics.mouse.x.push(xPos);
+  data.physics.mouse.y.push(yPos);
+
+  frame_data = [0,0,0,0,xPos,yPos] // mouse data for pyhon environment
+  
+  for (var i = 0; i < bodies.length; i++) {
+    
+    if (bodies[i].m_userData.bodyType === "dynamic")
+    {
+	    var body = bodies[i];
+	    var p = body.GetPosition();
+		var name = body.m_userData.name;
+		// if it's the first frame of an action, see if mouse can catch anything
+		if (frame == 0)
+		{	
+			if (caught_object == 0 & control_path.click)
+			{
+				x=Math.round(p.x * 100000) / 100000;
+				y=Math.round(p.y * 100000) / 100000;
+				if ( ((xPos-x)^2+(yPos-y)^2)^0.5 <= 0.125)
+				{
+					caught_object = i+1;
+				}
+			} 
+			else if (caught_object > 0 & !control_path.click)
+			{
+				caught_object = 0;
+			}
+
+			if (caught_object > 0)
+			{
+				for (var i = 0; i < cond.timeout; i++) 
+				{
+					control_path.obj[i] = caught_object;
+				}
+			}
+			
+		}
+
+
+		data.physics[name].x.push(Math.round(p.x * 100000) / 100000);
+		frame_data.push(Math.round(p.x * 100000) / 100000);
+		data.physics[name].y.push(Math.round(p.y * 100000) / 100000);
+		frame_data.push(Math.round(p.y * 100000) / 100000);
+		data.physics[name].vx.push(Math.round(body.m_linearVelocity.x * 100000) / 100000);
+		frame_data.push(Math.round(body.m_linearVelocity.x * 100000) / 100000);
+		data.physics[name].vy.push(Math.round(body.m_linearVelocity.y * 100000) / 100000);
+		frame_data.push(Math.round(body.m_linearVelocity.y * 100000) / 100000);
+		data.physics[name].rotation.push(Math.round(body.GetAngle() * 100000) / 100000);
+		// bodies[i].SetAngle(0)
+		// bodies[i].m_angularVelocity = 0
+		// print(bodies[i].m_angularVelocity)
+    }
+  }
+  // Update mouse data if is controlling
+  if (control_path.obj[frame] != 0){
+    frame_data[control_path.obj[frame]-1] = 1;
+  }
+
+  //////////////////////////////
+  //Update the controlled object
+
+  
+    if (control_path.obj[frame]!=0) {
+        var body = bodies[control_path.obj[frame]-1]; //Select which object is under control
+        body.m_linearDamping = CO_damping;
+
+        //Intervene on the physics
+        var tmp = body.GetLinearVelocity();
+        var xCO = body.GetPosition().x; //Position of controlled object
+        var yCO = body.GetPosition().y; //Position of controlled object
+        var xVec = .2*(xPos - xCO);//fistSpeed; 
+        var yVec = .2*(yPos - yCO);//fistSpeed;    
+        var armForce = new b2Vec2(xVec, yVec);
+        
+        // print(frame, 'armforce!', xCO, yCO, xVec, yVec)
+
+        data.physics.armforce.push(armForce)
+
+        body.ApplyImpulse(armForce, body.GetWorldCenter());
+
+        //Go back to normal damping when control released
+        if (frame!=(control_path.length-1))
+        {
+			// print(frame)
+            if (control_path.obj[frame+1]==0)
+            {
+                body.m_linearDamping = damping;
+            }
+        }
+
+    }
+  return frame_data
+
+}
 
 
 function Destory(){
@@ -156,7 +272,11 @@ function Destory(){
     bodies = []; // clear the object pointer vectors
     gravityControllers = [];
 
-	return JSON.stringify(data);
+	data = {
+		physics: {},
+		events: {},
+		setup: {}
+	};
 }
 
 ////////////////////////////////////////////////
@@ -276,127 +396,6 @@ function getSensorContact(contact) {
     };
   }
 }
-
-function action_forward(){
-	// Set new control path in interaction_environment
-	frames = [];
-	if_click = control_path.click
-
-	for (var frame = 0; frame<cond.timeout; frame++)
-	{
-		frames.push(onEF(frame));
-	}
-	return JSON.stringify(frames);
-}
-
-function onEF(frame) {
-  //Step the world forward
-  world.Step(stepSize, 3, 3);
-  world.ClearForces();
-
-  xPos = control_path.x[frame];//e.target.mouseX;
-  yPos = control_path.y[frame];//e.target.mouseY;
-  
-
-  data.physics.co.push(control_path.obj[frame]);
-  data.physics.mouse.x.push(xPos);
-  data.physics.mouse.y.push(yPos);
-
-  frame_data = [0,0,0,0,xPos,yPos] // mouse data for pyhon environment
-  
-  for (var i = 0; i < bodies.length; i++) {
-    
-    if (bodies[i].m_userData.bodyType === "dynamic")
-    {
-	    var body = bodies[i];
-	    var p = body.GetPosition();
-		var name = body.m_userData.name;
-		// if it's the first frame of an action, see if mouse can catch anything
-		if (frame == 0)
-		{	
-			if (caught_object == 0 & control_path.click)
-			{
-				x=Math.round(p.x * 100000) / 100000;
-				y=Math.round(p.y * 100000) / 100000;
-				if ( ((xPos-x)^2+(yPos-y)^2)^0.5 <= 0.125)
-				{
-					caught_object = i+1;
-				}
-			} 
-			else if (caught_object > 0 & !control_path.click)
-			{
-				caught_object = 0;
-			}
-
-			if (caught_object > 0)
-			{
-				for (var i = 0; i < cond.timeout; i++) 
-				{
-					control_path.obj[i] = caught_object;
-				}
-			}
-			
-		}
-
-
-		data.physics[name].x.push(Math.round(p.x * 100000) / 100000);
-		frame_data.push(Math.round(p.x * 100000) / 100000);
-		data.physics[name].y.push(Math.round(p.y * 100000) / 100000);
-		frame_data.push(Math.round(p.y * 100000) / 100000);
-		data.physics[name].vx.push(Math.round(body.m_linearVelocity.x * 100000) / 100000);
-		frame_data.push(Math.round(body.m_linearVelocity.x * 100000) / 100000);
-		data.physics[name].vy.push(Math.round(body.m_linearVelocity.y * 100000) / 100000);
-		frame_data.push(Math.round(body.m_linearVelocity.y * 100000) / 100000);
-		data.physics[name].rotation.push(Math.round(body.GetAngle() * 100000) / 100000);
-		// bodies[i].SetAngle(0)
-		// bodies[i].m_angularVelocity = 0
-		// print(bodies[i].m_angularVelocity)
-    }
-  }
-  // Update mouse data if is controlling
-  if (control_path.obj[frame] != 0){
-    frame_data[control_path.obj[frame]-1] = 1;
-  }
-
-  //////////////////////////////
-  //Update the controlled object
-
-  
-    if (control_path.obj[frame]!=0) {
-        var body = bodies[control_path.obj[frame]-1]; //Select which object is under control
-        body.m_linearDamping = CO_damping;
-
-        //Intervene on the physics
-        var tmp = body.GetLinearVelocity();
-        var xCO = body.GetPosition().x; //Position of controlled object
-        var yCO = body.GetPosition().y; //Position of controlled object
-        var xVec = .2*(xPos - xCO);//fistSpeed; 
-        var yVec = .2*(yPos - yCO);//fistSpeed;    
-        var armForce = new b2Vec2(xVec, yVec);
-        
-        // print(frame, 'armforce!', xCO, yCO, xVec, yVec)
-
-        data.physics.armforce.push(armForce)
-
-        body.ApplyImpulse(armForce, body.GetWorldCenter());
-
-        //Go back to normal damping when control released
-        if (frame!=(control_path.length-1))
-        {
-			// print(frame)
-            if (control_path.obj[frame+1]==0)
-            {
-                body.m_linearDamping = damping;
-            }
-        }
-
-    }
-  return frame_data
-
-}
-
-
-
 
 
 var listener = new b2ContactListener();

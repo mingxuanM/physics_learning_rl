@@ -1,6 +1,6 @@
 import json
 # Format js_simulator generated data to model usable sequence data
-with open('./test_data_js.json') as data_file:    
+with open('./extend_training_data_js.json') as data_file:    
     test_data_js = json.load(data_file)
 format_trails = []
 for t, trail in enumerate(test_data_js):
@@ -43,5 +43,5 @@ for t, trail in enumerate(test_data_js):
     print('trail {} formated'.format(t))
     trail = {}
 
-with open('./test_data_js_formated.json', 'w') as fp:
+with open('./extend_training_data_js_format.json', 'w') as fp:
     json.dump(format_trails, fp, sort_keys=True, indent=4)

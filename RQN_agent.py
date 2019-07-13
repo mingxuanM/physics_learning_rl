@@ -118,7 +118,7 @@ def load_weigths_into_target_network(agent, target_network):
 # t_max: maximum running time
 # train：if True, calculate loss and call train_step
 def train_iteration(t_max, train=False):
-    print('[beginning of session] ' + time.strftime("%H:%M:%S", time.localtime()))
+    
     session_reward = []
     td_loss = []
     s = environment.reset() # first 10 frames * 22 num_feats
@@ -136,7 +136,8 @@ def train_iteration(t_max, train=False):
         if is_done:
             break
         t += action_length
-    print('[end of session] ' + time.strftime("%H:%M:%S", time.localtime()))
+    environment.destory()
+    
     return session_reward, td_loss
 
 # Top level training loop, over epochs
@@ -144,11 +145,12 @@ def train_loop(args):
     rewards = []
     loss = []
     for i in range(args.epochs):
-        session_reward, td_loss = train_iteration(500, True)
+        print('[session {} started] '.format(i) + time.strftime("%H:%M:%S", time.localtime()))
+        session_reward, td_loss = train_iteration(args.timeout, args.train)
         session_reward_mean = np.mean(session_reward)
         td_loss_mean = np.mean(td_loss)
-        print("Session {}\t finished: mean reward = {:.4f}\t mean loss = {:.4f}\t total reward = {:.4f}\t epsilon = {:.4f}".format(
-            i, session_reward_mean, td_loss_mean, np.sum(session_reward),learning_agent.epsilon))
+        print('[session {} finished] '.format(i) + time.strftime("%H:%M:%S", time.localtime()) + 'mean reward = {:.4f}\t; mean loss = {:.4f}\t; total reward = {:.4f}\t; epsilon = {:.4f}'.format(
+            session_reward_mean, td_loss_mean, np.sum(session_reward),learning_agent.epsilon))
         rewards.append(session_reward_mean)
         loss.append(td_loss_mean)
         # load_weigths_into_target_network and adjust agent parameters
@@ -183,6 +185,9 @@ if __name__ == "__main__":
     parser.add_argument('--lr', type=float, action='store',
                         help='learning rate for Adam optimiser', default=1e-4)
 
+    parser.add_argument('--timeout', type=int, action='store',
+                        help='max number of frames for one episode, 1/60s per frame', default=1800)
+
     args = parser.parse_args()
 
     total_feats = 22
@@ -199,7 +204,7 @@ if __name__ == "__main__":
     environment = Interaction_env()
     # initialize learning_agent and target_agent
     qlearning_gamma = 0.9
-    n_actions = 16*(2+2+1) + 1
+    n_actions = 4*2
     learning_agent = Q_agent("learning_agent", n_actions, qlearning_gamma)
     target_agent = Q_agent("target_agent", n_actions, qlearning_gamma)
     # train

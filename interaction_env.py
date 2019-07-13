@@ -3,8 +3,8 @@ import numpy as np
 import json
 import random as rd
 import math
-from model_predictor.predictor import Predictor
-import tensorflow as tf
+# from model_predictor.predictor import Predictor
+# import tensorflow as tf
 # import keras
 
 n_actions = 4*2 # 4 directions * 2 if click
@@ -14,7 +14,7 @@ velocity_decay = 0.9 # velocity in meter/s decay rate per frame if not accelerat
 action_length = 10 # frames
 width = 6
 height = 4
-num_feats=22
+num_feats = 22
 loss_weight = np.array([1.6973/6.3432, 1.0517/6.3432, 1.7830/6.3432, 1.8112/6.3432, 
                                 1.6973/6.3432, 1.0517/6.3432, 1.7830/6.3432, 1.8112/6.3432, 
                                 1.6973/6.3432, 1.0517/6.3432, 1.7830/6.3432, 1.8112/6.3432,
@@ -31,28 +31,28 @@ class Interaction_env:
     def __init__(self):
         self.timesteps = 0
         # Read in world_setup
-        with open('./json/world_setup.json') as data_file:    
+        with open('./js_simulator/json/world_setup.json') as data_file:    
             self.world_setup = json.load(data_file)
 
         # Read in starting_state
-        with open('./json/starting_state.json') as data_file:    
+        with open('./js_simulator/json/starting_state.json') as data_file:    
             self.starting_state = json.load(data_file)
 
         # Create js environment
         self.context = pyduktape.DuktapeContext()
 
         # Load js box2d graphic library
-        js_file = open("./js/box2d.js",'r')
+        js_file = open("./js_simulator/js/box2d.js",'r')
         js = js_file.read()
         self.context.eval_js(js)
 
         # Load world environment script
-        js_file = open("./js/control_world.js",'r')
+        js_file = open("./js_simulator/js/control_world.js",'r')
         js = js_file.read()
         self.context.eval_js(js)
         
         self.cond = {}
-        self.predictor = Predictor(lr=1e-4, name='predictor', num_feats=22, n_state=16, input_frames=5, train=True)
+        # self.predictor = Predictor(lr=1e-4, name='predictor', num_feats=22, n_state=16, input_frames=5, train=True)
 
     def reset(self):
         world_setup = rd.sample(self.world_setup, 1)[0]
@@ -73,11 +73,11 @@ class Interaction_env:
 
         # Set mass
         if world_setup[6]=='A':
-            cond['mass'] = [2,1,1,1]
+            self.cond['mass'] = [2,1,1,1]
         elif world_setup[6]=='B':
-            cond['mass'] = [1,2,1,1]
+            self.cond['mass'] = [1,2,1,1]
         else:
-            cond['mass'] = [1,1,1,1]
+            self.cond['mass'] = [1,1,1,1]
 
         # Set timeout (action_length) in js simulator
         self.cond['timeout']= action_length
@@ -89,7 +89,7 @@ class Interaction_env:
         # Feed control path to js context      
         self.context.set_globals(control_path=path)
         # Build js environment, get trajectory for the first action_length frames
-        trajectory = context.eval_js("Run();") # [action_length,22]
+        trajectory = self.context.eval_js("Run();") # [action_length,22]
         trajectory = np.array(json.loads(trajectory)) # Convert to python object
         # self.state['last_trajectory'] = trajectory
         # self.state['caught_object'] = 0
@@ -98,7 +98,7 @@ class Interaction_env:
             'vx':0,
             'vy':0}
         
-        self.sess = tf.InteractiveSession()
+        # self.sess = tf.InteractiveSession()
         # keras.backend.set_session(sess)
 
         return trajectory
@@ -108,13 +108,13 @@ class Interaction_env:
         if_click = actionID // 4 # taking value [0,1]
         direction = actionID % 4 # taking value [0,1,2,3]: [up, down, right ,left]
         # Generate control path from action space given actionID
-        control_path_ = action_generation(if_click, direction)
+        control_path_ = self.action_generation(if_click, direction)
         
         # Feed control path to js context      
         self.context.set_globals(control_path=control_path_)
 
         # Run the simulation
-        trajectory = context.eval_js("action_forward();") # [action_length,22]
+        trajectory = self.context.eval_js("action_forward();") # [action_length,22]
         trajectory = np.array(json.loads(trajectory)) # Convert to python object
         reward, is_done = self.reward_cal(trajectory)
         # Update self.state
@@ -122,7 +122,7 @@ class Interaction_env:
         return trajectory, reward, is_done
 
     # Calculate reward given trajectory [action_length:22] of one action length
-    def reward_cal(self, trajectory, caught_any):
+    def reward_cal(self, trajectory):
         reward = 0
         is_done = False
 
@@ -140,17 +140,18 @@ class Interaction_env:
         elif self.state['caught_any'] and control_object == 0:
             # released last caught object
             self.state['caught_any'] = False
-        elif self.state['caught_any'] and control_object != 0:
+        # elif self.state['caught_any'] and control_object != 0:
+        #     pass
             # TODO reward for decrease predictor loss, train predictor
-            batch_num = action_length - self.predictor.input_frames
-            sequence = trajectory.reshape((1,action_length,num_feats))
-            for b in range(batch_num):
-                labels = sequence[:,b+self.predictor.input_frames,-16:]
-                inputs = sequence[:,b:b+self.predictor.input_frames,:]
-                _train_step, _weitghted_batch_losses, _batch_losses = sess.run(
-                    [self.predictor.train_step, self.predictor.weitghted_batch_losses, self.predictor.batch_losses], 
-                    {self.predictor.batch_labels: labels, self.predictor.training_states: inputs, self.predictor.loss_weight:loss_weight}
-                    )
+            # batch_num = action_length - self.predictor.input_frames
+            # sequence = trajectory.reshape((1,action_length,num_feats))
+            # for b in range(batch_num):
+            #     labels = sequence[:,b+self.predictor.input_frames,-16:]
+            #     inputs = sequence[:,b:b+self.predictor.input_frames,:]
+            #     _train_step, _weitghted_batch_losses, _batch_losses = sess.run(
+            #         [self.predictor.train_step, self.predictor.weitghted_batch_losses, self.predictor.batch_losses], 
+            #         {self.predictor.batch_labels: labels, self.predictor.training_states: inputs, self.predictor.loss_weight:loss_weight}
+            #         )
         return reward, is_done
 
     # Calculate control path in action_length frames (1/60s per frame), v in meter/s
@@ -159,8 +160,8 @@ class Interaction_env:
         control_path = {'x':[], 'y':[], 'obj':[0]*action_length, 'click':bool(if_click)}
         vx = self.state['vx']
         vy = self.state['vy']
-        last_mouse_x = self.state['last_trajectory']['mouse']['x'][-1]
-        last_mouse_y = self.state['last_trajectory']['mouse']['y'][-1]
+        last_mouse_x = self.state['last_trajectory'][-1][4]
+        last_mouse_y = self.state['last_trajectory'][-1][5]
 
         # if direction == 0:
         #     acce_x = acceleration
@@ -195,3 +196,6 @@ class Interaction_env:
         self.state['vx'] = vx
         self.state['vy'] = vy
         return control_path
+    
+    def destory(self):
+        self.context.eval_js("Destory();")
