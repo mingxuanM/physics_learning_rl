@@ -16,6 +16,8 @@ var data = {
 // if the mouse caught anything during last action
 // 1-4 for 1-4 object, 0 for None
 var caught_object = 0; 
+// if the agent need to catch during an action
+var to_catch = false
 
 /////////////////////////////
 //Set fixed/randomised properties
@@ -42,7 +44,7 @@ b2TensorDampingController = Box2D.Dynamics.Controllers.b2TensorDampingController
 b2ContactListener = Box2D.Dynamics.b2ContactListener;
 
 
-function Run() {
+function Run(){
      
 	fullX = 6;
 	fullY = 4;
@@ -118,7 +120,7 @@ function Run() {
 	
 		for (var j = i; j < cond.lf[i].length; j++)
 		{
-			if (cond.lf[i][j]!=0) {
+			if (cond.lf[i][j]!=0){
 
 				gravityControllers[i][j] = new b2GravityController()
 				gravityControllers[i][j].G = cond.lf[i][j];
@@ -136,8 +138,7 @@ function Run() {
 	/////////////////////////
 	//Loop through simulation
 	init_frames = []
-	for (var frame = 0; frame < cond.timeout; frame++)
-	{
+	for (var frame = 0; frame < cond.timeout; frame++){
 		init_frames.push(onEF(frame));
 	}
 	return JSON.stringify(init_frames);
@@ -148,123 +149,149 @@ function action_forward(){
 	// Set new control path in interaction_environment
 	frames = [];
 
-	for (var frame = 0; frame<cond.timeout; frame++)
-	{
+	for (var frame = 0; frame < cond.timeout; frame++){
 		frames.push(onEF(frame));
 	}
 	return JSON.stringify(frames);
 }
 
-function onEF(frame) {
-  //Step the world forward
-  world.Step(stepSize, 3, 3);
-  world.ClearForces();
+function onEF(frame){
+	//Step the world forward
+	world.Step(stepSize, 3, 3);
+	world.ClearForces();
 
-  xPos = control_path.x[frame];//e.target.mouseX;
-  yPos = control_path.y[frame];//e.target.mouseY;
+	xPos = control_path.x[frame];//e.target.mouseX;
+	yPos = control_path.y[frame];//e.target.mouseY;
 
-  data.physics.co.push(control_path.obj[frame]);
-  data.physics.mouse.x.push(xPos);
-  data.physics.mouse.y.push(yPos);
 
-  frame_data = [0,0,0,0,xPos,yPos] // mouse data for pyhon environment
-  
-  for (var i = 0; i < bodies.length; i++) {
-    
-    if (bodies[i].m_userData.bodyType === "dynamic")
-    {
-	    var body = bodies[i];
-	    var p = body.GetPosition();
-		var name = body.m_userData.name;
-		// if it's the first frame of an action, see if mouse can catch anything
-		if (frame == 0)
-		{	
-			if (caught_object == 0 & control_path.click)
-			{
-				x=Math.round(p.x * 100000) / 100000;
-				y=Math.round(p.y * 100000) / 100000;
-				if ( ((xPos-x)^2+(yPos-y)^2)^0.5 <= 0.125)
-				{
-					caught_object = i+1;
-				}
-			} 
-			else if (caught_object > 0 & !control_path.click)
-			{
-				caught_object = 0;
-			}
-
-			if (caught_object > 0)
-			{
-				for (var i = 0; i < cond.timeout; i++) 
-				{
-					control_path.obj[i] = caught_object;
-				}
-			}
-			
+	frame_data = [0,0,0,0,xPos,yPos]; // prepare mouse data for pyhon environment
+	if (frame == 0){
+		// print('debug 1')
+		// print(caught_object == 0)
+		// print(control_path.click)
+		// print(distance)
+		to_catch = false
+		if (caught_object == 0 && control_path.click){
+			to_catch = true
+			var distance = [];
+			var objects = [];
+		} else if (caught_object > 0 && control_path.click){
+			// to_catch = false;
+			caught_object = 0;
 		}
+	}
 
+	data.physics.co.push(control_path.obj[frame]);
+	data.physics.mouse.x.push(xPos);
+	data.physics.mouse.y.push(yPos);
 
-		data.physics[name].x.push(Math.round(p.x * 100000) / 100000);
-		frame_data.push(Math.round(p.x * 100000) / 100000);
-		data.physics[name].y.push(Math.round(p.y * 100000) / 100000);
-		frame_data.push(Math.round(p.y * 100000) / 100000);
-		data.physics[name].vx.push(Math.round(body.m_linearVelocity.x * 100000) / 100000);
-		frame_data.push(Math.round(body.m_linearVelocity.x * 100000) / 100000);
-		data.physics[name].vy.push(Math.round(body.m_linearVelocity.y * 100000) / 100000);
-		frame_data.push(Math.round(body.m_linearVelocity.y * 100000) / 100000);
-		data.physics[name].rotation.push(Math.round(body.GetAngle() * 100000) / 100000);
-		// bodies[i].SetAngle(0)
-		// bodies[i].m_angularVelocity = 0
-		// print(bodies[i].m_angularVelocity)
-    }
-  }
-  // Update mouse data if is controlling
-  if (control_path.obj[frame] != 0){
-    frame_data[control_path.obj[frame]-1] = 1;
-  }
+	for (var i = 0; i < bodies.length; i++){
+		if (bodies[i].m_userData.bodyType === "dynamic"){
+			var body = bodies[i];
+			var p = body.GetPosition();
+			var name = body.m_userData.name;
+			// if it's the first frame of an action, see if mouse can catch anything
+			if (frame == 0 && to_catch){
+				// print('debug 2')
+				// print(distance)
+				// if (to_catch){
+					x=Math.round(p.x * 100000) / 100000;
+					y=Math.round(p.y * 100000) / 100000;
+					dis = Math.sqrt(Math.pow((xPos-x),2)+Math.pow((yPos-y),2))
+					// dis = Math.sqrt(((xPos-x) ** 2) + ((yPos-y) ** 2))
 
-  //////////////////////////////
-  //Update the controlled object
+					if (dis <= 0.25){
+						distance.push(dis);
+						objects.push(i+1);
+						// caught_object = i+1;
+					}
+				// } 
+			}
 
-  
-    if (control_path.obj[frame]!=0) {
-        var body = bodies[control_path.obj[frame]-1]; //Select which object is under control
-        body.m_linearDamping = CO_damping;
+			data.physics[name].x.push(Math.round(p.x * 100000) / 100000);
+			frame_data.push(Math.round(p.x * 100000) / 100000);
+			data.physics[name].y.push(Math.round(p.y * 100000) / 100000);
+			frame_data.push(Math.round(p.y * 100000) / 100000);
+			data.physics[name].vx.push(Math.round(body.m_linearVelocity.x * 100000) / 100000);
+			frame_data.push(Math.round(body.m_linearVelocity.x * 100000) / 100000);
+			data.physics[name].vy.push(Math.round(body.m_linearVelocity.y * 100000) / 100000);
+			frame_data.push(Math.round(body.m_linearVelocity.y * 100000) / 100000);
+			data.physics[name].rotation.push(Math.round(body.GetAngle() * 100000) / 100000);
+			// bodies[i].SetAngle(0)
+			// bodies[i].m_angularVelocity = 0
+			// print(bodies[i].m_angularVelocity)
+		}
+	}
+	
+	// Update mouse data if is controlling at the first frame of an action
+	if (frame == 0){
+		// print('debug 3')
+		// print(distance)
+		if (to_catch){
+			if (distance.length >0){
+				// caught_one = 0;
+				min_dis = 100;
+				for(var obj = 0; obj < distance.length; obj++){
+					if (distance[obj]<min_dis){
+						min_dis = distance[obj];
+						caught_object = objects[obj];
+					}
+				}
+			}
+			distance = undefined;
+			objects = undefined;
+		}
+		if (caught_object > 0){
+			// print('JS caught_object: ')
+			// print(caught_object)
+			for (var f = 0; f < cond.timeout; f++){
+				control_path.obj[f] = caught_object;
+			}
+		}
+	}
 
-        //Intervene on the physics
-        var tmp = body.GetLinearVelocity();
-        var xCO = body.GetPosition().x; //Position of controlled object
-        var yCO = body.GetPosition().y; //Position of controlled object
-        var xVec = .2*(xPos - xCO);//fistSpeed; 
-        var yVec = .2*(yPos - yCO);//fistSpeed;    
-        var armForce = new b2Vec2(xVec, yVec);
-        
-        // print(frame, 'armforce!', xCO, yCO, xVec, yVec)
+	if (control_path.obj[frame] != 0){
+		frame_data[control_path.obj[frame]-1] = 1;
+	}
 
-        data.physics.armforce.push(armForce)
+	//////////////////////////////
+	//Update the controlled object 
+		if (control_path.obj[frame]!=0){
+			var body = bodies[control_path.obj[frame]-1]; //Select which object is under control
+			body.m_linearDamping = CO_damping;
 
-        body.ApplyImpulse(armForce, body.GetWorldCenter());
+			//Intervene on the physics
+			var tmp = body.GetLinearVelocity();
+			var xCO = body.GetPosition().x; //Position of controlled object
+			var yCO = body.GetPosition().y; //Position of controlled object
+			var xVec = .2*(xPos - xCO);//fistSpeed; 
+			var yVec = .2*(yPos - yCO);//fistSpeed;    
+			var armForce = new b2Vec2(xVec, yVec);
+			
+			// print(frame, 'armforce!', xCO, yCO, xVec, yVec)
 
-        //Go back to normal damping when control released
-        if (frame!=(control_path.length-1))
-        {
-			// print(frame)
-            if (control_path.obj[frame+1]==0)
-            {
-                body.m_linearDamping = damping;
-            }
-        }
+			data.physics.armforce.push(armForce)
 
-    }
-  return frame_data
+			body.ApplyImpulse(armForce, body.GetWorldCenter());
 
+			//Go back to normal damping when control released
+			if (frame!=(control_path.length-1))
+			{
+				// print(frame)
+				if (control_path.obj[frame+1]==0)
+				{
+					body.m_linearDamping = damping;
+				}
+			}
+		}
+	return frame_data;
 }
 
 
 function Destory(){
     //End of simulation stuff...
     //Destroy bodies
-    for (var i = 0; i < bodies.length; i++) {
+    for (var i = 0; i < bodies.length; i++){
         var body = bodies[i];
         
         world.DestroyBody(body);
@@ -277,12 +304,14 @@ function Destory(){
 		events: {},
 		setup: {}
 	};
+	to_catch = false;
+	caught_object = 0;
 }
 
 ////////////////////////////////////////////////
 //Makes a round object in the box2d environment
 ////////////////////////////////////////////////
-function createBall(r, x, y, starting_vec, type, density, damping, friction, restitution, userData) {
+function createBall(r, x, y, starting_vec, type, density, damping, friction, restitution, userData){
 	// Create the fixture definition
 	var fixDef = new b2FixtureDef;
 
@@ -306,7 +335,7 @@ function createBall(r, x, y, starting_vec, type, density, damping, friction, res
 	var b = world.CreateBody(bodyDef);
 	test = b.CreateFixture(fixDef);
 
-	if (typeof userData !== 'undefined') {
+	if (typeof userData !== 'undefined'){
 	b.SetUserData(userData);
 	}
 
@@ -327,7 +356,7 @@ function createBall(r, x, y, starting_vec, type, density, damping, friction, res
 ////////////////////////////////////////////////
 //Makes a square object in the box2d environment
 ////////////////////////////////////////////////
-function createBox(w, h, x, y, type, density, damping, friction, restitution, userData) {
+function createBox(w, h, x, y, type, density, damping, friction, restitution, userData){
 
   // Create the fixture definition
   var fixDef = new b2FixtureDef;
@@ -357,7 +386,7 @@ function createBox(w, h, x, y, type, density, damping, friction, restitution, us
   test = b.CreateFixture(fixDef);
 
   //What is userData exactly, and how do we use it?
-  if (typeof userData !== 'undefined') {
+  if (typeof userData !== 'undefined'){
     b.SetUserData(userData);
   }
 
@@ -371,7 +400,7 @@ function createBox(w, h, x, y, type, density, damping, friction, restitution, us
 }
 
 
-function getSensorContact(contact) {
+function getSensorContact(contact){
   var fixtureA = contact.GetFixtureA();
   var fixtureB = contact.GetFixtureB();
 
@@ -384,7 +413,7 @@ function getSensorContact(contact) {
   var bodyA = fixtureA.GetBody();
   var bodyB = fixtureB.GetBody();
 
-  if (sensorA) { // bodyB should be added/removed to the buoyancy controller
+  if (sensorA){ // bodyB should be added/removed to the buoyancy controller
     return {
       sensor: bodyA,
       body: bodyB
@@ -399,23 +428,23 @@ function getSensorContact(contact) {
 
 
 var listener = new b2ContactListener();
-listener.BeginContact = function(contact) {
+listener.BeginContact = function(contact){
 	var tmp = [];
 	var tmp2 = [contact.GetFixtureA().GetBody().GetUserData(),
     contact.GetFixtureB().GetBody().GetUserData()];//.sort(); //Contact entities
     //DO STUFF WITH CONTACT HERE
 };
 
-listener.EndContact = function(contact) {
+listener.EndContact = function(contact){
 	var contactEntities = getSensorContact(contact);
     
     // print('collision! (listener)', contact);
 	
-	if (contactEntities) {
+	if (contactEntities){
 		var sensor = contactEntities.sensor;
-		if (sensor.GetUserData()) {
+		if (sensor.GetUserData()){
 			var userData = sensor.GetUserData();
-			if (userData.controller) {
+			if (userData.controller){
 				userData.controller.RemoveBody(contactEntities.body);
 			}
 		}

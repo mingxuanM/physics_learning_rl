@@ -43,7 +43,7 @@ context.eval_js(js)
 
 test_data = []
 
-for i in range(500):
+for i in range(200):
     #Run through a trial
     ######################################
 
@@ -85,9 +85,9 @@ for i in range(500):
     #         [0.0, 0.0, 0.0, float(setup['lf6'])],
     #         [0.0, 0.0, 0.0, 0.0]]
     
-    # 40% to have no local forces
+    # 30% to have no local forces
     no_force = rd.random()
-    if no_force <= 0.4:
+    if no_force <= 0.3:
         cond['lf'] = [[0.0,0.0,0.0,0.0],
                 [0.0,0.0,0.0,0.0],
                 [0.0,0.0,0.0,0.0],
@@ -111,15 +111,15 @@ for i in range(500):
     # 'y':[1]*onset['frame'][0],
     # 'obj':[0]*onset['frame'][0]}
     if is_passive:
-        path = {'x':[0]*500,
-            'y':[0]*500,
-            'obj':[0]*500}
+        path = {'x':[0]*1801,
+            'y':[0]*1801,
+            'obj':[0]*1801}
     else:
         path = {'x':[x/100 for x in control_path_['x']],
             'y':[y/100 for y in control_path_['y']],
             'obj':control_path_['obj']}
 
-    cond['timeout']=min(len(path['x']), 1000)
+    cond['timeout']=len(path['x'])
 
     #Simulate in javascript
     ########################

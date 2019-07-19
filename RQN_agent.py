@@ -26,7 +26,9 @@ import tensorflow as tf
 # import keras.layers as L
 import time
 
-n_actions = 4*2 # 4 directions * 2 if click
+n_actions = 6 # 1 no action + 4 directions acc + 1 click
+qlearning_gamma = 0.9
+# n_actions = 4*2 # 4 directions * 2 if click
 action_length = 10 # frames
 RQN_num_feats = 22 # 4 caught object + 2 mouse + 4*4
 
@@ -55,7 +57,8 @@ class Q_agent:
             self.prediction = self.nn(self.state_t)
 
             self.action_t = tf.placeholder(tf.int32)
-            self.target_t = tf.placeholder(tf.float32, [1,1])
+            # self.target_t = tf.placeholder(tf.float32, [1,1])
+            self.target_t = tf.placeholder(tf.float32)
 
             # mse loss
             # self.loss_ = (tf.reduce_sum(self.prediction * tf.one_hot(self.action_t, n_actions), axis=1) - self.target_t) ** 2
@@ -82,15 +85,15 @@ class Q_agent:
     def get_target(self, state_next, reward, is_done):
         sess = tf.get_default_session()
         q_values_next = sess.run(self.prediction, {self.state_t: state_next})
-        q_target_a = reward + self.qlearning_gamma * tf.reduce_max(q_values_next, axis=1)
-        q_target_a = tf.where(is_done, reward, q_target_a)
+        q_target_a = reward + self.qlearning_gamma * np.amax(q_values_next) # tf.reduce_max(q_values_next, axis=1)
+        # q_target_a = tf.where(is_done, reward, q_target_a)
         return q_target_a
 
     # train network and return loss
     # target: calculated from target network
     def train_network(self, state_t, action, target):
         sess = tf.get_default_session()
-        _train_step, _loss, _prediction = sess.run(self.train_step, self.loss, self.prediction, 
+        _train_step, _loss, _prediction = sess.run([self.train_step, self.loss, self.prediction], 
             {self.state_t: state_t, self.action_t: action, self.target_t: target})
         return _loss
 
@@ -122,11 +125,15 @@ def train_iteration(t_max, train=False):
     session_reward = []
     td_loss = []
     s = environment.reset() # first 10 frames * 22 num_feats
+    s=s.reshape((1,action_length,RQN_num_feats))
     t = 0
     while t < t_max:
         a = learning_agent.get_action(s)
+        print('action')
+        print(a)
         trajectory, reward, is_done = environment.act(a)
         s_next = trajectory # 10 frames * 22 num_feats
+        s_next=s_next.reshape((1,action_length,RQN_num_feats))
         if train:
             target = target_agent.get_target(s_next, reward, is_done)
             loss = learning_agent.train_network(s, a, target)
@@ -149,21 +156,25 @@ def train_loop(args):
         session_reward, td_loss = train_iteration(args.timeout, args.train)
         session_reward_mean = np.mean(session_reward)
         td_loss_mean = np.mean(td_loss)
-        print('[session {} finished] '.format(i) + time.strftime("%H:%M:%S", time.localtime()) + 'mean reward = {:.4f}\t; mean loss = {:.4f}\t; total reward = {:.4f}\t; epsilon = {:.4f}'.format(
+        print('[session {} finished] '.format(i) + time.strftime("%H:%M:%S", time.localtime()) + ';\t mean reward = {:.4f};\t mean loss = {:.4f};\t total reward = {:.4f};\t epsilon = {:.4f}'.format(
             session_reward_mean, td_loss_mean, np.sum(session_reward),learning_agent.epsilon))
         rewards.append(session_reward_mean)
         loss.append(td_loss_mean)
         # load_weigths_into_target_network and adjust agent parameters
-        if i % 2 == 0:
+        if i%2==0:
             load_weigths_into_target_network(learning_agent, target_agent)
             learning_agent.set_epsilon(max(learning_agent.epsilon * epsilon_decay, 0.01))
+        
+        if i%10==0 and i>0:
+            save_path = learning_agent.saver.save(sess, "./checkpoints/{}_{}_epochs.ckpt".format(exp_name, i))
+            print("Model saved in path: %s" % save_path)
 
     if args.save_model:
         model_json = learning_agent.nn.to_json()
         with open('{}.json'.format(exp_name), 'w') as json_file:
             json_file.write(model_json)
         # agent.nn.save_weights('{}.h5'.format(exp_name))
-        save_path = learning_agent.saver.save(sess, "./chechpoints/{}_{}_epochs.ckpt".format(exp_name, args.epochs))
+        save_path = learning_agent.saver.save(sess, "./checkpoints/{}_{}_epochs.ckpt".format(exp_name, args.epochs))
         print("Model saved in path: %s" % save_path)
         print("Model saved!")
         np.savetxt('{}.txt'.format(exp_name), (rewards, loss))
@@ -186,16 +197,15 @@ if __name__ == "__main__":
                         help='learning rate for Adam optimiser', default=1e-4)
 
     parser.add_argument('--timeout', type=int, action='store',
-                        help='max number of frames for one episode, 1/60s per frame', default=1800)
+                        help='max number of frames for one episode, 1/60s per frame', default=500)
 
     args = parser.parse_args()
 
-    total_feats = 22
-    n_state = 16
+    RQN_num_feats = 22
     input_frames = 5
     epsilon_decay = 0.9
 
-    exp_name = 'RQN'
+    exp_name = 'RQN_{:1.0e}'.format(args.lr)
 
     tf.reset_default_graph()
     sess = tf.InteractiveSession()
@@ -203,9 +213,10 @@ if __name__ == "__main__":
     # initialize interaction_env
     environment = Interaction_env()
     # initialize learning_agent and target_agent
-    qlearning_gamma = 0.9
-    n_actions = 4*2
+    
+    # n_actions = 4*2
     learning_agent = Q_agent("learning_agent", n_actions, qlearning_gamma)
     target_agent = Q_agent("target_agent", n_actions, qlearning_gamma)
+    sess.run(tf.global_variables_initializer())
     # train
     train_loop(args)

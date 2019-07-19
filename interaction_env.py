@@ -7,11 +7,11 @@ import math
 # import tensorflow as tf
 # import keras
 
-n_actions = 4*2 # 4 directions * 2 if click
-directions_tan = [(np.cos(i*np.pi/8.),np.sin(i*np.pi/8.)) for i in range(16)]
+n_actions = 6 # 1 no action + 4 directions acc + 1 click
+# directions_tan = [(np.cos(i*np.pi/8.),np.sin(i*np.pi/8.)) for i in range(16)]
 acceleration = 1 # in meter/s/frame (speed meter/s change in each frame)
 velocity_decay = 0.9 # velocity in meter/s decay rate per frame if not accelerate
-action_length = 10 # frames
+action_length = 5 # frames
 width = 6
 height = 4
 num_feats = 22
@@ -59,17 +59,35 @@ class Interaction_env:
         starting_state = rd.sample(self.starting_state, 1)[0]
 
         # Set starting conditions
-        self.cond = {'sls':[{'x':starting_state[0], 'y':starting_state[1]}, {'x':starting_state[4], 'y':starting_state[5]},
-                        {'x':starting_state[8], 'y':starting_state[9]}, {'x':starting_state[12], 'y':starting_state[13]}],
-                'svs':[{'x':starting_state[2], 'y':starting_state[3]}, {'x':starting_state[6], 'y':starting_state[7]},
-                        {'x':starting_state[10], 'y':starting_state[11]}, {'x':starting_state[14], 'y':starting_state[15]}]
+        # self.cond = {'sls':[{'x':starting_state[0], 'y':starting_state[1]}, {'x':starting_state[4], 'y':starting_state[5]},
+        #                 {'x':starting_state[8], 'y':starting_state[9]}, {'x':starting_state[12], 'y':starting_state[13]}],
+        #         'svs':[{'x':rd.uniform(-10.0, 10.0), 'y':rd.uniform(-10.0, 10.0)}, {'x':rd.uniform(-10.0, 10.0), 'y':rd.uniform(-10.0, 10.0)},
+        #                 {'x':rd.uniform(-10.0, 10.0), 'y':rd.uniform(-10.0, 10.0)}, {'x':rd.uniform(-10.0, 10.0), 'y':rd.uniform(-10.0, 10.0)}]
+        #         }
+        self.cond = {'sls':[{'x':rd.uniform(0.0, 6.0), 'y':rd.uniform(0.0, 4.0)}, {'x':rd.uniform(0.0, 6.0), 'y':rd.uniform(0.0, 4.0)},
+                        {'x':rd.uniform(0.0, 6.0), 'y':rd.uniform(0.0, 4.0)}, {'x':rd.uniform(0.0, 6.0), 'y':rd.uniform(0.0, 4.0)}],
+                'svs':[{'x':rd.uniform(-10.0, 10.0), 'y':rd.uniform(-10.0, 10.0)}, {'x':rd.uniform(-10.0, 10.0), 'y':rd.uniform(-10.0, 10.0)},
+                        {'x':rd.uniform(-10.0, 10.0), 'y':rd.uniform(-10.0, 10.0)}, {'x':rd.uniform(-10.0, 10.0), 'y':rd.uniform(-10.0, 10.0)}]
                 }
+
+        # Zero condition
+        # self.cond = {'sls':[{'x':3, 'y':2}, {'x':1, 'y':1},
+        #                 {'x':5, 'y':3}, {'x':1, 'y':3}],
+        #         'svs':[{'x':0, 'y':0}, {'x':0, 'y':0},
+        #                 {'x':0, 'y':0}, {'x':0, 'y':0}]
+        #         }
 
         # Set local forces
         self.cond['lf'] = [[0.0,float(world_setup[0]), float(world_setup[1]), float(world_setup[2])],
                 [0.0, 0.0, float(world_setup[3]), float(world_setup[4])],
                 [0.0, 0.0, 0.0, float(world_setup[5])],
                 [0.0, 0.0, 0.0, 0.0]]
+
+        # Zero condition
+        # self.cond['lf'] = [[0.0, 0.0, 0.0, 0.0],
+        #         [0.0, 0.0, 0.0, 0.0],
+        #         [0.0, 0.0, 0.0, 0.0],
+        #         [0.0, 0.0, 0.0, 0.0]]
 
         # Set mass
         if world_setup[6]=='A':
@@ -85,7 +103,7 @@ class Interaction_env:
         self.context.set_globals(cond=self.cond)
         
         # initial control path for the first action_length frames
-        path = {'x':[0]*action_length, 'y':[0]*action_length, 'obj':[0]*action_length, 'click':False}
+        path = {'x':[3]*action_length, 'y':[2]*action_length, 'obj':[0]*action_length, 'click':False}
         # Feed control path to js context      
         self.context.set_globals(control_path=path)
         # Build js environment, get trajectory for the first action_length frames
@@ -105,8 +123,12 @@ class Interaction_env:
 
     def act(self, actionID):
         # actionID taking value range(8)
-        if_click = actionID // 4 # taking value [0,1]
-        direction = actionID % 4 # taking value [0,1,2,3]: [up, down, right ,left]
+        if_click = False
+        direction = 0 # taking value [0,1,2,3,4]: [none, up, down, right ,left]
+        if actionID < 5:
+            direction = actionID 
+        elif actionID == 5:
+            if_click = True  
         # Generate control path from action space given actionID
         control_path_ = self.action_generation(if_click, direction)
         
@@ -126,9 +148,12 @@ class Interaction_env:
         reward = 0
         is_done = False
 
-        control_object = np.sum(trajectory[0][:4])
+        control_object = np.sum(trajectory[0,:4])
         if control_object > 0:
-            control_object = np.argmax(trajectory[0][:4])
+            for i in range(4):
+                if trajectory[0,i] == 1:
+                    control_object = i+1
+                    break
 
         # if (not self.state['caught_any'] and control_object == 0):
         # nothing happens
@@ -157,7 +182,7 @@ class Interaction_env:
     # Calculate control path in action_length frames (1/60s per frame), v in meter/s
     def action_generation(self, if_click, direction):
         
-        control_path = {'x':[], 'y':[], 'obj':[0]*action_length, 'click':bool(if_click)}
+        control_path = {'x':[], 'y':[], 'obj':[0]*action_length, 'click':if_click}
         vx = self.state['vx']
         vy = self.state['vy']
         last_mouse_x = self.state['last_trajectory'][-1][4]
@@ -176,14 +201,17 @@ class Interaction_env:
         #     acce_x = 0
         #     acce_y = -acceleration
 
-        # direction taking value [0,1,2,3]: [up, down, right ,left]
+        # direction taking value [0,1,2,3,4]: [none, up, down, right ,left]
         for _ in range(action_length):
-            if direction <= 1:
-                vx += acceleration*(1-2*direction) # 0:acceleration*1; 1:acceleration*-1
+            if direction == 0:
+                vx *= velocity_decay
+                vy *= velocity_decay
+            if direction <= 2:
+                vx += acceleration*(3-2*direction) # 1:acceleration*1; 2:acceleration*-1
                 vy *= velocity_decay
             else:
                 vx *= velocity_decay
-                vy += acceleration*(5-2*direction) # 2:acceleration*1; 3:acceleration*-1
+                vy += acceleration*(7-2*direction) # 3:acceleration*1; 4:acceleration*-1
             last_mouse_x += vx/60
             last_mouse_x = max(last_mouse_x, 0)
             last_mouse_x = min(last_mouse_x, width)
