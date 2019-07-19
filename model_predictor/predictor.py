@@ -111,6 +111,7 @@ def train_sequense(exp_name, epochs, save_model, training_sequenses):
         epoch_loss = []
         for sequence_idx, _training_sequense in enumerate(training_sequenses):
             sequence_loss = []
+            # _training_sequense = np.array(_training_sequense)
             # cut out excess frames so that _training_sequense can be reshaped by batch_size
             excessed = int(_training_sequense.shape[0] % batch_size)
             _training_sequense = _training_sequense[:-excessed,:]
@@ -142,7 +143,6 @@ def train_sequense(exp_name, epochs, save_model, training_sequenses):
         mean_epoch_loss = np.mean(epoch_loss, axis=0)
         # training_losses.append(mean_epoch_loss)
         training_losses_time.append('epoch {}\t, '.format(i) + time.strftime("%H:%M:%S", time.localtime()) + ', loss: ' + str(mean_epoch_loss))
-        # TODO currently storing mean loss, need losses for 16 variables
         print("[End of epoch {}\t] ".format(
             i) + time.strftime("%H:%M:%S", time.localtime()) + ', Mean squared loss for 4 elements:')
         print(mean_epoch_loss)
@@ -184,7 +184,7 @@ def train_sequense(exp_name, epochs, save_model, training_sequenses):
         model_json = model_predictor.nn.to_json()
         with open('{}.json'.format(exp_name), 'w') as json_file:
             json_file.write(model_json)
-        save_path = model_predictor.saver.save(sess, "./chechpoints/{}_50_epochs.ckpt".format(exp_name))
+        save_path = model_predictor.saver.save(sess, "./chechpoints/{}_{}_epochs.ckpt".format(exp_name,epochs))
         print("Model saved in path: %s" % save_path)
         # np.savetxt('LSTM_{}.txt'.format(exp_name), (training_losses_time))
         with open('{}.txt'.format(exp_name), 'w') as f:
@@ -366,11 +366,15 @@ def data_loader(train):
     if train:
         with open('data/trails_data.json') as json_file:  
             data = json.load(json_file)
-            data = data[:685]+data[686:692]+data[693:]
+            data = data[:685]+data[686:692]+data[693:] # 798 sequences
+        with open('data/extend_training_data_js.json') as json_file: 
+            # extent_data = json.load(json_file)
+            data.extend(json.load(json_file)) # 500 sequences; 80% passive; 40% no local forces
+            # extent_data = []
     else:
         with open('data/test_data_js.json') as json_file:  
             data = json.load(json_file)
-    
+    np.random.shuffle(data)
     return np.array(data)
 
 
@@ -414,7 +418,7 @@ if __name__ == "__main__":
                                 6.3432/1.6973, 6.3432/1.0517, 6.3432/1.7830, 6.3432/1.8112,
                                 6.3432/1.6973, 6.3432/1.0517, 6.3432/1.7830, 6.3432/1.8112])
 
-    exp_name = 'additive_F_{:1.0e}_{}'.format(args.lr,str(args.loss_weight))
+    exp_name = 'predictor_extend_{:1.0e}_{}'.format(args.lr,str(args.loss_weight))
 
     if args.train:
         # truncated_backprop_length = 5

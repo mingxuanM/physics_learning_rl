@@ -1,0 +1,3 @@
+model_checkpoint_path: "RQN_1e-04_20_epochs.ckpt"
+all_model_checkpoint_paths: "RQN_1e-04_10_epochs.ckpt"
+all_model_checkpoint_paths: "RQN_1e-04_20_epochs.ckpt"
