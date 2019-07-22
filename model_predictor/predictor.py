@@ -149,7 +149,7 @@ def train_sequense(exp_name, epochs, save_model, training_sequenses):
         print('Weighted average loss:{}'.format(
             mean_epoch_loss[0]*1.6973/6.3432 + mean_epoch_loss[1]*1.0517/6.3432 + mean_epoch_loss[2]*1.7830/6.3432 + mean_epoch_loss[3]*1.8112/6.3432))
         if i%10==0 and i>0:
-            save_path = model_predictor.saver.save(sess, "./chechpoints/{}_{}_epochs.ckpt".format(exp_name, i))
+            save_path = model_predictor.saver.save(sess, "./checkpoints/{}_{}_epochs.ckpt".format(exp_name, i))
             print("Model saved in path: %s" % save_path)
 #---------
         # plt.figure(1)
@@ -184,7 +184,7 @@ def train_sequense(exp_name, epochs, save_model, training_sequenses):
         model_json = model_predictor.nn.to_json()
         with open('{}.json'.format(exp_name), 'w') as json_file:
             json_file.write(model_json)
-        save_path = model_predictor.saver.save(sess, "./chechpoints/{}_{}_epochs.ckpt".format(exp_name,epochs))
+        save_path = model_predictor.saver.save(sess, "./checkpoints/{}_{}_epochs.ckpt".format(exp_name,epochs))
         print("Model saved in path: %s" % save_path)
         # np.savetxt('LSTM_{}.txt'.format(exp_name), (training_losses_time))
         with open('{}.txt'.format(exp_name), 'w') as f:
@@ -197,7 +197,7 @@ def train_sequense(exp_name, epochs, save_model, training_sequenses):
 # Predict next 1 frame given 5 frames from test set
 def passive_test(exp_name, test_sequenses):
     for i in range(1,6):
-        model_predictor_trained.saver.restore(sess, "./chechpoints/{}_{}0_epochs.ckpt".format(exp_name, i))
+        model_predictor_trained.saver.restore(sess, "./checkpoints/{}_{}0_epochs.ckpt".format(exp_name, i))
         print('Model trained with {}0 epochs successfully loaded'.format(i))
         epoch_loss = np.zeros((len(test_sequenses),4))
         for s_idx, sequence in enumerate(test_sequenses):
@@ -231,7 +231,7 @@ def passive_test(exp_name, test_sequenses):
 # Use 0 - 5 predicted frames
 def long_term_passive_test(exp_name, test_sequenses):
     for i in range(1,6):
-        model_predictor_trained.saver.restore(sess, "./chechpoints/{}_{}0_epochs.ckpt".format(exp_name,i))
+        model_predictor_trained.saver.restore(sess, "./checkpoints/{}_{}0_epochs.ckpt".format(exp_name,i))
         print('Model trained with {}0 epochs successfully loaded'.format(i))
         epoch_loss = np.zeros((len(test_sequenses),6,4))
         for s_idx, sequence in enumerate(test_sequenses):
@@ -274,7 +274,7 @@ def generate_trajectories(exp_name, trajectory_len=60):
     with open('data/special_test_cases.json') as json_file:  
         special_cases = json.load(json_file)
     i=4
-    model_predictor_trained.saver.restore(sess, "./chechpoints/{}_{}0_epochs.ckpt".format(exp_name, i))
+    model_predictor_trained.saver.restore(sess, "./checkpoints/{}_{}0_epochs.ckpt".format(exp_name, i))
     print('Model trained with {}0 epochs successfully loaded'.format(i))
     for s_idx, sequence in enumerate(special_cases):
         trajectory = np.zeros((trajectory_len+5,n_state))
