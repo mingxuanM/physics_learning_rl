@@ -12,8 +12,8 @@ n_actions = 6 # 1 no action + 4 directions acc + 1 click
 acceleration = 1 # in meter/s/frame (speed meter/s change in each frame)
 velocity_decay = 0.9 # velocity in meter/s decay rate per frame if not accelerate
 action_length = 5 # frames
-width = 6
-height = 4
+env_width = 6
+env_height = 4
 num_feats = 22
 loss_weight = np.array([1.6973/6.3432, 1.0517/6.3432, 1.7830/6.3432, 1.8112/6.3432, 
                                 1.6973/6.3432, 1.0517/6.3432, 1.7830/6.3432, 1.8112/6.3432, 
@@ -59,16 +59,16 @@ class Interaction_env:
         starting_state = rd.sample(self.starting_state, 1)[0]
 
         # Set starting conditions
-        # self.cond = {'sls':[{'x':starting_state[0], 'y':starting_state[1]}, {'x':starting_state[4], 'y':starting_state[5]},
-        #                 {'x':starting_state[8], 'y':starting_state[9]}, {'x':starting_state[12], 'y':starting_state[13]}],
-        #         'svs':[{'x':rd.uniform(-10.0, 10.0), 'y':rd.uniform(-10.0, 10.0)}, {'x':rd.uniform(-10.0, 10.0), 'y':rd.uniform(-10.0, 10.0)},
-        #                 {'x':rd.uniform(-10.0, 10.0), 'y':rd.uniform(-10.0, 10.0)}, {'x':rd.uniform(-10.0, 10.0), 'y':rd.uniform(-10.0, 10.0)}]
-        #         }
-        self.cond = {'sls':[{'x':rd.uniform(0.0, 6.0), 'y':rd.uniform(0.0, 4.0)}, {'x':rd.uniform(0.0, 6.0), 'y':rd.uniform(0.0, 4.0)},
-                        {'x':rd.uniform(0.0, 6.0), 'y':rd.uniform(0.0, 4.0)}, {'x':rd.uniform(0.0, 6.0), 'y':rd.uniform(0.0, 4.0)}],
+        self.cond = {'sls':[{'x':starting_state[0], 'y':starting_state[1]}, {'x':starting_state[4], 'y':starting_state[5]},
+                        {'x':starting_state[8], 'y':starting_state[9]}, {'x':starting_state[12], 'y':starting_state[13]}],
                 'svs':[{'x':rd.uniform(-10.0, 10.0), 'y':rd.uniform(-10.0, 10.0)}, {'x':rd.uniform(-10.0, 10.0), 'y':rd.uniform(-10.0, 10.0)},
                         {'x':rd.uniform(-10.0, 10.0), 'y':rd.uniform(-10.0, 10.0)}, {'x':rd.uniform(-10.0, 10.0), 'y':rd.uniform(-10.0, 10.0)}]
                 }
+        # self.cond = {'sls':[{'x':rd.uniform(0.0, 6.0), 'y':rd.uniform(0.0, 4.0)}, {'x':rd.uniform(0.0, 6.0), 'y':rd.uniform(0.0, 4.0)},
+        #                 {'x':rd.uniform(0.0, 6.0), 'y':rd.uniform(0.0, 4.0)}, {'x':rd.uniform(0.0, 6.0), 'y':rd.uniform(0.0, 4.0)}],
+        #         'svs':[{'x':rd.uniform(-10.0, 10.0), 'y':rd.uniform(-10.0, 10.0)}, {'x':rd.uniform(-10.0, 10.0), 'y':rd.uniform(-10.0, 10.0)},
+        #                 {'x':rd.uniform(-10.0, 10.0), 'y':rd.uniform(-10.0, 10.0)}, {'x':rd.uniform(-10.0, 10.0), 'y':rd.uniform(-10.0, 10.0)}]
+        #         }
 
         # Zero condition
         # self.cond = {'sls':[{'x':3, 'y':2}, {'x':1, 'y':1},
@@ -155,11 +155,38 @@ class Interaction_env:
                     control_object = i+1
                     break
 
-        # if (not self.state['caught_any'] and control_object == 0):
-        # nothing happens
-        if not self.state['caught_any'] and control_object != 0:
+        if (not self.state['caught_any']) and control_object == 0:
+            # agent has not caught any yet
+            # calculate the difference of distance from mouse to the closest object in the last frame of last action
+            # give reward by distance decrease
+            f0 = self.state['last_trajectory'][-1]
+            min_dist = 100
+            min_dist_x = 0
+            min_dist_y = 0
+            close_obj = 0
+            mouse_x1 = f0[4]
+            mouse_y1 = f0[5]
+            # find closest obj in f0
+            for obj in range(4):
+                obj_x1 = f0[4*obj+6]
+                obj_y1 = f0[4*obj+7]
+                dist = ((obj_x1-mouse_x1)**2+(obj_y1-mouse_y1)**2)**0.5
+                if dist<min_dist:
+                    min_dist = dist
+                    min_dist_x = abs(obj_x1-mouse_x1)
+                    min_dist_y = abs(obj_y1-mouse_y1)
+                    close_obj = obj
+
+            f5 = trajectory[-1]
+            # dist5 = ((f5[4*close_obj+6]-f5[4])**2+(f5[4*close_obj+7]-f5[5])**2)**0.5
+            dist5_x = abs(f5[4*close_obj+6]-f5[4])
+            dist5_y = abs(f5[4*close_obj+7]-f5[5])
+            # max possible reward is 2
+            reward += min((max((min_dist_x - dist5_x)/min_dist_x, 0) + max((min_dist_y - dist5_y)/min_dist_y, 0)),2)
+
+        elif (not self.state['caught_any']) and control_object != 0:
             # object caught
-            reward += 1
+            reward += 5
             self.state['caught_any'] = True
             is_done = True
         elif self.state['caught_any'] and control_object == 0:
@@ -214,10 +241,10 @@ class Interaction_env:
                 vy += acceleration*(7-2*direction) # 3:acceleration*1; 4:acceleration*-1
             last_mouse_x += vx/60
             last_mouse_x = max(last_mouse_x, 0)
-            last_mouse_x = min(last_mouse_x, width)
+            last_mouse_x = min(last_mouse_x, env_width)
             last_mouse_y += vy/60
             last_mouse_y = max(last_mouse_y, 0)
-            last_mouse_y = min(last_mouse_y, height)
+            last_mouse_y = min(last_mouse_y, env_height)
 
             control_path['x'].append(last_mouse_x)
             control_path['y'].append(last_mouse_y)

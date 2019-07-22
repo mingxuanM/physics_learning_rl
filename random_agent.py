@@ -72,7 +72,7 @@ def train_loop(args):
         rewards.append(session_reward_mean)
         if session_reward_mean>0:
             succeed_episode += 1
-        time_taken.append(len(session_reward))
+            time_taken.append(len(session_reward))
     print('agent succeed in catching object in {}/{} ({}%) episodes'.format(succeed_episode, args.epochs, succeed_episode/args.epochs*100))
     print('End of training, average actions to catch: {}'.format(np.mean(time_taken)))
     
