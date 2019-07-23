@@ -27,14 +27,16 @@ import tensorflow as tf
 import time
 import sys
 
-n_actions = 6 # 1 no action + 4 directions acc + 1 click
-qlearning_gamma = 0.9
-# n_actions = 4*2 # 4 directions * 2 if click
-action_length = 5 # frames
-RQN_num_feats = 22 # 4 caught object + 2 mouse + 4*4
+from config import n_actions, RQN_num_feats, action_length, qlearning_gamma, epsilon_decay
 
-# epsilon_decay = 0.9995 # 10000 epochs
-epsilon_decay = 0.995 # 2000 epochs
+# n_actions = 6 # 1 no action + 4 directions acc + 1 click
+# qlearning_gamma = 0.9
+# # n_actions = 4*2 # 4 directions * 2 if click
+# action_length = 5 # frames
+# RQN_num_feats = 22 # 4 caught object + 2 mouse + 4*4
+
+# # epsilon_decay = 0.9995 # 10000 epochs
+# epsilon_decay = 0.995 # 2000 epochs
 
 # Workflow:
 # learning_agent.get_action(state_t) -> action -> 

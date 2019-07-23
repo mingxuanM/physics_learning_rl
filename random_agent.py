@@ -4,10 +4,12 @@ import numpy as np
 import time
 import random as rd
 
-n_actions = 6 # 1 no action + 4 directions acc + 1 click
-# n_actions = 4*2 # 4 directions * 2 if click
-action_length = 5 # frames
-# RQN_num_feats = 22 # 4 caught object + 2 mouse + 4*4
+from config import n_actions, action_length
+
+# n_actions = 6 # 1 no action + 4 directions acc + 1 click
+# # n_actions = 4*2 # 4 directions * 2 if click
+# action_length = 5 # frames
+# # RQN_num_feats = 22 # 4 caught object + 2 mouse + 4*4
 
 class Random_agent():
     # def __init__(self):
