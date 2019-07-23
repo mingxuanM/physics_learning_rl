@@ -3,18 +3,20 @@ import numpy as np
 import json
 import random as rd
 import math
-# from model_predictor.predictor import Predictor
-# import tensorflow as tf
-# import keras
+from model_predictor.predictor import Predictor
+import tensorflow as tf
+import keras
 
-n_actions = 6 # 1 no action + 4 directions acc + 1 click
-# directions_tan = [(np.cos(i*np.pi/8.),np.sin(i*np.pi/8.)) for i in range(16)]
-acceleration = 1 # in meter/s/frame (speed meter/s change in each frame)
-velocity_decay = 0.9 # velocity in meter/s decay rate per frame if not accelerate
-action_length = 5 # frames
-env_width = 6
-env_height = 4
-num_feats = 22
+from config import n_actions, acceleration, velocity_decay, action_length, env_width, env_height, num_feats, predictor_input_frames 
+
+# n_actions = 6 # 1 no action + 4 directions acc + 1 click
+# # directions_tan = [(np.cos(i*np.pi/8.),np.sin(i*np.pi/8.)) for i in range(16)]
+# acceleration = 1 # in meter/s/frame (speed meter/s change in each frame)
+# velocity_decay = 0.9 # velocity in meter/s decay rate per frame if not accelerate
+# action_length = 5 # frames
+# env_width = 6
+# env_height = 4
+# num_feats = 22
 loss_weight = np.array([1.6973/6.3432, 1.0517/6.3432, 1.7830/6.3432, 1.8112/6.3432, 
                                 1.6973/6.3432, 1.0517/6.3432, 1.7830/6.3432, 1.8112/6.3432, 
                                 1.6973/6.3432, 1.0517/6.3432, 1.7830/6.3432, 1.8112/6.3432,
@@ -116,8 +118,8 @@ class Interaction_env:
             'vx':0,
             'vy':0}
         
-        # self.sess = tf.InteractiveSession()
-        # keras.backend.set_session(sess)
+        self.sess = tf.InteractiveSession()
+        keras.backend.set_session(sess)
 
         return trajectory
 
@@ -192,18 +194,48 @@ class Interaction_env:
         elif self.state['caught_any'] and control_object == 0:
             # released last caught object
             self.state['caught_any'] = False
-        # elif self.state['caught_any'] and control_object != 0:
+        elif self.state['caught_any'] and control_object != 0:
         #     pass
             # TODO reward for decrease predictor loss, train predictor
-            # batch_num = action_length - self.predictor.input_frames
+            batch_num = action_length
             # sequence = trajectory.reshape((1,action_length,num_feats))
-            # for b in range(batch_num):
-            #     labels = sequence[:,b+self.predictor.input_frames,-16:]
-            #     inputs = sequence[:,b:b+self.predictor.input_frames,:]
-            #     _train_step, _weitghted_batch_losses, _batch_losses = sess.run(
-            #         [self.predictor.train_step, self.predictor.weitghted_batch_losses, self.predictor.batch_losses], 
-            #         {self.predictor.batch_labels: labels, self.predictor.training_states: inputs, self.predictor.loss_weight:loss_weight}
-            #         )
+            mean_weitghted_batch_losses = []
+            for b in range(batch_num):
+                if b <= predictor_input_frames:
+                    inputs = np.concatenate(self.state['last_trajectory'][-predictor_input_frames+b:], trajectory[:b])
+                else:
+                    inputs = trajectory[b-predictor_input_frames:b]
+                # labels = sequence[:,b+self.predictor.input_frames,-16:]
+                labels = trajectory[:,b,-16:].reshape((1,16))
+                # inputs = sequence[:,b:b+self.predictor.input_frames,:]
+                inputs = inputs.reshape((1,predictor_input_frames,num_feats))
+                _train_step, _weitghted_batch_losses, _batch_losses = self.sess.run(
+                    [self.predictor.train_step, self.predictor.weitghted_batch_losses, self.predictor.batch_losses], 
+                    {self.predictor.batch_labels: labels, self.predictor.training_states: inputs, self.predictor.loss_weight:loss_weight}
+                    )
+                mean_weitghted_batch_losses.append(_weitghted_batch_losses)
+            mean_weitghted_batch_losses = np.mean(mean_weitghted_batch_losses)
+
+            # After training stpes, use the updated predictor to calculate loss again:
+            mean_weitghted_batch_losses_after = []
+            for b in range(batch_num):
+                if b <= predictor_input_frames:
+                    inputs = np.concatenate(self.state['last_trajectory'][-predictor_input_frames+b:], trajectory[:b])
+                else:
+                    inputs = trajectory[b-predictor_input_frames:b]
+                # labels = sequence[:,b+self.predictor.input_frames,-16:]
+                labels = trajectory[:,b,-16:].reshape((1,16))
+            
+                prediction = np.array(sess.run([self.predictor.prediction], {self.predictor.state_t: inputs}))
+       
+                batch_loss_ = np.reshape(np.square(np.subtract(labels, prediction)), 16)
+                mean_weitghted_batch_losses_after.append(np.sum(np.multiply(batch_loss_, loss_weight)))
+            mean_weitghted_batch_losses_after = np.mean(mean_weitghted_batch_losses_after)
+
+            reward += np.abs(mean_weitghted_batch_losses - mean_weitghted_batch_losses_after)
+
+
+
         return reward, is_done
 
     # Calculate control path in action_length frames (1/60s per frame), v in meter/s
