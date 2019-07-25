@@ -17,4 +17,9 @@ qlearning_gamma = 0.9
 # epsilon_decay = 0.9995 # 10000 epochs
 epsilon_decay = 0.995 # 2000 epochs
 
+# number of frames for model predictor network
 predictor_input_frames = 5
+
+# bonus rate of 'predictor loss drop reward' when agent is dragging
+# final reward will be (1 + dragging_bonus) * np.abs(pretrained_loss - trained_loss)
+dragging_bonus = 1.5 
