@@ -21,6 +21,7 @@ class Random_agent():
 # t_max: maximum running time
 def train_iteration(t_max):
     session_reward = []
+    seesion_predictor_loss = []
     td_loss = []
     s = environment.reset() # first action_length frames * 22 num_feats
     # print(s)
@@ -31,9 +32,10 @@ def train_iteration(t_max):
             print('invalid actionID {} break'.format(a))
             break
         # a = 5
-        trajectory, reward, is_done = environment.act(a)
+        trajectory, reward, is_done, predictor_loss = environment.act(a)
         s_next = trajectory # action_length frames * 22 num_feats
         session_reward.append(reward)
+        seesion_predictor_loss.append(reward)
         s = s_next
         a_string = 'none'
         if a == 0: 
@@ -57,33 +59,38 @@ def train_iteration(t_max):
         t += action_length
     environment.destory()
     
-    return session_reward
+    return session_reward, seesion_predictor_loss
 
 # Top level training loop, over epochs
 def train_loop(args):
     rewards = []
-    time_taken = []
-    succeed_episode = 0
-    for i in range(args.epochs):
+    # time_taken = []
+    # succeed_episode = 0
+    for i in range(args.episode):
         # print('[session {} started]\t '.format(i) + time.strftime("%H:%M:%S", time.localtime()))
-        session_reward = train_iteration(args.timeout)
+        session_reward, seesion_predictor_loss = train_iteration(args.timeout)
         session_reward_mean = np.mean(session_reward)
+        seesion_predictor_loss_mean = np.mean(seesion_predictor_loss)
         print('[session {} finished]\t '.format(i) + time.strftime("%H:%M:%S", time.localtime()) + " mean reward = {:.4f}; total reward = {:.4f}".format(
             session_reward_mean, np.sum(session_reward)))
-        print('number of timesteps taken: \t{}'.format(len(session_reward)*5))
+        
+        # print('number of timesteps taken: \t{}'.format(len(session_reward)*5))
+        print('predictor loss: {}'.format(seesion_predictor_loss))
+        print('mean: {}'.format(seesion_predictor_loss_mean))
+        print(' ')
         rewards.append(session_reward_mean)
-        if session_reward_mean>0:
-            succeed_episode += 1
-            time_taken.append(len(session_reward))
-    print('agent succeed in catching object in {}/{} ({}%) episodes'.format(succeed_episode, args.epochs, succeed_episode/args.epochs*100))
-    print('End of training, average actions to catch: {}'.format(np.mean(time_taken)))
+        # if session_reward_mean>0:
+        #     succeed_episode += 1
+        #     time_taken.append(len(session_reward))
+    # print('agent succeed in catching object in {}/{} ({}%) episodes'.format(succeed_episode, args.epochs, succeed_episode/args.epochs*100))
+    # print('End of training, average actions to catch: {}'.format(np.mean(time_taken)))
     
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description='run a random agent')
-    parser.add_argument('--epochs', type=int, action='store',
+    parser.add_argument('--episode', type=int, action='store',
                         help='number of epoches to run', default=50)
     parser.add_argument('--timeout', type=int, action='store',
                         help='max number of frames for one episode, 1/60s per frame', default=1800)

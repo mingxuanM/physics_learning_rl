@@ -5,7 +5,7 @@ import random as rd
 import math
 from model_predictor.predictor import Predictor
 import tensorflow as tf
-import keras
+# import keras
 
 from config import n_actions, acceleration, velocity_decay, action_length, env_width, env_height, num_feats, predictor_input_frames, dragging_bonus 
 
@@ -35,6 +35,8 @@ class Interaction_env:
         # Read in world_setup
         with open('./js_simulator/json/world_setup.json') as data_file:    
             self.world_setup = json.load(data_file)
+        # self.world_setup = rd.sample(self.world_setup, 1)[0]
+        self.world_setup = self.world_setup[4]
 
         # Read in starting_state
         with open('./js_simulator/json/starting_state.json') as data_file:    
@@ -54,10 +56,14 @@ class Interaction_env:
         self.context.eval_js(js)
         
         self.cond = {}
-        # self.predictor = Predictor(lr=1e-4, name='predictor', num_feats=22, n_state=16, input_frames=5, train=True)
+
+        self.sess = tf.InteractiveSession()
+        self.predictor = Predictor(lr=1e-4, name='predictor', num_feats=22, n_state=16, input_frames=5, train=True, batch_size=1)
+        self.sess.run(tf.global_variables_initializer())
+        self.predictor.saver.restore(self.sess, "./model_predictor/checkpoints/pretrained_model_predictor_2.ckpt")
 
     def reset(self):
-        world_setup = rd.sample(self.world_setup, 1)[0]
+        world_setup = self.world_setup
         starting_state = rd.sample(self.starting_state, 1)[0]
 
         # Set starting conditions
@@ -118,8 +124,7 @@ class Interaction_env:
             'vx':0,
             'vy':0}
         
-        # self.sess = tf.InteractiveSession()
-        # keras.backend.set_session(self.sess)
+        
 
         return trajectory
 
@@ -140,10 +145,10 @@ class Interaction_env:
         # Run the simulation
         trajectory = self.context.eval_js("action_forward();") # [action_length,22]
         trajectory = np.array(json.loads(trajectory)) # Convert to python object
-        reward, is_done = self.reward_cal(trajectory)
+        reward, is_done, pretrained_loss = self.reward_cal(trajectory)
         # Update self.state
         self.state['last_trajectory'] = trajectory
-        return trajectory, reward, is_done
+        return trajectory, reward, is_done, pretrained_loss
 
     # Calculate reward given trajectory [action_length:22] of one action length
     def reward_cal(self, trajectory):
@@ -192,8 +197,9 @@ class Interaction_env:
         elif (not self.state['caught_any']) and control_object != 0:
             # object caught
             reward += 5
+            reward += dragging_bonus * np.abs(pretrained_loss - trained_loss)
             self.state['caught_any'] = True
-            is_done = True
+            # is_done = True
         elif self.state['caught_any'] and control_object == 0:
             # released last caught object
             self.state['caught_any'] = False
@@ -201,7 +207,7 @@ class Interaction_env:
             # add bonus reward for decrease predictor loss when agent is dragging
             reward += dragging_bonus * np.abs(pretrained_loss - trained_loss)
 
-        return reward, is_done
+        return reward, is_done, pretrained_loss
 
     def predictor_train(self, trajectory):
         batch_num = action_length
@@ -209,34 +215,34 @@ class Interaction_env:
         mean_weitghted_batch_losses = np.zeros(batch_num)
         for b in range(batch_num):
             if b <= predictor_input_frames:
-                inputs = np.concatenate(self.state['last_trajectory'][-predictor_input_frames+b:], trajectory[:b])
+                inputs = np.concatenate((self.state['last_trajectory'][-predictor_input_frames+b:,:], trajectory[:b,:]), axis=0)
             else:
                 inputs = trajectory[b-predictor_input_frames:b]
             # labels = sequence[:,b+self.predictor.input_frames,-16:]
-            labels = trajectory[:,b,-16:].reshape((1,16))
+            labels = trajectory[b,-16:].reshape((1,16))
             # inputs = sequence[:,b:b+self.predictor.input_frames,:]
             inputs = inputs.reshape((1,predictor_input_frames,num_feats))
             _train_step, _weitghted_batch_losses, _batch_losses = self.sess.run(
                 [self.predictor.train_step, self.predictor.weitghted_batch_losses, self.predictor.batch_losses], 
                 {self.predictor.batch_labels: labels, self.predictor.training_states: inputs, self.predictor.loss_weight:loss_weight}
                 )
-            mean_weitghted_batch_losses[b] = _weitghted_batch_losses
+            mean_weitghted_batch_losses[b] = np.sum(_weitghted_batch_losses)/4
         mean_weitghted_batch_losses = np.mean(mean_weitghted_batch_losses)
 
         # After training stpes, use the updated predictor to calculate loss again:
         mean_weitghted_batch_losses_after = np.zeros(batch_num)
         for b in range(batch_num):
             if b <= predictor_input_frames:
-                inputs = np.concatenate(self.state['last_trajectory'][-predictor_input_frames+b:], trajectory[:b])
+                inputs = np.concatenate((self.state['last_trajectory'][-predictor_input_frames+b:,:], trajectory[:b,:]), axis=0)
             else:
                 inputs = trajectory[b-predictor_input_frames:b]
             # labels = sequence[:,b+self.predictor.input_frames,-16:]
-            labels = trajectory[:,b,-16:].reshape((1,16))
-        
+            labels = trajectory[b,-16:].reshape((1,16))
+            inputs = inputs.reshape((1,predictor_input_frames,num_feats))
             prediction = np.array(self.sess.run([self.predictor.prediction], {self.predictor.state_t: inputs}))
     
             batch_loss_ = np.reshape(np.square(np.subtract(labels, prediction)), 16)
-            mean_weitghted_batch_losses_after[b] = np.sum(np.multiply(batch_loss_, loss_weight))
+            mean_weitghted_batch_losses_after[b] = np.sum(np.multiply(batch_loss_, loss_weight))/4
         mean_weitghted_batch_losses_after = np.mean(mean_weitghted_batch_losses_after)
         return mean_weitghted_batch_losses, mean_weitghted_batch_losses_after
 
