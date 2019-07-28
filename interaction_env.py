@@ -61,11 +61,12 @@ class Interaction_env:
         self.predictor = Predictor(lr=1e-4, name='predictor', num_feats=22, n_state=16, input_frames=5, train=True, batch_size=1)
         self.sess.run(tf.global_variables_initializer())
         self.predictor.saver.restore(self.sess, "./model_predictor/checkpoints/pretrained_model_predictor_2.ckpt")
+        self.trajectory_history = []
 
     def reset(self):
         world_setup = self.world_setup
         starting_state = rd.sample(self.starting_state, 1)[0]
-
+        self.trajectory_history = []
         # Set starting conditions
         self.cond = {'sls':[{'x':starting_state[0], 'y':starting_state[1]}, {'x':starting_state[4], 'y':starting_state[5]},
                         {'x':starting_state[8], 'y':starting_state[9]}, {'x':starting_state[12], 'y':starting_state[13]}],
@@ -116,7 +117,9 @@ class Interaction_env:
         self.context.set_globals(control_path=path)
         # Build js environment, get trajectory for the first action_length frames
         trajectory = self.context.eval_js("Run();") # [action_length,22]
-        trajectory = np.array(json.loads(trajectory)) # Convert to python object
+        trajectory = json.loads(trajectory)
+        self.trajectory_history.extend(trajectory)
+        trajectory = np.array(trajectory) # Convert to python object
         # self.state['last_trajectory'] = trajectory
         # self.state['caught_object'] = 0
         self.state = {'last_trajectory':trajectory,
@@ -125,7 +128,6 @@ class Interaction_env:
             'vy':0}
         
         
-
         return trajectory
 
     def act(self, actionID):
@@ -144,10 +146,13 @@ class Interaction_env:
 
         # Run the simulation
         trajectory = self.context.eval_js("action_forward();") # [action_length,22]
-        trajectory = np.array(json.loads(trajectory)) # Convert to python object
+        trajectory = json.loads(trajectory)
+        self.trajectory_history.extend(trajectory)
+        trajectory = np.array(trajectory) # Convert to python object
         reward, is_done, pretrained_loss = self.reward_cal(trajectory)
         # Update self.state
         self.state['last_trajectory'] = trajectory
+        
         return trajectory, reward, is_done, pretrained_loss
 
     # Calculate reward given trajectory [action_length:22] of one action length
@@ -155,8 +160,12 @@ class Interaction_env:
         reward = 0
         is_done = False
         # train predictor network, add reward for loss drop
-        pretrained_loss, trained_loss = self.predictor_train(trajectory)
-        reward += np.abs(pretrained_loss - trained_loss)
+        # pretrained_loss, trained_loss = self.predictor_test(trajectory)
+        # reward += np.abs(pretrained_loss - trained_loss)
+
+        # calculate predictor loss, add to reward
+        predictor_loss= self.predictor_test(trajectory)
+        reward += predictor_loss
 
         control_object = np.sum(trajectory[0,:4])
         if control_object > 0:
@@ -197,7 +206,7 @@ class Interaction_env:
         elif (not self.state['caught_any']) and control_object != 0:
             # object caught
             reward += 5
-            reward += dragging_bonus * np.abs(pretrained_loss - trained_loss)
+            reward += dragging_bonus * predictor_loss
             self.state['caught_any'] = True
             # is_done = True
         elif self.state['caught_any'] and control_object == 0:
@@ -205,29 +214,29 @@ class Interaction_env:
             self.state['caught_any'] = False
         elif self.state['caught_any'] and control_object != 0:
             # add bonus reward for decrease predictor loss when agent is dragging
-            reward += dragging_bonus * np.abs(pretrained_loss - trained_loss)
+            reward += dragging_bonus * predictor_loss
 
-        return reward, is_done, pretrained_loss
+        return reward, is_done, predictor_loss
 
-    def predictor_train(self, trajectory):
+    def predictor_test(self, trajectory):
         batch_num = action_length
         # sequence = trajectory.reshape((1,action_length,num_feats))
-        mean_weitghted_batch_losses = np.zeros(batch_num)
-        for b in range(batch_num):
-            if b <= predictor_input_frames:
-                inputs = np.concatenate((self.state['last_trajectory'][-predictor_input_frames+b:,:], trajectory[:b,:]), axis=0)
-            else:
-                inputs = trajectory[b-predictor_input_frames:b]
-            # labels = sequence[:,b+self.predictor.input_frames,-16:]
-            labels = trajectory[b,-16:].reshape((1,16))
-            # inputs = sequence[:,b:b+self.predictor.input_frames,:]
-            inputs = inputs.reshape((1,predictor_input_frames,num_feats))
-            _train_step, _weitghted_batch_losses, _batch_losses = self.sess.run(
-                [self.predictor.train_step, self.predictor.weitghted_batch_losses, self.predictor.batch_losses], 
-                {self.predictor.batch_labels: labels, self.predictor.training_states: inputs, self.predictor.loss_weight:loss_weight}
-                )
-            mean_weitghted_batch_losses[b] = np.sum(_weitghted_batch_losses)/4
-        mean_weitghted_batch_losses = np.mean(mean_weitghted_batch_losses)
+        # mean_weitghted_batch_losses = np.zeros(batch_num)
+        # for b in range(batch_num):
+        #     if b <= predictor_input_frames:
+        #         inputs = np.concatenate((self.state['last_trajectory'][-predictor_input_frames+b:,:], trajectory[:b,:]), axis=0)
+        #     else:
+        #         inputs = trajectory[b-predictor_input_frames:b]
+        #     # labels = sequence[:,b+self.predictor.input_frames,-16:]
+        #     labels = trajectory[b,-16:].reshape((1,16))
+        #     # inputs = sequence[:,b:b+self.predictor.input_frames,:]
+        #     inputs = inputs.reshape((1,predictor_input_frames,num_feats))
+        #     _train_step, _weitghted_batch_losses, _batch_losses = self.sess.run(
+        #         [self.predictor.train_step, self.predictor.weitghted_batch_losses, self.predictor.batch_losses], 
+        #         {self.predictor.batch_labels: labels, self.predictor.training_states: inputs, self.predictor.loss_weight:loss_weight}
+        #         )
+        #     mean_weitghted_batch_losses[b] = np.sum(_weitghted_batch_losses)/4
+        # mean_weitghted_batch_losses = np.mean(mean_weitghted_batch_losses)
 
         # After training stpes, use the updated predictor to calculate loss again:
         mean_weitghted_batch_losses_after = np.zeros(batch_num)
@@ -244,7 +253,7 @@ class Interaction_env:
             batch_loss_ = np.reshape(np.square(np.subtract(labels, prediction)), 16)
             mean_weitghted_batch_losses_after[b] = np.sum(np.multiply(batch_loss_, loss_weight))/4
         mean_weitghted_batch_losses_after = np.mean(mean_weitghted_batch_losses_after)
-        return mean_weitghted_batch_losses, mean_weitghted_batch_losses_after
+        return mean_weitghted_batch_losses_after
 
 
     # Calculate control path in action_length frames (1/60s per frame), v in meter/s
@@ -295,3 +304,9 @@ class Interaction_env:
     
     def destory(self):
         self.context.eval_js("Destory();")
+        return self.trajectory_history
+        # with open('./active_training_data/random_data.json') as data_file:    
+        #     data = json.load(data_file)
+        # data.append(self.trajectory_history)
+        # with open('./active_training_data/random_data.json', 'w') as data_file:
+        #     json.dump(data, data_file, indent=4)

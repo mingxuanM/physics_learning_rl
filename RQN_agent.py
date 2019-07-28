@@ -26,6 +26,7 @@ import tensorflow as tf
 # import keras.layers as L
 import time
 import sys
+import json
 
 from config import n_actions, RQN_num_feats, action_length, qlearning_gamma, epsilon_decay
 
@@ -151,9 +152,9 @@ def train_iteration(t_max, train=False):
         if is_done:
             break
         t += action_length
-    environment.destory()
+    trajectory_history = environment.destory()
     
-    return session_reward, td_loss, is_done, seesion_predictor_loss
+    return session_reward, td_loss, is_done, seesion_predictor_loss, trajectory_history
 
 # Top level training loop, over epochs
 def train_loop(args):
@@ -161,15 +162,17 @@ def train_loop(args):
     loss = []
     succeed_episode = 0
     time_taken = []
+    data = []
     for i in range(args.epochs):
         print('[session {} started] '.format(i) + time.strftime("%H:%M:%S", time.localtime()))
-        session_reward, td_loss, is_done, seesion_predictor_loss = train_iteration(args.timeout, args.train)
+        session_reward, td_loss, is_done, session_predictor_loss, trajectory_history = train_iteration(args.timeout, args.train)
+        data.append(trajectory_history)
         session_reward_mean = np.mean(session_reward)
-        seesion_predictor_loss_mean = np.mean(seesion_predictor_loss)
+        session_predictor_loss_mean = np.mean(session_predictor_loss)
         td_loss_mean = np.mean(td_loss) 
         print('[session {} finished] '.format(i) + time.strftime("%H:%M:%S", time.localtime()) + ';\t mean reward = {:.4f};\t mean loss = {:.4f};\t total reward = {:.4f};\t epsilon = {:.4f}'.format(
             session_reward_mean, td_loss_mean, np.sum(session_reward),learning_agent.epsilon))
-        print('predictor loss: {}'.format(seesion_predictor_loss_mean))
+        print('predictor loss: {}'.format(session_predictor_loss_mean))
         rewards.append(session_reward_mean)
         loss.append(td_loss_mean)
         # load_weigths_into_target_network and adjust agent parameters
@@ -187,6 +190,8 @@ def train_loop(args):
             time_taken.append(len(session_reward))
     print('agent succeed in catching object in {}/{} ({}%) episodes'.format(succeed_episode, args.epochs, succeed_episode/args.epochs*100))
     print('End of training, average actions to catch: {}'.format(np.mean(time_taken)))
+    with open('./active_training_data/active_data.json', 'w') as data_file:
+        json.dump(data, data_file, indent=4)
 
     if args.save_model and args.train:
         model_json = learning_agent.nn.to_json()
@@ -269,6 +274,11 @@ if __name__ == "__main__":
         # bonded reward trained on 10000 episodes "./checkpoints/RQN_bonded_1e-04_10000_epochs.ckpt"
         learning_agent.saver.restore(sess, "./checkpoints/trained_RQN_catching.ckpt")
         target_agent.saver.restore(sess, "./checkpoints/trained_RQN_catching_target.ckpt")
+
+        # initialize json file for interaction environment appending
+        data = []
+        with open('./active_training_data/random_data.json', 'w') as data_file:
+            json.dump(data, data_file, indent=4)
     
     # train
     train_loop(args)

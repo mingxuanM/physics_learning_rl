@@ -3,6 +3,7 @@ from interaction_env import Interaction_env
 import numpy as np
 import time
 import random as rd
+import json
 
 from config import n_actions, action_length
 
@@ -35,7 +36,7 @@ def train_iteration(t_max):
         trajectory, reward, is_done, predictor_loss = environment.act(a)
         s_next = trajectory # action_length frames * 22 num_feats
         session_reward.append(reward)
-        seesion_predictor_loss.append(reward)
+        seesion_predictor_loss.append(predictor_loss)
         s = s_next
         a_string = 'none'
         if a == 0: 
@@ -57,18 +58,20 @@ def train_iteration(t_max):
         if is_done:
             break
         t += action_length
-    environment.destory()
+    trajectory_history = environment.destory()
     
-    return session_reward, seesion_predictor_loss
+    return session_reward, seesion_predictor_loss, trajectory_history
 
 # Top level training loop, over epochs
 def train_loop(args):
     rewards = []
+    data = []
     # time_taken = []
     # succeed_episode = 0
     for i in range(args.episode):
         # print('[session {} started]\t '.format(i) + time.strftime("%H:%M:%S", time.localtime()))
-        session_reward, seesion_predictor_loss = train_iteration(args.timeout)
+        session_reward, seesion_predictor_loss, trajectory_history = train_iteration(args.timeout)
+        data.append(trajectory_history)
         session_reward_mean = np.mean(session_reward)
         seesion_predictor_loss_mean = np.mean(seesion_predictor_loss)
         print('[session {} finished]\t '.format(i) + time.strftime("%H:%M:%S", time.localtime()) + " mean reward = {:.4f}; total reward = {:.4f}".format(
@@ -84,6 +87,9 @@ def train_loop(args):
         #     time_taken.append(len(session_reward))
     # print('agent succeed in catching object in {}/{} ({}%) episodes'.format(succeed_episode, args.epochs, succeed_episode/args.epochs*100))
     # print('End of training, average actions to catch: {}'.format(np.mean(time_taken)))
+    # Write to json file
+    with open('./active_training_data/random_data.json', 'w') as data_file:
+        json.dump(data, data_file, indent=4)
     
 
 
@@ -111,5 +117,10 @@ if __name__ == "__main__":
     # qlearning_gamma = 0.9
     # n_actions = 6
     random_agent = Random_agent()
+
+    # initialize json file
+    # data = []
+    # with open('./active_training_data/random_data.json', 'w') as data_file:
+    #     json.dump(data, data_file, indent=4)
     # train
     train_loop(args)
