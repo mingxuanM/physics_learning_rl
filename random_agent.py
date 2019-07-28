@@ -35,7 +35,7 @@ def train_iteration(t_max):
         trajectory, reward, is_done, predictor_loss = environment.act(a)
         s_next = trajectory # action_length frames * 22 num_feats
         session_reward.append(reward)
-        seesion_predictor_loss.append(reward)
+        seesion_predictor_loss.append(predictor_loss)
         s = s_next
         a_string = 'none'
         if a == 0: 

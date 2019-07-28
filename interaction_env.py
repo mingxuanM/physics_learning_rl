@@ -56,9 +56,10 @@ class Interaction_env:
         self.context.eval_js(js)
         
         self.cond = {}
-
-        self.sess = tf.InteractiveSession()
-        self.predictor = Predictor(lr=1e-4, name='predictor', num_feats=22, n_state=16, input_frames=5, train=True, batch_size=1)
+        predictor_graph = tf.Graph()
+        with predictor_graph.as_default():
+            self.predictor = Predictor(lr=1e-4, name='predictor', num_feats=22, n_state=16, input_frames=5, train=True, batch_size=1)
+        self.sess = tf.InteractiveSession(graph = predictor_graph)
         self.sess.run(tf.global_variables_initializer())
         self.predictor.saver.restore(self.sess, "./model_predictor/checkpoints/pretrained_model_predictor_2.ckpt")
 
