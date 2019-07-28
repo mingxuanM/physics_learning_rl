@@ -244,8 +244,8 @@ if __name__ == "__main__":
     # exp_name = 'RQN_more_reward_{:1.0e}'.format(args.lr) # add reward for getting close to nearest puck
     # exp_name = 'RQN_{:1.0e}'.format(args.lr) # only 5 reward for successful catching
 
-    tf.reset_default_graph()
-    sess = tf.InteractiveSession()
+    # tf.reset_default_graph()
+    # sess = tf.InteractiveSession()
     # keras.backend.set_session(sess)
     # initialize interaction_env
     environment = Interaction_env()
@@ -254,8 +254,11 @@ if __name__ == "__main__":
     # n_actions = 4*2
     if not args.active_learning:
         if args.train:
-            learning_agent = Q_agent("learning_agent", n_actions, qlearning_gamma, epsilon=args.epsilon)
-            target_agent = Q_agent("target_agent", n_actions, qlearning_gamma, epsilon=args.epsilon)
+            rqn_agent_graph = tf.Graph()
+            with rqn_agent_graph.as_default():
+                learning_agent = Q_agent("learning_agent", n_actions, qlearning_gamma, epsilon=args.epsilon)
+                target_agent = Q_agent("target_agent", n_actions, qlearning_gamma, epsilon=args.epsilon)
+            sess = tf.InteractiveSession(graph = rqn_agent_graph)
             sess.run(tf.global_variables_initializer())
             if args.continue_from > 0:
                 learning_agent.saver.restore(sess, "./checkpoints/{}_{}_epochs.ckpt".format(exp_name,args.continue_from))
@@ -263,13 +266,19 @@ if __name__ == "__main__":
         else:
             if args.continue_from == 0:
                 sys.exit('[ERROR] test model not specified')
-            learning_agent = Q_agent("learning_agent", n_actions, qlearning_gamma, epsilon=0)
+            rqn_agent_graph = tf.Graph()
+            with rqn_agent_graph.as_default():
+                learning_agent = Q_agent("learning_agent", n_actions, qlearning_gamma, epsilon=0)
+            sess = tf.InteractiveSession(graph = rqn_agent_graph)
             sess.run(tf.global_variables_initializer())
             learning_agent.saver.restore(sess, "./checkpoints/{}_{}_epochs.ckpt".format(exp_name,args.continue_from))
     else:
         args.save_model = False
-        learning_agent = Q_agent("learning_agent", n_actions, qlearning_gamma, epsilon=args.epsilon)
-        target_agent = Q_agent("target_agent", n_actions, qlearning_gamma, epsilon=args.epsilon)
+        rqn_agent_graph = tf.Graph()
+        with rqn_agent_graph.as_default():
+            learning_agent = Q_agent("learning_agent", n_actions, qlearning_gamma, epsilon=args.epsilon)
+            target_agent = Q_agent("target_agent", n_actions, qlearning_gamma, epsilon=args.epsilon)
+        sess = tf.InteractiveSession(graph = rqn_agent_graph)
         sess.run(tf.global_variables_initializer())
         # bonded reward trained on 10000 episodes "./checkpoints/RQN_bonded_1e-04_10000_epochs.ckpt"
         learning_agent.saver.restore(sess, "./checkpoints/trained_RQN_catching.ckpt")
