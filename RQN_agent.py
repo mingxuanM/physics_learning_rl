@@ -27,7 +27,7 @@ import tensorflow as tf
 import time
 import sys
 
-from config import n_actions, RQN_num_feats, action_length, qlearning_gamma, epsilon_decay
+from config import n_actions, RQN_num_feats, action_length, qlearning_gamma
 
 # n_actions = 6 # 1 no action + 4 directions acc + 1 click
 # qlearning_gamma = 0.9
@@ -37,6 +37,7 @@ from config import n_actions, RQN_num_feats, action_length, qlearning_gamma, eps
 
 # # epsilon_decay = 0.9995 # 10000 epochs
 # epsilon_decay = 0.995 # 2000 epochs
+epsilon_decay = 0.98 # 2000 epochs
 
 # Workflow:
 # learning_agent.get_action(state_t) -> action -> 
@@ -199,6 +200,11 @@ def train_loop(args):
         print("Model saved!")
         np.savetxt('{}.txt'.format(exp_name), (rewards, loss))
         print("Training details saved!")
+
+    if args.active_learning:
+        save_path = learning_agent.saver.save(sess, "./checkpoints/active_learning.ckpt")
+        target_save_path = target_agent.saver.save(sess, "./checkpoints/active_learning_target.ckpt")
+        print("Model saved in path: %s" % save_path)
     return
 
 if __name__ == "__main__":
@@ -280,8 +286,8 @@ if __name__ == "__main__":
         sess.run(tf.global_variables_initializer())
         # environment.predictor.saver.restore(sess, "./model_predictor/checkpoints/pretrained_model_predictor_2.ckpt")
         # bonded reward trained on 10000 episodes "./checkpoints/RQN_bonded_1e-04_10000_epochs.ckpt"
-        learning_agent.saver.restore(sess, "./checkpoints/RQN_bonded_1e-04_9900_epochs.ckpt")
-        target_agent.saver.restore(sess, "./checkpoints/RQN_bonded_1e-04_target_9900_epochs.ckpt")
+        learning_agent.saver.restore(sess, "./checkpoints/RQN_bonded_1e-04_10000_epochs.ckpt")
+        target_agent.saver.restore(sess, "./checkpoints/RQN_bonded_1e-04_target_10000_epochs.ckpt")
     
     # train
     train_loop(args)
