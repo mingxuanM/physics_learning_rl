@@ -7,21 +7,19 @@ import random as rd
 import math
 # import imp
 
-#Read in mouse data
-###################
-# with open('../json/mouse_data.json') as data_file:    
-#     mouse_data = json.load(data_file)
 
-#Read in starting conditions
-#############################
-# with open('../json/starting_conditions.json') as data_file:    
-#     starts = json.load(data_file)
+#Read in world setups
+###################
 with open('./json/world_setup.json') as data_file:    
     world_setup = json.load(data_file)
 
+#Read in mouse data
+###################
 with open('./json/control_path.json') as data_file:    
     control_path = json.load(data_file)
 
+#Read in starting conditions
+#############################
 with open('./json/starting_state.json') as data_file:    
     starting_state = json.load(data_file)
 
@@ -50,7 +48,8 @@ for i in range(200):
     rd.seed(i)#Set seed
 
     # Choose a starting condition at random from participant data
-    world_setup_ = rd.sample(world_setup, 1)[0]
+    # world_setup_ = rd.sample(world_setup, 1)[0]
+    world_setup_ = world_setup[4]
     # 80% to generate a passive episode
     is_passive = rd.random()
     is_passive = is_passive <= 0.8
@@ -80,20 +79,20 @@ for i in range(200):
             }
 
     # Set local forces
-    # cond['lf'] = [[0.0,float(setup['lf1']), float(setup['lf2']), float(setup['lf3'])],
-    #         [0.0, 0.0, float(setup['lf4']),float(setup['lf5'])],
-    #         [0.0, 0.0, 0.0, float(setup['lf6'])],
-    #         [0.0, 0.0, 0.0, 0.0]]
-    
     # 30% to have no local forces
-    no_force = rd.random()
-    if no_force <= 0.3:
-        cond['lf'] = [[0.0,0.0,0.0,0.0],
-                [0.0,0.0,0.0,0.0],
-                [0.0,0.0,0.0,0.0],
-                [0.0,0.0,0.0,0.0]]
-    else:
-        cond['lf'] = [[0.0,float(world_setup_[0]), float(world_setup_[1]), float(world_setup_[2])],
+    # no_force = rd.random()
+    # if no_force <= 0.3:
+    #     cond['lf'] = [[0.0,0.0,0.0,0.0],
+    #             [0.0,0.0,0.0,0.0],
+    #             [0.0,0.0,0.0,0.0],
+    #             [0.0,0.0,0.0,0.0]]
+    # else:
+    #     cond['lf'] = [[0.0,float(world_setup_[0]), float(world_setup_[1]), float(world_setup_[2])],
+    #             [0.0, 0.0, float(world_setup_[3]), float(world_setup_[4])],
+    #             [0.0, 0.0, 0.0, float(world_setup_[5])],
+    #             [0.0, 0.0, 0.0, 0.0]]
+    
+    cond['lf'] = [[0.0,float(world_setup_[0]), float(world_setup_[1]), float(world_setup_[2])],
                 [0.0, 0.0, float(world_setup_[3]), float(world_setup_[4])],
                 [0.0, 0.0, 0.0, float(world_setup_[5])],
                 [0.0, 0.0, 0.0, 0.0]]
@@ -150,8 +149,8 @@ for i in range(200):
     print('trail {} generated'.format(i))
     #Save data
     ##########
-with open('./extend_training_data_js.json', 'w') as fp:
-    json.dump(test_data, fp, sort_keys=True, indent=4)
+# with open('./extend_training_data_js.json', 'w') as fp:
+#     json.dump(test_data, fp, sort_keys=True, indent=4)
 
 
 #Make a movie
@@ -167,3 +166,47 @@ with open('./extend_training_data_js.json', 'w') as fp:
 # circle = gizeh.circle(r=30, xy= [40,40], fill=(1,0,0))
 # circle.draw(surface) # draw the circle on the surface
 # surface.write_to_png("circle.png") # export the surface as a PNG
+
+format_trails = []
+for t, trail in enumerate(test_data):
+    objs = trail["co"]
+    mouseX = trail["mouse"]['x']
+    mouseY = trail["mouse"]['y']
+
+    o1x= trail["o1"]['x']
+    o1y= trail["o1"]['y']
+    o1vx= trail["o1"]['vx']
+    o1vy= trail["o1"]['vy']
+
+    o2x= trail["o2"]['x']
+    o2y= trail["o2"]['y']
+    o2vx= trail["o2"]['vx']
+    o2vy= trail["o2"]['vy']
+
+    o3x= trail["o3"]['x']
+    o3y= trail["o3"]['y']
+    o3vx= trail["o3"]['vx']
+    o3vy= trail["o3"]['vy']
+
+    o4x= trail["o4"]['x']
+    o4y= trail["o4"]['y']
+    o4vx= trail["o4"]['vx']
+    o4vy= trail["o4"]['vy']
+    format_trail = []
+    for f, obj in enumerate(objs):
+        one_hot = [0,0,0,0]
+        if obj != 0:
+            one_hot[obj-1] = 1
+        format_trail.append((
+            one_hot[0], one_hot[1], one_hot[2], one_hot[3], mouseX[f], mouseY[f],
+            o1x[f], o1y[f], o1vx[f], o1vy[f], 
+            o2x[f], o2y[f], o2vx[f], o2vy[f], 
+            o3x[f], o3y[f], o3vx[f], o3vy[f], 
+            o4x[f], o4y[f], o4vx[f], o4vy[f]
+        ))
+    format_trails.append(format_trail)
+    print('trail {} formated'.format(t))
+    trail = {}
+
+with open('./world_setup_4_test_set.json', 'w') as fp:
+    json.dump(format_trails, fp, sort_keys=True, indent=4)
