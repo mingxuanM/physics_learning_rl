@@ -20,7 +20,7 @@ class Random_agent():
     
 # run one episode
 # t_max: maximum running time
-def train_iteration(t_max):
+def train_iteration(random_agent, environment, t_max):
     session_reward = []
     seesion_predictor_loss = []
     td_loss = []
@@ -63,14 +63,14 @@ def train_iteration(t_max):
     return session_reward, seesion_predictor_loss, trajectory_history
 
 # Top level training loop, over epochs
-def train_loop(args):
+def train_loop(random_agent, environment, episode, timeout):
     rewards = []
     data = []
     # time_taken = []
     # succeed_episode = 0
     for i in range(args.episode):
         # print('[session {} started]\t '.format(i) + time.strftime("%H:%M:%S", time.localtime()))
-        session_reward, seesion_predictor_loss, trajectory_history = train_iteration(args.timeout)
+        session_reward, seesion_predictor_loss, trajectory_history = train_iteration(random_agent, environment, args.timeout)
         data.append(trajectory_history)
         session_reward_mean = np.mean(session_reward)
         seesion_predictor_loss_mean = np.mean(seesion_predictor_loss)
@@ -88,8 +88,9 @@ def train_loop(args):
     # print('agent succeed in catching object in {}/{} ({}%) episodes'.format(succeed_episode, args.epochs, succeed_episode/args.epochs*100))
     # print('End of training, average actions to catch: {}'.format(np.mean(time_taken)))
     # Write to json file
-    with open('./active_training_data/random_data.json', 'w') as data_file:
+    with open('./model_predictor/data/random_training_data.json', 'w') as data_file:
         json.dump(data, data_file, indent=4)
+    return data
     
 
 
@@ -123,4 +124,4 @@ if __name__ == "__main__":
     # with open('./active_training_data/random_data.json', 'w') as data_file:
     #     json.dump(data, data_file, indent=4)
     # train
-    train_loop(args)
+    _ = train_loop(random_agent, environment, args.episode, args.timeout)

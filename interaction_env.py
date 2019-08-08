@@ -12,6 +12,7 @@ from config import n_actions, acceleration, velocity_decay, action_length, env_w
 # n_actions = 6 # 1 no action + 4 directions acc + 1 click
 # # directions_tan = [(np.cos(i*np.pi/8.),np.sin(i*np.pi/8.)) for i in range(16)]
 # acceleration = 1 # in meter/s/frame (speed meter/s change in each frame)
+#   Could be smaller: 0.1 meter/s/frame
 # velocity_decay = 0.9 # velocity in meter/s decay rate per frame if not accelerate
 # action_length = 5 # frames
 # env_width = 6
@@ -30,13 +31,17 @@ class Interaction_env:
 #   (velocity is the final velocity from last action)
 # 3. self.context: js environment
 # 4. self.cond: a dictionary stores {'starting locations', 'starting velocities', 'local forces', 'mass'}
-    def __init__(self):
+    def __init__(self, world_setup_idx=None, predictor=None, predictor_sess=None):
         self.timesteps = 0
+        self.world_setup_idx = world_setup_idx
         # Read in world_setup
         with open('./js_simulator/json/world_setup.json') as data_file:    
             self.world_setup = json.load(data_file)
-        # self.world_setup = rd.sample(self.world_setup, 1)[0]
-        self.world_setup = self.world_setup[4]
+        # if world_setup is None:
+        #     self.world_setup = rd.sample(self.world_setup, 1)[0]
+        # else:
+        # # self.world_setup = self.world_setup[4] # First experiment setup: [0,3,0,3,-3,0,"B"]
+        #     self.world_setup = self.world_setup[world_setup] # Second experiment setup: [0,0,0,0,0,0,"same"]
 
         # Read in starting_state
         with open('./js_simulator/json/starting_state.json') as data_file:    
@@ -56,16 +61,27 @@ class Interaction_env:
         self.context.eval_js(js)
         
         self.cond = {}
-        predictor_graph = tf.Graph()
-        with predictor_graph.as_default():
-            self.predictor = Predictor(lr=1e-4, name='predictor', num_feats=22, n_state=16, input_frames=5, train=True, batch_size=1)
-        self.sess = tf.InteractiveSession(graph = predictor_graph)
-        self.sess.run(tf.global_variables_initializer())
-        self.predictor.saver.restore(self.sess, "./model_predictor/checkpoints/pretrained_model_predictor_2.ckpt")
+
+        if predictor is None:
+            predictor_graph = tf.Graph()
+            with predictor_graph.as_default():
+                self.predictor = Predictor(lr=1e-4, name='predictor', num_feats=22, n_state=16, input_frames=5, train=True, batch_size=1)
+            self.sess = tf.InteractiveSession(graph = predictor_graph)
+            self.sess.run(tf.global_variables_initializer())
+            self.predictor.saver.restore(self.sess, "./model_predictor/checkpoints/pretrained_model_predictor.ckpt") # 1e-5 learning rate, 20 epochs   
+        else:
+            self.predictor = predictor
+            self.sess = predictor_sess
+        
         self.trajectory_history = []
 
+
     def reset(self):
-        world_setup = self.world_setup
+        if self.world_setup_idx is None:
+            world_setup = rd.sample(self.world_setup, 1)[0]
+        else:
+            world_setup = self.world_setup[self.world_setup_idx]
+
         starting_state = rd.sample(self.starting_state, 1)[0]
         self.trajectory_history = []
         # Set starting conditions
@@ -234,7 +250,7 @@ class Interaction_env:
         #     inputs = inputs.reshape((1,predictor_input_frames,num_feats))
         #     _train_step, _weitghted_batch_losses, _batch_losses = self.sess.run(
         #         [self.predictor.train_step, self.predictor.weitghted_batch_losses, self.predictor.batch_losses], 
-        #         {self.predictor.batch_labels: labels, self.predictor.training_states: inputs, self.predictor.loss_weight:loss_weight}
+        #         {self.predictor.batch_labels: labels, self.predictor.state_t: inputs, self.predictor.loss_weight:loss_weight}
         #         )
         #     mean_weitghted_batch_losses[b] = np.sum(_weitghted_batch_losses)/4
         # mean_weitghted_batch_losses = np.mean(mean_weitghted_batch_losses)
