@@ -148,7 +148,8 @@ class Interaction_env:
         return trajectory
 
     def act(self, actionID):
-        # actionID taking value range(8)
+        # actionID taking value from 0 to 5
+        # [0:none, 1:up, 2:down, 3:right, 4:left, 5:click]
         if_click = False
         direction = 0 # taking value [0,1,2,3,4]: [none, up, down, right ,left]
         if actionID < 5:
@@ -182,6 +183,7 @@ class Interaction_env:
 
         # calculate predictor loss, add to reward
         predictor_loss= self.predictor_test(trajectory)
+        # predictor_loss = 0
         reward += predictor_loss
 
         control_object = np.sum(trajectory[0,:4])
@@ -218,7 +220,14 @@ class Interaction_env:
             dist5_x = abs(f5[4*close_obj+6]-f5[4])
             dist5_y = abs(f5[4*close_obj+7]-f5[5])
             # max possible reward is 2
-            reward += min((max((min_dist_x - dist5_x)/min_dist_x, 0) + max((min_dist_y - dist5_y)/min_dist_y, 0)),2)
+            if min_dist_x > 0 and min_dist_y > 0:
+                reward += min((max((min_dist_x - dist5_x)/min_dist_x, 0) + max((min_dist_y - dist5_y)/min_dist_y, 0)),2)
+            elif min_dist_x == 0 and min_dist_y > 0:
+                reward += min((1 + max((min_dist_y - dist5_y)/min_dist_y, 0)),2)
+            elif min_dist_x > 0 and min_dist_y == 0:
+                reward += min((max((min_dist_x - dist5_x)/min_dist_x, 0) + 1),2)
+            elif min_dist_x == 0 and min_dist_y == 0:
+                reward += 2
 
         elif (not self.state['caught_any']) and control_object != 0:
             # object caught
@@ -300,10 +309,10 @@ class Interaction_env:
             if direction == 0:
                 vx *= velocity_decay
                 vy *= velocity_decay
-            if direction <= 2:
+            elif direction == 1 or direction == 2:
                 vx += acceleration*(3-2*direction) # 1:acceleration*1; 2:acceleration*-1
                 vy *= velocity_decay
-            else:
+            elif direction == 3 or direction == 4:
                 vx *= velocity_decay
                 vy += acceleration*(7-2*direction) # 3:acceleration*1; 4:acceleration*-1
             last_mouse_x += vx/60

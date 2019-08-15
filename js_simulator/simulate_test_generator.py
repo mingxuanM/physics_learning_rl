@@ -49,7 +49,8 @@ for i in range(200):
 
     # Choose a starting condition at random from participant data
     # world_setup_ = rd.sample(world_setup, 1)[0]
-    world_setup_ = world_setup[4]
+    # world_setup_ = world_setup[4]
+    world_setup_ = world_setup[-1]
     # 80% to generate a passive episode
     is_passive = rd.random()
     is_passive = is_passive <= 0.8
@@ -208,5 +209,5 @@ for t, trail in enumerate(test_data):
     print('trail {} formated'.format(t))
     trail = {}
 
-with open('./world_setup_4_test_set.json', 'w') as fp:
+with open('../model_predictor/data/world_setup_-1_test_set.json', 'w') as fp:
     json.dump(format_trails, fp, sort_keys=True, indent=4)
