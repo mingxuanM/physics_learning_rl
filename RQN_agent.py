@@ -161,7 +161,7 @@ def train_loop(learning_agent, target_agent, env, episode, train, timeout, conti
     # time_taken = []
     data = []
     for i in range(episode):
-        print('[session {} started] '.format(i) + time.strftime("%H:%M:%S", time.localtime()))
+        # print('[session {} started] '.format(i) + time.strftime("%H:%M:%S", time.localtime()))
         session_reward, td_loss, is_done, session_predictor_loss, trajectory_history = train_iteration(learning_agent, target_agent, env, timeout, train)
         if not train:
             data.append(trajectory_history)
@@ -177,29 +177,31 @@ def train_loop(learning_agent, target_agent, env, episode, train, timeout, conti
         if train:
             if i%2==0:
                 load_weigths_into_target_network(learning_agent, target_agent)
-                learning_agent.set_epsilon(max(learning_agent.epsilon * epsilon_decay, 0.01))
+                # learning_agent.set_epsilon(max(learning_agent.epsilon * epsilon_decay, 0.01))
+                learning_agent.set_epsilon(max(1-i/episode, 0.01))
             if i%100==0 and i>0 and save_model:
                 save_path = learning_agent.saver.save(sess, "./checkpoints/{}_{}_epochs.ckpt".format(exp_name, i + continue_from))
                 target_save_path = target_agent.saver.save(sess, "./checkpoints/{}_target_{}_epochs.ckpt".format(exp_name, i + continue_from))
                 print("Model saved in path: %s" % save_path)
+        # Count and print for catching records
         # if is_done:
         #     succeed_episode += 1
         #     time_taken.append(len(session_reward))
-    # print('agent succeed in catching object in {}/{} ({}%) episodes'.format(succeed_episode, args.episode, succeed_episode/args.episode*100))
+    # print('agent succeed in catching object in {}/{} ({}%) episodes'.format(succeed_episode, episode, succeed_episode/episode*100))
     # print('End of training, average actions to catch: {}'.format(np.mean(time_taken)))
 
-    if not args.train:
+    if not train:
         with open('./model_predictor/data/active_training_data.json', 'w') as data_file:
             json.dump(data, data_file, indent=4)
         return data
 
-    if args.save_model and args.train:
+    if save_model and train:
         # model_json = learning_agent.nn.to_json()
         # with open('{}.json'.format(exp_name), 'w') as json_file:
         #     json_file.write(model_json)
         # agent.nn.save_weights('{}.h5'.format(exp_name))
-        save_path = learning_agent.saver.save(sess, "./checkpoints/{}_{}_epochs.ckpt".format(exp_name, args.episode + args.continue_from))
-        target_save_path = target_agent.saver.save(sess, "./checkpoints/{}_target_{}_epochs.ckpt".format(exp_name, args.episode + args.continue_from))
+        save_path = learning_agent.saver.save(sess, "./checkpoints/{}_{}_epochs.ckpt".format(exp_name, episode + continue_from))
+        target_save_path = target_agent.saver.save(sess, "./checkpoints/{}_target_{}_epochs.ckpt".format(exp_name, episode + continue_from))
         print("Model saved in path: %s" % save_path)
         print("Model saved!")
         # np.savetxt('{}.txt'.format(exp_name), (rewards, loss))
@@ -241,8 +243,8 @@ if __name__ == "__main__":
     epsilon_decay = 0.9
     if args.episode >= 10000:
         epsilon_decay = 0.9995 # 10000 epochs
-    elif args.episode >= 2000:
-        epsilon_decay = 0.995 # 2000 epochs
+    elif args.episode >= 1000:
+        epsilon_decay = 0.999 # 2000 epochs
     else:
         epsilon_decay = 0.95
 
@@ -251,7 +253,8 @@ if __name__ == "__main__":
     # exp_name = 'RQN_more_reward_{:1.0e}'.format(args.lr) # add reward for getting close to nearest puck
     # exp_name = 'RQN_{:1.0e}'.format(args.lr) # only 5 reward for successful catching
 
-    exp_name = 'active_learning_loss_reward_world-1'
+    exp_name = 'new_active_learning_world-1'
+    # exp_name = 'new_catch_training'
 
     # tf.reset_default_graph()
     # sess = tf.InteractiveSession()
@@ -282,6 +285,7 @@ if __name__ == "__main__":
             sess = tf.InteractiveSession(graph = rqn_agent_graph)
             sess.run(tf.global_variables_initializer())
             learning_agent.saver.restore(sess, "./checkpoints/{}_{}_epochs.ckpt".format(exp_name,args.continue_from))
+            target_agent = None
     else:
         # train for active learning
         if args.train:
@@ -305,6 +309,7 @@ if __name__ == "__main__":
             sess.run(tf.global_variables_initializer())
             # RQN agent trained on 10000 episodes with bonded reward "./checkpoints/RQN_bonded_1e-04_10000_epochs.ckpt"
             learning_agent.saver.restore(sess, "./checkpoints/active_learning_loss_reward_world-1_{}_epochs.ckpt".format(args.continue_from))
+            target_agent = None
     
     # train
     _ = train_loop(learning_agent, target_agent, environment, args.episode, args.train, args.timeout, args.continue_from, args.save_model)

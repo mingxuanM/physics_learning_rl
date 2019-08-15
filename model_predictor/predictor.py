@@ -85,7 +85,7 @@ class Predictor:
 
 # run one batch
 # batch_sequence: [batch_size, input_frames+1, num_feats]
-def train_iteration(model_predictor, sess, batch_sequence):   
+def train_iteration(model_predictor, sess, batch_sequence, loss_weight):   
     # labels = np.zeros((truncated_backprop_length, batch_size, n_state))
     # inputs = np.zeros((truncated_backprop_length, batch_size, input_frames, num_feats))
     labels = batch_sequence[:,-1,-16:]
@@ -103,7 +103,7 @@ def train_iteration(model_predictor, sess, batch_sequence):
 
 # Top level training over epochs
 # training_sequense in [batch_size*-1*num_feats]
-def train_sequense(model_predictor, sess, exp_name, epochs, save_model, training_sequenses, batch_size):
+def train_sequense(model_predictor, sess, exp_name, epochs, save_model, training_sequenses, test_sequences, batch_size, loss_weight):
     # mean losses during each epoch
     # training_losses = []
     training_losses_time = []
@@ -125,7 +125,7 @@ def train_sequense(model_predictor, sess, exp_name, epochs, save_model, training
                 # end = start + truncated_backprop_length + input_frames
                 start = batch_idx
                 end = start + input_frames + 1
-                batch_loss_ = train_iteration(model_predictor, sess, training_sequense[:,start:end,:])
+                batch_loss_ = train_iteration(model_predictor, sess, training_sequense[:,start:end,:], loss_weight)
                 batch_loss = np.array([
                     np.mean([batch_loss_[0],batch_loss_[4],batch_loss_[8],batch_loss_[12]]), # x
                     np.mean([batch_loss_[1],batch_loss_[5],batch_loss_[9],batch_loss_[13]]), # y
@@ -153,10 +153,10 @@ def train_sequense(model_predictor, sess, exp_name, epochs, save_model, training
             save_path = model_predictor.saver.save(sess, "./checkpoints/{}_{}_epochs.ckpt".format(exp_name, i))
             print("Model saved in path: %s" % save_path)
         if i%5==0:
-            test_loss = test_model()
+            test_loss = test_model(model_predictor, sess, test_sequences, batch_size)
             print('Test loss: {}'.format(test_loss))
             training_losses_time.append('Test loss: {}'.format(test_loss))
-    test_loss = test_model()
+    test_loss = test_model(model_predictor, sess, test_sequences, batch_size)
     print('Test loss: {}'.format(test_loss))
     training_losses_time.append('Test loss: {}'.format(test_loss))
 
@@ -173,7 +173,7 @@ def train_sequense(model_predictor, sess, exp_name, epochs, save_model, training
         print("Training details saved!")
 
 # Test
-def test_model():
+def test_model(model_predictor, sess, test_sequences, batch_size, num_feats=22, input_frames=5, n_state=16):
     test_loss = np.zeros((len(test_sequences),4))
     for s_idx, sequence in enumerate(test_sequences):
         excessed = int(sequence.shape[0] % batch_size)

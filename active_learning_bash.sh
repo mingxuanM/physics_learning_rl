@@ -1,3 +1,6 @@
+# This bash file runs a separate training framework with each component step by step.
+# learning_system.py provides a intergrated training framework that runs everything with one python script.
+
 # generate test set
 # cd js_simulator
 # python ./simulate_test_generator.py &&
@@ -9,15 +12,15 @@
 # python random_agent.py --episode 500 > active_random_learning_world-1.txt &&
 # should have:
 # ./model_predictor/data/world-1_random_data.json
-echo '------------------------radnom data generated'
+# echo '------------------------radnom data generated'
 
-# loss reward training
+# active training with loss reward
 python RQN_agent.py --episode 2000 --active_learning True --save_model True --train True > active_learning_loss_reward_world-1.txt &&
 # should have:
 # ./checkpoints/active_learning_loss_reward_world-1_2000_epochs.ckpt
 echo '------------------------loss reward training completed'
 
-# loss reward data generation
+# generation active data set
 python RQN_agent.py --episode 500 --continue_from 2000 --active_learning True  > active_learning_loss_reward_data_generation_world-1.txt &&
 # should have:
 # ./model_predictor/data/world-1_active_data.json

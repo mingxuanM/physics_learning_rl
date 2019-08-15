@@ -7,7 +7,8 @@ import tensorflow as tf
 import time
 import sys
 import json
-from config import n_actions, RQN_num_feats, action_length, qlearning_gamma, epsilon_decay
+import numpy as np
+from config import n_actions, RQN_num_feats, action_length, qlearning_gamma, epsilon_decay, loss_weight
 
 
 """
@@ -48,6 +49,9 @@ if __name__ == "__main__":
 
     parser.add_argument('--agent_training_episode', type=int, action='store',
                         help='the number of episodes to train the agent', default=2000)
+
+    parser.add_argument('--epsilon', type=float, action='store',
+                        help='the epsilon for rl training policy', default=0.99)
     
     parser.add_argument('--predictor_training_epochs', type=int, action='store',
                         help='the number of epochs to train the predictor', default=50)
@@ -86,8 +90,8 @@ if __name__ == "__main__":
     else:
         rqn_agent_graph = tf.Graph()
         with rqn_agent_graph.as_default():
-            learning_agent = Q_agent("learning_agent", n_actions, qlearning_gamma, epsilon=args.epsilon)
-            target_agent = Q_agent("target_agent", n_actions, qlearning_gamma, epsilon=args.epsilon)
+            learning_agent = Q_agent("learning_agent", n_actions, qlearning_gamma, epsilon = args.epsilon)
+            target_agent = Q_agent("target_agent", n_actions, qlearning_gamma, epsilon = args.epsilon)
         agent_sess = tf.InteractiveSession(graph = rqn_agent_graph)
         agent_sess.run(tf.global_variables_initializer())
         learning_agent.saver.restore(agent_sess, "./checkpoints/trained_RQN_catching.ckpt")
@@ -95,16 +99,25 @@ if __name__ == "__main__":
 
         for i in range(args.training_loop):
             # Train agent
-            with agent_sess.as_default():
-                rqn_loop(learning_agent, target_agent, environment, args.agent_training_episode, True, args.timeout, continue_from=0, save_model=args.save_model)
+            # with agent_sess.as_default():
+            rqn_loop(learning_agent, target_agent, environment, args.agent_training_episode, True, args.timeout, continue_from=0, save_model=args.save_model)
             print('Active agent training completed for loop {}'.format(i))
             # Generate data with trained agent
-            with agent_sess.as_default():
-                training_data = rqn_loop(learning_agent, target_agent, environment, args.training_set_size, False, args.timeout)
+            # with agent_sess.as_default():
+            training_data = rqn_loop(learning_agent, target_agent, environment, args.training_set_size, False, args.timeout)
             print('Active data generation completed for loop {}'.format(i))
+            training_data = np.array(training_data)
+            np.random.shuffle(training_data)
             # Train predictor
             exp_name = 'active_training_loop_{}'.format(i)
-            train_sequense(predictor, predictor_sess, exp_name, args.predictor_training_epochs, args.save_model, training_data, 20)
+
+            with open('./model_predictor/data/world_setup_-1_test_set.json') as json_file: 
+                test_data = json.load(json_file)
+                test_data = np.array(test_data)
+            np.random.shuffle(test_data)
+            
+
+            train_sequense(predictor, predictor_sess, exp_name, args.predictor_training_epochs, args.save_model, training_data, test_data, 20, loss_weight)
             print('Predictor training with active agent completed for loop {}'.format(i))
 
             print('Active training loop {} completed'.format(i))
