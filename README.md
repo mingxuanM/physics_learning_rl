@@ -35,32 +35,32 @@ pyduktape 0.0.6
 
 ### File structures (master branch):
 
-#### learning_system.py
+* **learning_system.py**
 An integreated launch script that runs *separate training framework* in loop. *active_learning_bash.sh* does the same thing but run scripts one by one.
 
-#### RQN_agent.py
+* **RQN_agent.py**
 The active agent based on Recurrent Q-Network, includes training and testing methods.
 
-#### random_agent.py
+* **random_agent.py**
 Baseline agent, samples random actions.
 
-#### interaction_env.py
+* **interaction_env.py**
 The interaction enviroment, defines action space and reward signals, communicate with JavaScript simulator.
 
-#### config.py
+* **config.py**
 Constant parameters define enviroment and model settings.
 
-#### js_simulator/
+* **js_simulator/**
 JavaScript simualtor, contains data generation and environment settings.
 
-#### model_predictor/
+* **model_predictor/**
 The world predictor based on LSTM, includes training and testing methods.
 
-#### model_predictor/video_generation.py
+* **model_predictor/video_generation.py**
 Use `moviepy.editor` to generate videos with recorded trials data.
 
-#### exp_log/ & model_predictor/exp_log/
+* **exp_log/ & model_predictor/exp_log/**
 Training and testing logs of the active agent and world predictor
 
-#### checkpoints/ & model_predictor/checkpoints/
+* **checkpoints/ & model_predictor/checkpoints/**
 Checkpoints of pre-trained active agent and world predictor
