@@ -1,5 +1,9 @@
 .idea
-*.json
-*.txt
-*.mp4
+
+
 *__pycache__
+*_not_used/
+*archive/
+model_predictor/general_ckpts/
+model_predictor/direct_ckpts/
+model_predictor/data/*.json
