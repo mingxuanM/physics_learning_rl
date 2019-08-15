@@ -1,0 +1,1501 @@
+Active data generation started...
+[session 0 started] 11:29:20
+[session 0 finished] 11:29:33;	 mean reward = 0.7198;	 mean loss = nan;	 total reward = 259.1256;	 epsilon = 0.0000
+predictor loss: 0.3064404125630364
+[session 1 started] 11:29:33
+[session 1 finished] 11:29:43;	 mean reward = 0.5291;	 mean loss = nan;	 total reward = 190.4858;	 epsilon = 0.0000
+predictor loss: 0.21520702401668315
+[session 2 started] 11:29:43
+[session 2 finished] 11:29:53;	 mean reward = 0.7284;	 mean loss = nan;	 total reward = 262.2205;	 epsilon = 0.0000
+predictor loss: 0.32129615764134273
+[session 3 started] 11:29:53
+[session 3 finished] 11:30:01;	 mean reward = 0.4158;	 mean loss = nan;	 total reward = 149.6732;	 epsilon = 0.0000
+predictor loss: 0.09021982450576138
+[session 4 started] 11:30:01
+[session 4 finished] 11:30:11;	 mean reward = 0.5015;	 mean loss = nan;	 total reward = 180.5510;	 epsilon = 0.0000
+predictor loss: 0.20004165563675322
+[session 5 started] 11:30:11
+[session 5 finished] 11:30:19;	 mean reward = 0.4822;	 mean loss = nan;	 total reward = 173.5837;	 epsilon = 0.0000
+predictor loss: 0.12064350193287225
+[session 6 started] 11:30:19
+[session 6 finished] 11:30:28;	 mean reward = 0.3793;	 mean loss = nan;	 total reward = 136.5393;	 epsilon = 0.0000
+predictor loss: 0.05506258791265914
+[session 7 started] 11:30:28
+[session 7 finished] 11:30:37;	 mean reward = 0.4427;	 mean loss = nan;	 total reward = 159.3843;	 epsilon = 0.0000
+predictor loss: 0.06962095335440664
+[session 8 started] 11:30:37
+[session 8 finished] 11:30:46;	 mean reward = 0.3891;	 mean loss = nan;	 total reward = 140.0826;	 epsilon = 0.0000
+predictor loss: 0.17152734308224007
+[session 9 started] 11:30:46
+[session 9 finished] 11:30:54;	 mean reward = 0.5234;	 mean loss = nan;	 total reward = 188.4183;	 epsilon = 0.0000
+predictor loss: 0.21205947349427162
+[session 10 started] 11:30:54
+[session 10 finished] 11:31:04;	 mean reward = 0.3990;	 mean loss = nan;	 total reward = 143.6509;	 epsilon = 0.0000
+predictor loss: 0.16572172639672364
+[session 11 started] 11:31:04
+[session 11 finished] 11:31:13;	 mean reward = 0.4631;	 mean loss = nan;	 total reward = 166.7171;	 epsilon = 0.0000
+predictor loss: 0.21002516919650552
+[session 12 started] 11:31:13
+[session 12 finished] 11:31:22;	 mean reward = 0.4003;	 mean loss = nan;	 total reward = 144.1042;	 epsilon = 0.0000
+predictor loss: 0.19299553618772142
+[session 13 started] 11:31:22
+[session 13 finished] 11:31:30;	 mean reward = 0.5770;	 mean loss = nan;	 total reward = 207.7314;	 epsilon = 0.0000
+predictor loss: 0.20878948931723235
+[session 14 started] 11:31:30
+[session 14 finished] 11:31:38;	 mean reward = 0.5607;	 mean loss = nan;	 total reward = 201.8672;	 epsilon = 0.0000
+predictor loss: 0.18396466202852732
+[session 15 started] 11:31:38
+[session 15 finished] 11:31:47;	 mean reward = 0.3807;	 mean loss = nan;	 total reward = 137.0549;	 epsilon = 0.0000
+predictor loss: 0.03771740146379263
+[session 16 started] 11:31:47
+[session 16 finished] 11:31:55;	 mean reward = 0.5836;	 mean loss = nan;	 total reward = 210.1035;	 epsilon = 0.0000
+predictor loss: 0.2744198037381418
+[session 17 started] 11:31:55
+[session 17 finished] 11:32:04;	 mean reward = 0.4023;	 mean loss = nan;	 total reward = 144.8459;	 epsilon = 0.0000
+predictor loss: 0.05969075485352859
+[session 18 started] 11:32:04
+[session 18 finished] 11:32:12;	 mean reward = 0.6966;	 mean loss = nan;	 total reward = 250.7933;	 epsilon = 0.0000
+predictor loss: 0.21840590807410493
+[session 19 started] 11:32:12
+[session 19 finished] 11:32:21;	 mean reward = 0.5039;	 mean loss = nan;	 total reward = 181.3929;	 epsilon = 0.0000
+predictor loss: 0.18737126525916536
+[session 20 started] 11:32:21
+[session 20 finished] 11:32:30;	 mean reward = 0.3508;	 mean loss = nan;	 total reward = 126.2755;	 epsilon = 0.0000
+predictor loss: 0.031200140331582783
+[session 21 started] 11:32:30
+[session 21 finished] 11:32:39;	 mean reward = 0.3772;	 mean loss = nan;	 total reward = 135.7868;	 epsilon = 0.0000
+predictor loss: 0.22018873163423988
+[session 22 started] 11:32:39
+[session 22 finished] 11:32:50;	 mean reward = 0.5695;	 mean loss = nan;	 total reward = 205.0161;	 epsilon = 0.0000
+predictor loss: 0.14050377665022012
+[session 23 started] 11:32:50
+[session 23 finished] 11:32:59;	 mean reward = 0.5021;	 mean loss = nan;	 total reward = 180.7591;	 epsilon = 0.0000
+predictor loss: 0.15593177783465614
+[session 24 started] 11:32:59
+[session 24 finished] 11:33:10;	 mean reward = 0.4457;	 mean loss = nan;	 total reward = 160.4375;	 epsilon = 0.0000
+predictor loss: 0.15368556636312147
+[session 25 started] 11:33:10
+[session 25 finished] 11:33:18;	 mean reward = 0.5470;	 mean loss = nan;	 total reward = 196.9258;	 epsilon = 0.0000
+predictor loss: 0.21261237443803277
+[session 26 started] 11:33:18
+[session 26 finished] 11:33:27;	 mean reward = 0.7368;	 mean loss = nan;	 total reward = 265.2495;	 epsilon = 0.0000
+predictor loss: 0.3239422713075382
+[session 27 started] 11:33:27
+[session 27 finished] 11:33:35;	 mean reward = 0.5016;	 mean loss = nan;	 total reward = 180.5833;	 epsilon = 0.0000
+predictor loss: 0.17062100282738768
+[session 28 started] 11:33:35
+[session 28 finished] 11:33:44;	 mean reward = 0.5232;	 mean loss = nan;	 total reward = 188.3630;	 epsilon = 0.0000
+predictor loss: 0.15018256031434493
+[session 29 started] 11:33:44
+[session 29 finished] 11:33:54;	 mean reward = 0.2219;	 mean loss = nan;	 total reward = 79.8736;	 epsilon = 0.0000
+predictor loss: 0.06243112186667215
+[session 30 started] 11:33:54
+[session 30 finished] 11:34:02;	 mean reward = 0.4390;	 mean loss = nan;	 total reward = 158.0547;	 epsilon = 0.0000
+predictor loss: 0.12517188004986526
+[session 31 started] 11:34:02
+[session 31 finished] 11:34:11;	 mean reward = 0.4372;	 mean loss = nan;	 total reward = 157.3867;	 epsilon = 0.0000
+predictor loss: 0.09809714182521972
+[session 32 started] 11:34:11
+[session 32 finished] 11:34:19;	 mean reward = 0.4073;	 mean loss = nan;	 total reward = 146.6350;	 epsilon = 0.0000
+predictor loss: 0.0919306079700551
+[session 33 started] 11:34:19
+[session 33 finished] 11:34:27;	 mean reward = 0.4886;	 mean loss = nan;	 total reward = 175.9077;	 epsilon = 0.0000
+predictor loss: 0.26365836012578747
+[session 34 started] 11:34:27
+[session 34 finished] 11:34:36;	 mean reward = 0.3780;	 mean loss = nan;	 total reward = 136.0841;	 epsilon = 0.0000
+predictor loss: 0.16656051964056762
+[session 35 started] 11:34:36
+[session 35 finished] 11:34:44;	 mean reward = 0.8256;	 mean loss = nan;	 total reward = 297.2257;	 epsilon = 0.0000
+predictor loss: 0.281046710670113
+[session 36 started] 11:34:44
+[session 36 finished] 11:34:52;	 mean reward = 0.5002;	 mean loss = nan;	 total reward = 180.0797;	 epsilon = 0.0000
+predictor loss: 0.1266620925900187
+[session 37 started] 11:34:52
+[session 37 finished] 11:35:01;	 mean reward = 0.6767;	 mean loss = nan;	 total reward = 243.6167;	 epsilon = 0.0000
+predictor loss: 0.2160220320485713
+[session 38 started] 11:35:01
+[session 38 finished] 11:35:10;	 mean reward = 0.4821;	 mean loss = nan;	 total reward = 173.5501;	 epsilon = 0.0000
+predictor loss: 0.15884317963096894
+[session 39 started] 11:35:10
+[session 39 finished] 11:35:18;	 mean reward = 0.4479;	 mean loss = nan;	 total reward = 161.2377;	 epsilon = 0.0000
+predictor loss: 0.12933375477044753
+[session 40 started] 11:35:18
+[session 40 finished] 11:35:27;	 mean reward = 0.4203;	 mean loss = nan;	 total reward = 151.3020;	 epsilon = 0.0000
+predictor loss: 0.09535225962983426
+[session 41 started] 11:35:27
+[session 41 finished] 11:35:34;	 mean reward = 0.4743;	 mean loss = nan;	 total reward = 170.7460;	 epsilon = 0.0000
+predictor loss: 0.15097102468342907
+[session 42 started] 11:35:34
+[session 42 finished] 11:35:42;	 mean reward = 0.4154;	 mean loss = nan;	 total reward = 149.5300;	 epsilon = 0.0000
+predictor loss: 0.08681570965268312
+[session 43 started] 11:35:42
+[session 43 finished] 11:35:50;	 mean reward = 0.3836;	 mean loss = nan;	 total reward = 138.1084;	 epsilon = 0.0000
+predictor loss: 0.08997683153403475
+[session 44 started] 11:35:50
+[session 44 finished] 11:35:58;	 mean reward = 0.7459;	 mean loss = nan;	 total reward = 268.5231;	 epsilon = 0.0000
+predictor loss: 0.30317507982118047
+[session 45 started] 11:35:58
+[session 45 finished] 11:36:07;	 mean reward = 0.7154;	 mean loss = nan;	 total reward = 257.5368;	 epsilon = 0.0000
+predictor loss: 0.32482379243393134
+[session 46 started] 11:36:07
+[session 46 finished] 11:36:15;	 mean reward = 0.5605;	 mean loss = nan;	 total reward = 201.7832;	 epsilon = 0.0000
+predictor loss: 0.2758690952252064
+[session 47 started] 11:36:15
+[session 47 finished] 11:36:23;	 mean reward = 0.4088;	 mean loss = nan;	 total reward = 147.1627;	 epsilon = 0.0000
+predictor loss: 0.1116481566529672
+[session 48 started] 11:36:23
+[session 48 finished] 11:36:32;	 mean reward = 0.5609;	 mean loss = nan;	 total reward = 201.9227;	 epsilon = 0.0000
+predictor loss: 0.16725832651194322
+[session 49 started] 11:36:32
+[session 49 finished] 11:36:41;	 mean reward = 0.7904;	 mean loss = nan;	 total reward = 284.5309;	 epsilon = 0.0000
+predictor loss: 0.40270073608149864
+[session 50 started] 11:36:41
+[session 50 finished] 11:36:49;	 mean reward = 0.5725;	 mean loss = nan;	 total reward = 206.0929;	 epsilon = 0.0000
+predictor loss: 0.16370985693426232
+[session 51 started] 11:36:49
+[session 51 finished] 11:36:58;	 mean reward = 0.4398;	 mean loss = nan;	 total reward = 158.3221;	 epsilon = 0.0000
+predictor loss: 0.13781217495927828
+[session 52 started] 11:36:58
+[session 52 finished] 11:37:07;	 mean reward = 0.3527;	 mean loss = nan;	 total reward = 126.9564;	 epsilon = 0.0000
+predictor loss: 0.09954057789953133
+[session 53 started] 11:37:07
+[session 53 finished] 11:37:16;	 mean reward = 0.5617;	 mean loss = nan;	 total reward = 202.2040;	 epsilon = 0.0000
+predictor loss: 0.23013708447995487
+[session 54 started] 11:37:16
+[session 54 finished] 11:37:25;	 mean reward = 0.3728;	 mean loss = nan;	 total reward = 134.2024;	 epsilon = 0.0000
+predictor loss: 0.08168523838429528
+[session 55 started] 11:37:25
+[session 55 finished] 11:37:34;	 mean reward = 0.5337;	 mean loss = nan;	 total reward = 192.1386;	 epsilon = 0.0000
+predictor loss: 0.2158589483204165
+[session 56 started] 11:37:34
+[session 56 finished] 11:37:43;	 mean reward = 0.4196;	 mean loss = nan;	 total reward = 151.0726;	 epsilon = 0.0000
+predictor loss: 0.13282036759812466
+[session 57 started] 11:37:43
+[session 57 finished] 11:37:50;	 mean reward = 0.5132;	 mean loss = nan;	 total reward = 184.7557;	 epsilon = 0.0000
+predictor loss: 0.17157393488945016
+[session 58 started] 11:37:50
+[session 58 finished] 11:37:59;	 mean reward = 0.4680;	 mean loss = nan;	 total reward = 168.4629;	 epsilon = 0.0000
+predictor loss: 0.15101915688834194
+[session 59 started] 11:37:59
+[session 59 finished] 11:38:07;	 mean reward = 0.6070;	 mean loss = nan;	 total reward = 218.5076;	 epsilon = 0.0000
+predictor loss: 0.21707294950234893
+[session 60 started] 11:38:07
+[session 60 finished] 11:38:16;	 mean reward = 0.4250;	 mean loss = nan;	 total reward = 153.0045;	 epsilon = 0.0000
+predictor loss: 0.11081773197207245
+[session 61 started] 11:38:16
+[session 61 finished] 11:38:24;	 mean reward = 0.8304;	 mean loss = nan;	 total reward = 298.9266;	 epsilon = 0.0000
+predictor loss: 0.35814270976713475
+[session 62 started] 11:38:24
+[session 62 finished] 11:38:33;	 mean reward = 0.5579;	 mean loss = nan;	 total reward = 200.8606;	 epsilon = 0.0000
+predictor loss: 0.19116347253133328
+[session 63 started] 11:38:33
+[session 63 finished] 11:38:42;	 mean reward = 0.5063;	 mean loss = nan;	 total reward = 182.2804;	 epsilon = 0.0000
+predictor loss: 0.13343248552989903
+[session 64 started] 11:38:42
+[session 64 finished] 11:38:50;	 mean reward = 0.4829;	 mean loss = nan;	 total reward = 173.8513;	 epsilon = 0.0000
+predictor loss: 0.18983226023874333
+[session 65 started] 11:38:50
+[session 65 finished] 11:38:58;	 mean reward = 0.4738;	 mean loss = nan;	 total reward = 170.5784;	 epsilon = 0.0000
+predictor loss: 0.1040416549016571
+[session 66 started] 11:38:58
+[session 66 finished] 11:39:07;	 mean reward = 0.6399;	 mean loss = nan;	 total reward = 230.3758;	 epsilon = 0.0000
+predictor loss: 0.25558092215803835
+[session 67 started] 11:39:07
+[session 67 finished] 11:39:16;	 mean reward = 0.5819;	 mean loss = nan;	 total reward = 209.4912;	 epsilon = 0.0000
+predictor loss: 0.19984013976770013
+[session 68 started] 11:39:16
+[session 68 finished] 11:39:24;	 mean reward = 0.5296;	 mean loss = nan;	 total reward = 190.6459;	 epsilon = 0.0000
+predictor loss: 0.15459511624647704
+[session 69 started] 11:39:24
+[session 69 finished] 11:39:33;	 mean reward = 0.4941;	 mean loss = nan;	 total reward = 177.8804;	 epsilon = 0.0000
+predictor loss: 0.16558191964224117
+[session 70 started] 11:39:33
+[session 70 finished] 11:39:41;	 mean reward = 0.6415;	 mean loss = nan;	 total reward = 230.9471;	 epsilon = 0.0000
+predictor loss: 0.25836635270328234
+[session 71 started] 11:39:41
+[session 71 finished] 11:39:49;	 mean reward = 0.6281;	 mean loss = nan;	 total reward = 226.1282;	 epsilon = 0.0000
+predictor loss: 0.20637389936148814
+[session 72 started] 11:39:49
+[session 72 finished] 11:39:58;	 mean reward = 0.6682;	 mean loss = nan;	 total reward = 240.5438;	 epsilon = 0.0000
+predictor loss: 0.23954173316344063
+[session 73 started] 11:39:58
+[session 73 finished] 11:40:07;	 mean reward = 0.8280;	 mean loss = nan;	 total reward = 298.0939;	 epsilon = 0.0000
+predictor loss: 0.3198903117490159
+[session 74 started] 11:40:07
+[session 74 finished] 11:40:16;	 mean reward = 0.5611;	 mean loss = nan;	 total reward = 201.9848;	 epsilon = 0.0000
+predictor loss: 0.20454832125167735
+[session 75 started] 11:40:16
+[session 75 finished] 11:40:25;	 mean reward = 0.7809;	 mean loss = nan;	 total reward = 281.1131;	 epsilon = 0.0000
+predictor loss: 0.3593985323780934
+[session 76 started] 11:40:25
+[session 76 finished] 11:40:33;	 mean reward = 0.7375;	 mean loss = nan;	 total reward = 265.5117;	 epsilon = 0.0000
+predictor loss: 0.3109997840538152
+[session 77 started] 11:40:33
+[session 77 finished] 11:40:43;	 mean reward = 0.4153;	 mean loss = nan;	 total reward = 149.4945;	 epsilon = 0.0000
+predictor loss: 0.13029654612785552
+[session 78 started] 11:40:43
+[session 78 finished] 11:40:51;	 mean reward = 0.4182;	 mean loss = nan;	 total reward = 150.5481;	 epsilon = 0.0000
+predictor loss: 0.16595054417886684
+[session 79 started] 11:40:51
+[session 79 finished] 11:40:59;	 mean reward = 0.4789;	 mean loss = nan;	 total reward = 172.3989;	 epsilon = 0.0000
+predictor loss: 0.20833879466554567
+[session 80 started] 11:40:59
+[session 80 finished] 11:41:08;	 mean reward = 0.4849;	 mean loss = nan;	 total reward = 174.5787;	 epsilon = 0.0000
+predictor loss: 0.1813616604490591
+[session 81 started] 11:41:08
+[session 81 finished] 11:41:16;	 mean reward = 0.4462;	 mean loss = nan;	 total reward = 160.6492;	 epsilon = 0.0000
+predictor loss: 0.12841483640541093
+[session 82 started] 11:41:16
+[session 82 finished] 11:41:24;	 mean reward = 0.5821;	 mean loss = nan;	 total reward = 209.5629;	 epsilon = 0.0000
+predictor loss: 0.2673410084884742
+[session 83 started] 11:41:24
+[session 83 finished] 11:41:33;	 mean reward = 0.5742;	 mean loss = nan;	 total reward = 206.7042;	 epsilon = 0.0000
+predictor loss: 0.26164715784457254
+[session 84 started] 11:41:33
+[session 84 finished] 11:41:42;	 mean reward = 0.5081;	 mean loss = nan;	 total reward = 182.8992;	 epsilon = 0.0000
+predictor loss: 0.2255964168977434
+[session 85 started] 11:41:42
+[session 85 finished] 11:41:51;	 mean reward = 0.5768;	 mean loss = nan;	 total reward = 207.6395;	 epsilon = 0.0000
+predictor loss: 0.23691630340758268
+[session 86 started] 11:41:51
+[session 86 finished] 11:41:59;	 mean reward = 0.3999;	 mean loss = nan;	 total reward = 143.9509;	 epsilon = 0.0000
+predictor loss: 0.10788763538601892
+[session 87 started] 11:41:59
+[session 87 finished] 11:42:08;	 mean reward = 0.5624;	 mean loss = nan;	 total reward = 202.4550;	 epsilon = 0.0000
+predictor loss: 0.1934444956519089
+[session 88 started] 11:42:08
+[session 88 finished] 11:42:16;	 mean reward = 0.5809;	 mean loss = nan;	 total reward = 209.1132;	 epsilon = 0.0000
+predictor loss: 0.23088048539496905
+[session 89 started] 11:42:16
+[session 89 finished] 11:42:24;	 mean reward = 0.5232;	 mean loss = nan;	 total reward = 188.3384;	 epsilon = 0.0000
+predictor loss: 0.22305898038658087
+[session 90 started] 11:42:24
+[session 90 finished] 11:42:33;	 mean reward = 0.3966;	 mean loss = nan;	 total reward = 142.7791;	 epsilon = 0.0000
+predictor loss: 0.09253939614414705
+[session 91 started] 11:42:33
+[session 91 finished] 11:42:43;	 mean reward = 0.5144;	 mean loss = nan;	 total reward = 185.1797;	 epsilon = 0.0000
+predictor loss: 0.1430222527587095
+[session 92 started] 11:42:43
+[session 92 finished] 11:42:52;	 mean reward = 0.6373;	 mean loss = nan;	 total reward = 229.4193;	 epsilon = 0.0000
+predictor loss: 0.2575135157260169
+[session 93 started] 11:42:52
+[session 93 finished] 11:43:00;	 mean reward = 0.6372;	 mean loss = nan;	 total reward = 229.4096;	 epsilon = 0.0000
+predictor loss: 0.29345238804177776
+[session 94 started] 11:43:00
+[session 94 finished] 11:43:08;	 mean reward = 0.5994;	 mean loss = nan;	 total reward = 215.8015;	 epsilon = 0.0000
+predictor loss: 0.2332889670521345
+[session 95 started] 11:43:08
+[session 95 finished] 11:43:16;	 mean reward = 0.4932;	 mean loss = nan;	 total reward = 177.5429;	 epsilon = 0.0000
+predictor loss: 0.1449424569962143
+[session 96 started] 11:43:16
+[session 96 finished] 11:43:24;	 mean reward = 0.4941;	 mean loss = nan;	 total reward = 177.8877;	 epsilon = 0.0000
+predictor loss: 0.17042066452454668
+[session 97 started] 11:43:24
+[session 97 finished] 11:43:33;	 mean reward = 0.5832;	 mean loss = nan;	 total reward = 209.9489;	 epsilon = 0.0000
+predictor loss: 0.14273145319805794
+[session 98 started] 11:43:33
+[session 98 finished] 11:43:41;	 mean reward = 0.5508;	 mean loss = nan;	 total reward = 198.2736;	 epsilon = 0.0000
+predictor loss: 0.1512104490861696
+[session 99 started] 11:43:41
+[session 99 finished] 11:43:49;	 mean reward = 0.6421;	 mean loss = nan;	 total reward = 231.1532;	 epsilon = 0.0000
+predictor loss: 0.2547014682707998
+[session 100 started] 11:43:49
+[session 100 finished] 11:43:57;	 mean reward = 0.4939;	 mean loss = nan;	 total reward = 177.8183;	 epsilon = 0.0000
+predictor loss: 0.1654393354853136
+[session 101 started] 11:43:57
+[session 101 finished] 11:44:07;	 mean reward = 0.6754;	 mean loss = nan;	 total reward = 243.1348;	 epsilon = 0.0000
+predictor loss: 0.26799550075130857
+[session 102 started] 11:44:07
+[session 102 finished] 11:44:15;	 mean reward = 0.7634;	 mean loss = nan;	 total reward = 274.8116;	 epsilon = 0.0000
+predictor loss: 0.2731381159508032
+[session 103 started] 11:44:15
+[session 103 finished] 11:44:24;	 mean reward = 0.5279;	 mean loss = nan;	 total reward = 190.0295;	 epsilon = 0.0000
+predictor loss: 0.18416859265814808
+[session 104 started] 11:44:24
+[session 104 finished] 11:44:32;	 mean reward = 0.6448;	 mean loss = nan;	 total reward = 232.1126;	 epsilon = 0.0000
+predictor loss: 0.22905451043491795
+[session 105 started] 11:44:32
+[session 105 finished] 11:44:42;	 mean reward = 0.7024;	 mean loss = nan;	 total reward = 252.8563;	 epsilon = 0.0000
+predictor loss: 0.29317848638897104
+[session 106 started] 11:44:42
+[session 106 finished] 11:44:50;	 mean reward = 0.5091;	 mean loss = nan;	 total reward = 183.2925;	 epsilon = 0.0000
+predictor loss: 0.1383265633052306
+[session 107 started] 11:44:50
+[session 107 finished] 11:44:58;	 mean reward = 0.5265;	 mean loss = nan;	 total reward = 189.5503;	 epsilon = 0.0000
+predictor loss: 0.2147376366651392
+[session 108 started] 11:44:58
+[session 108 finished] 11:45:07;	 mean reward = 0.5198;	 mean loss = nan;	 total reward = 187.1253;	 epsilon = 0.0000
+predictor loss: 0.21047818865038795
+[session 109 started] 11:45:07
+[session 109 finished] 11:45:15;	 mean reward = 0.4199;	 mean loss = nan;	 total reward = 151.1582;	 epsilon = 0.0000
+predictor loss: 0.11143582731721616
+[session 110 started] 11:45:15
+[session 110 finished] 11:45:24;	 mean reward = 0.7547;	 mean loss = nan;	 total reward = 271.6846;	 epsilon = 0.0000
+predictor loss: 0.44197893742071775
+[session 111 started] 11:45:24
+[session 111 finished] 11:45:34;	 mean reward = 0.5459;	 mean loss = nan;	 total reward = 196.5231;	 epsilon = 0.0000
+predictor loss: 0.1487397169165439
+[session 112 started] 11:45:34
+[session 112 finished] 11:45:43;	 mean reward = 0.6171;	 mean loss = nan;	 total reward = 222.1458;	 epsilon = 0.0000
+predictor loss: 0.20273336266849012
+[session 113 started] 11:45:43
+[session 113 finished] 11:45:51;	 mean reward = 0.5519;	 mean loss = nan;	 total reward = 198.6777;	 epsilon = 0.0000
+predictor loss: 0.21052191961884428
+[session 114 started] 11:45:51
+[session 114 finished] 11:46:00;	 mean reward = 0.4175;	 mean loss = nan;	 total reward = 150.2983;	 epsilon = 0.0000
+predictor loss: 0.08795973028343441
+[session 115 started] 11:46:00
+[session 115 finished] 11:46:09;	 mean reward = 0.4214;	 mean loss = nan;	 total reward = 151.6957;	 epsilon = 0.0000
+predictor loss: 0.17237864300444106
+[session 116 started] 11:46:09
+[session 116 finished] 11:46:17;	 mean reward = 0.5641;	 mean loss = nan;	 total reward = 203.0734;	 epsilon = 0.0000
+predictor loss: 0.18034146797701464
+[session 117 started] 11:46:17
+[session 117 finished] 11:46:25;	 mean reward = 0.3843;	 mean loss = nan;	 total reward = 138.3617;	 epsilon = 0.0000
+predictor loss: 0.07447701029547679
+[session 118 started] 11:46:25
+[session 118 finished] 11:46:34;	 mean reward = 0.6920;	 mean loss = nan;	 total reward = 249.1071;	 epsilon = 0.0000
+predictor loss: 0.25695834573779547
+[session 119 started] 11:46:34
+[session 119 finished] 11:46:43;	 mean reward = 0.6810;	 mean loss = nan;	 total reward = 245.1738;	 epsilon = 0.0000
+predictor loss: 0.2579301598887076
+[session 120 started] 11:46:43
+[session 120 finished] 11:46:51;	 mean reward = 0.5385;	 mean loss = nan;	 total reward = 193.8767;	 epsilon = 0.0000
+predictor loss: 0.21140213814783324
+[session 121 started] 11:46:51
+[session 121 finished] 11:46:59;	 mean reward = 0.5252;	 mean loss = nan;	 total reward = 189.0688;	 epsilon = 0.0000
+predictor loss: 0.20961310959587032
+[session 122 started] 11:46:59
+[session 122 finished] 11:47:08;	 mean reward = 0.6436;	 mean loss = nan;	 total reward = 231.6848;	 epsilon = 0.0000
+predictor loss: 0.282733407658627
+[session 123 started] 11:47:08
+[session 123 finished] 11:47:16;	 mean reward = 0.4584;	 mean loss = nan;	 total reward = 165.0384;	 epsilon = 0.0000
+predictor loss: 0.12632185109635405
+[session 124 started] 11:47:16
+[session 124 finished] 11:47:25;	 mean reward = 0.4838;	 mean loss = nan;	 total reward = 174.1686;	 epsilon = 0.0000
+predictor loss: 0.14671711161830636
+[session 125 started] 11:47:25
+[session 125 finished] 11:47:34;	 mean reward = 0.2061;	 mean loss = nan;	 total reward = 74.1805;	 epsilon = 0.0000
+predictor loss: 0.050147665044870234
+[session 126 started] 11:47:34
+[session 126 finished] 11:47:46;	 mean reward = 0.4974;	 mean loss = nan;	 total reward = 179.0760;	 epsilon = 0.0000
+predictor loss: 0.162433002747959
+[session 127 started] 11:47:46
+[session 127 finished] 11:47:54;	 mean reward = 0.6214;	 mean loss = nan;	 total reward = 223.7175;	 epsilon = 0.0000
+predictor loss: 0.20301078341920606
+[session 128 started] 11:47:54
+[session 128 finished] 11:48:04;	 mean reward = 0.7450;	 mean loss = nan;	 total reward = 268.2076;	 epsilon = 0.0000
+predictor loss: 0.3537660007377413
+[session 129 started] 11:48:04
+[session 129 finished] 11:48:12;	 mean reward = 0.5481;	 mean loss = nan;	 total reward = 197.3297;	 epsilon = 0.0000
+predictor loss: 0.1931494048348429
+[session 130 started] 11:48:12
+[session 130 finished] 11:48:20;	 mean reward = 0.4551;	 mean loss = nan;	 total reward = 163.8198;	 epsilon = 0.0000
+predictor loss: 0.11258612510832006
+[session 131 started] 11:48:20
+[session 131 finished] 11:48:28;	 mean reward = 0.4149;	 mean loss = nan;	 total reward = 149.3555;	 epsilon = 0.0000
+predictor loss: 0.10987156724890712
+[session 132 started] 11:48:28
+[session 132 finished] 11:48:37;	 mean reward = 0.7027;	 mean loss = nan;	 total reward = 252.9671;	 epsilon = 0.0000
+predictor loss: 0.26421055917990127
+[session 133 started] 11:48:37
+[session 133 finished] 11:48:46;	 mean reward = 0.5562;	 mean loss = nan;	 total reward = 200.2473;	 epsilon = 0.0000
+predictor loss: 0.17056277240691117
+[session 134 started] 11:48:46
+[session 134 finished] 11:48:54;	 mean reward = 0.4343;	 mean loss = nan;	 total reward = 156.3457;	 epsilon = 0.0000
+predictor loss: 0.08960574801845494
+[session 135 started] 11:48:54
+[session 135 finished] 11:49:04;	 mean reward = 0.4167;	 mean loss = nan;	 total reward = 150.0186;	 epsilon = 0.0000
+predictor loss: 0.09257986534860883
+[session 136 started] 11:49:04
+[session 136 finished] 11:49:11;	 mean reward = 0.5058;	 mean loss = nan;	 total reward = 182.0928;	 epsilon = 0.0000
+predictor loss: 0.13839478263396668
+[session 137 started] 11:49:11
+[session 137 finished] 11:49:20;	 mean reward = 0.3121;	 mean loss = nan;	 total reward = 112.3690;	 epsilon = 0.0000
+predictor loss: 0.08958345957979529
+[session 138 started] 11:49:20
+[session 138 finished] 11:49:29;	 mean reward = 0.8072;	 mean loss = nan;	 total reward = 290.5806;	 epsilon = 0.0000
+predictor loss: 0.43193023491949645
+[session 139 started] 11:49:29
+[session 139 finished] 11:49:39;	 mean reward = 0.2765;	 mean loss = nan;	 total reward = 99.5437;	 epsilon = 0.0000
+predictor loss: 0.0651656174788767
+[session 140 started] 11:49:39
+[session 140 finished] 11:49:49;	 mean reward = 0.7542;	 mean loss = nan;	 total reward = 271.5095;	 epsilon = 0.0000
+predictor loss: 0.31439295603515205
+[session 141 started] 11:49:49
+[session 141 finished] 11:49:58;	 mean reward = 0.3489;	 mean loss = nan;	 total reward = 125.6057;	 epsilon = 0.0000
+predictor loss: 0.15288242149057837
+[session 142 started] 11:49:58
+[session 142 finished] 11:50:06;	 mean reward = 0.3118;	 mean loss = nan;	 total reward = 112.2543;	 epsilon = 0.0000
+predictor loss: 0.08404363828068005
+[session 143 started] 11:50:06
+[session 143 finished] 11:50:14;	 mean reward = 0.5240;	 mean loss = nan;	 total reward = 188.6533;	 epsilon = 0.0000
+predictor loss: 0.18193976828524236
+[session 144 started] 11:50:14
+[session 144 finished] 11:50:23;	 mean reward = 0.4400;	 mean loss = nan;	 total reward = 158.4033;	 epsilon = 0.0000
+predictor loss: 0.13149176066025767
+[session 145 started] 11:50:23
+[session 145 finished] 11:50:31;	 mean reward = 0.5197;	 mean loss = nan;	 total reward = 187.0840;	 epsilon = 0.0000
+predictor loss: 0.15824492982709779
+[session 146 started] 11:50:31
+[session 146 finished] 11:50:40;	 mean reward = 0.4465;	 mean loss = nan;	 total reward = 160.7276;	 epsilon = 0.0000
+predictor loss: 0.1436663568437485
+[session 147 started] 11:50:40
+[session 147 finished] 11:50:48;	 mean reward = 0.6027;	 mean loss = nan;	 total reward = 216.9878;	 epsilon = 0.0000
+predictor loss: 0.22462226777310831
+[session 148 started] 11:50:48
+[session 148 finished] 11:50:57;	 mean reward = 0.3575;	 mean loss = nan;	 total reward = 128.6958;	 epsilon = 0.0000
+predictor loss: 0.15164663725190822
+[session 149 started] 11:50:57
+[session 149 finished] 11:51:05;	 mean reward = 0.5129;	 mean loss = nan;	 total reward = 184.6512;	 epsilon = 0.0000
+predictor loss: 0.1566181144426387
+[session 150 started] 11:51:05
+[session 150 finished] 11:51:14;	 mean reward = 0.6024;	 mean loss = nan;	 total reward = 216.8732;	 epsilon = 0.0000
+predictor loss: 0.2792759974066236
+[session 151 started] 11:51:14
+[session 151 finished] 11:51:22;	 mean reward = 0.3996;	 mean loss = nan;	 total reward = 143.8503;	 epsilon = 0.0000
+predictor loss: 0.11500651966401296
+[session 152 started] 11:51:22
+[session 152 finished] 11:51:31;	 mean reward = 0.5798;	 mean loss = nan;	 total reward = 208.7154;	 epsilon = 0.0000
+predictor loss: 0.24282290538592635
+[session 153 started] 11:51:31
+[session 153 finished] 11:51:39;	 mean reward = 0.5585;	 mean loss = nan;	 total reward = 201.0487;	 epsilon = 0.0000
+predictor loss: 0.2078960633199357
+[session 154 started] 11:51:39
+[session 154 finished] 11:51:47;	 mean reward = 0.5189;	 mean loss = nan;	 total reward = 186.8149;	 epsilon = 0.0000
+predictor loss: 0.18750914728831514
+[session 155 started] 11:51:47
+[session 155 finished] 11:51:56;	 mean reward = 0.5039;	 mean loss = nan;	 total reward = 181.4036;	 epsilon = 0.0000
+predictor loss: 0.10246944385348393
+[session 156 started] 11:51:56
+[session 156 finished] 11:52:05;	 mean reward = 0.5863;	 mean loss = nan;	 total reward = 211.0725;	 epsilon = 0.0000
+predictor loss: 0.20062027600302865
+[session 157 started] 11:52:05
+[session 157 finished] 11:52:15;	 mean reward = 0.4848;	 mean loss = nan;	 total reward = 174.5300;	 epsilon = 0.0000
+predictor loss: 0.12887365553652763
+[session 158 started] 11:52:15
+[session 158 finished] 11:52:23;	 mean reward = 0.6903;	 mean loss = nan;	 total reward = 248.4995;	 epsilon = 0.0000
+predictor loss: 0.25704967622119845
+[session 159 started] 11:52:23
+[session 159 finished] 11:52:31;	 mean reward = 0.4314;	 mean loss = nan;	 total reward = 155.2973;	 epsilon = 0.0000
+predictor loss: 0.14783567147892818
+[session 160 started] 11:52:31
+[session 160 finished] 11:52:41;	 mean reward = 0.6862;	 mean loss = nan;	 total reward = 247.0170;	 epsilon = 0.0000
+predictor loss: 0.32583235919510795
+[session 161 started] 11:52:41
+[session 161 finished] 11:52:49;	 mean reward = 0.5383;	 mean loss = nan;	 total reward = 193.7806;	 epsilon = 0.0000
+predictor loss: 0.18437979268163926
+[session 162 started] 11:52:49
+[session 162 finished] 11:52:58;	 mean reward = 0.5621;	 mean loss = nan;	 total reward = 202.3617;	 epsilon = 0.0000
+predictor loss: 0.22223447012837383
+[session 163 started] 11:52:58
+[session 163 finished] 11:53:08;	 mean reward = 0.6210;	 mean loss = nan;	 total reward = 223.5669;	 epsilon = 0.0000
+predictor loss: 0.21391444851003744
+[session 164 started] 11:53:08
+[session 164 finished] 11:53:17;	 mean reward = 0.4898;	 mean loss = nan;	 total reward = 176.3125;	 epsilon = 0.0000
+predictor loss: 0.17939025861626806
+[session 165 started] 11:53:17
+[session 165 finished] 11:53:26;	 mean reward = 0.6255;	 mean loss = nan;	 total reward = 225.1844;	 epsilon = 0.0000
+predictor loss: 0.17730447466597585
+[session 166 started] 11:53:26
+[session 166 finished] 11:53:34;	 mean reward = 0.5023;	 mean loss = nan;	 total reward = 180.8379;	 epsilon = 0.0000
+predictor loss: 0.19825253813370342
+[session 167 started] 11:53:34
+[session 167 finished] 11:53:43;	 mean reward = 0.5187;	 mean loss = nan;	 total reward = 186.7198;	 epsilon = 0.0000
+predictor loss: 0.14357423967072636
+[session 168 started] 11:53:43
+[session 168 finished] 11:53:52;	 mean reward = 0.5540;	 mean loss = nan;	 total reward = 199.4220;	 epsilon = 0.0000
+predictor loss: 0.24001699718556288
+[session 169 started] 11:53:52
+[session 169 finished] 11:53:59;	 mean reward = 0.4873;	 mean loss = nan;	 total reward = 175.4295;	 epsilon = 0.0000
+predictor loss: 0.17099929511834966
+[session 170 started] 11:53:59
+[session 170 finished] 11:54:08;	 mean reward = 0.7156;	 mean loss = nan;	 total reward = 257.6080;	 epsilon = 0.0000
+predictor loss: 0.17501736266363407
+[session 171 started] 11:54:08
+[session 171 finished] 11:54:17;	 mean reward = 0.8355;	 mean loss = nan;	 total reward = 300.7659;	 epsilon = 0.0000
+predictor loss: 0.4294227863395789
+[session 172 started] 11:54:17
+[session 172 finished] 11:54:25;	 mean reward = 0.4796;	 mean loss = nan;	 total reward = 172.6726;	 epsilon = 0.0000
+predictor loss: 0.16468539797704343
+[session 173 started] 11:54:25
+[session 173 finished] 11:54:35;	 mean reward = 0.4185;	 mean loss = nan;	 total reward = 150.6574;	 epsilon = 0.0000
+predictor loss: 0.13818038899778382
+[session 174 started] 11:54:35
+[session 174 finished] 11:54:44;	 mean reward = 0.5669;	 mean loss = nan;	 total reward = 204.0699;	 epsilon = 0.0000
+predictor loss: 0.08481227972269842
+[session 175 started] 11:54:44
+[session 175 finished] 11:54:52;	 mean reward = 0.5654;	 mean loss = nan;	 total reward = 203.5492;	 epsilon = 0.0000
+predictor loss: 0.22041837013127194
+[session 176 started] 11:54:52
+[session 176 finished] 11:55:00;	 mean reward = 0.6570;	 mean loss = nan;	 total reward = 236.5330;	 epsilon = 0.0000
+predictor loss: 0.3342042228525443
+[session 177 started] 11:55:00
+[session 177 finished] 11:55:09;	 mean reward = 0.3011;	 mean loss = nan;	 total reward = 108.4037;	 epsilon = 0.0000
+predictor loss: 0.1537412657297224
+[session 178 started] 11:55:09
+[session 178 finished] 11:55:18;	 mean reward = 0.5634;	 mean loss = nan;	 total reward = 202.8155;	 epsilon = 0.0000
+predictor loss: 0.19499351743718457
+[session 179 started] 11:55:18
+[session 179 finished] 11:55:26;	 mean reward = 0.4433;	 mean loss = nan;	 total reward = 159.5999;	 epsilon = 0.0000
+predictor loss: 0.1409670467696815
+[session 180 started] 11:55:26
+[session 180 finished] 11:55:34;	 mean reward = 0.4486;	 mean loss = nan;	 total reward = 161.5064;	 epsilon = 0.0000
+predictor loss: 0.12282653994703106
+[session 181 started] 11:55:34
+[session 181 finished] 11:55:43;	 mean reward = 0.3180;	 mean loss = nan;	 total reward = 114.4937;	 epsilon = 0.0000
+predictor loss: 0.11364555365536998
+[session 182 started] 11:55:43
+[session 182 finished] 11:55:51;	 mean reward = 0.4489;	 mean loss = nan;	 total reward = 161.5864;	 epsilon = 0.0000
+predictor loss: 0.13390159373838986
+[session 183 started] 11:55:51
+[session 183 finished] 11:56:00;	 mean reward = 0.4865;	 mean loss = nan;	 total reward = 175.1479;	 epsilon = 0.0000
+predictor loss: 0.12633512891314216
+[session 184 started] 11:56:00
+[session 184 finished] 11:56:08;	 mean reward = 0.7121;	 mean loss = nan;	 total reward = 256.3636;	 epsilon = 0.0000
+predictor loss: 0.2310093059572128
+[session 185 started] 11:56:08
+[session 185 finished] 11:56:16;	 mean reward = 0.4636;	 mean loss = nan;	 total reward = 166.8993;	 epsilon = 0.0000
+predictor loss: 0.16670015360949514
+[session 186 started] 11:56:16
+[session 186 finished] 11:56:25;	 mean reward = 0.1838;	 mean loss = nan;	 total reward = 66.1538;	 epsilon = 0.0000
+predictor loss: 0.060615376397503765
+[session 187 started] 11:56:25
+[session 187 finished] 11:56:33;	 mean reward = 0.7041;	 mean loss = nan;	 total reward = 253.4643;	 epsilon = 0.0000
+predictor loss: 0.36712521096213135
+[session 188 started] 11:56:33
+[session 188 finished] 11:56:42;	 mean reward = 0.6901;	 mean loss = nan;	 total reward = 248.4219;	 epsilon = 0.0000
+predictor loss: 0.295004203019378
+[session 189 started] 11:56:42
+[session 189 finished] 11:56:50;	 mean reward = 0.5636;	 mean loss = nan;	 total reward = 202.8919;	 epsilon = 0.0000
+predictor loss: 0.22182657605347478
+[session 190 started] 11:56:50
+[session 190 finished] 11:56:59;	 mean reward = 0.6354;	 mean loss = nan;	 total reward = 228.7450;	 epsilon = 0.0000
+predictor loss: 0.30695688007418886
+[session 191 started] 11:56:59
+[session 191 finished] 11:57:08;	 mean reward = 0.3943;	 mean loss = nan;	 total reward = 141.9633;	 epsilon = 0.0000
+predictor loss: 0.07812721741302152
+[session 192 started] 11:57:08
+[session 192 finished] 11:57:17;	 mean reward = 0.4684;	 mean loss = nan;	 total reward = 168.6184;	 epsilon = 0.0000
+predictor loss: 0.15850769920153462
+[session 193 started] 11:57:17
+[session 193 finished] 11:57:25;	 mean reward = 0.3678;	 mean loss = nan;	 total reward = 132.4241;	 epsilon = 0.0000
+predictor loss: 0.07726016351956577
+[session 194 started] 11:57:25
+[session 194 finished] 11:57:33;	 mean reward = 0.6103;	 mean loss = nan;	 total reward = 219.7225;	 epsilon = 0.0000
+predictor loss: 0.2112512809905514
+[session 195 started] 11:57:33
+[session 195 finished] 11:57:42;	 mean reward = 0.6192;	 mean loss = nan;	 total reward = 222.9276;	 epsilon = 0.0000
+predictor loss: 0.26766916841555694
+[session 196 started] 11:57:42
+[session 196 finished] 11:57:49;	 mean reward = 0.5399;	 mean loss = nan;	 total reward = 194.3708;	 epsilon = 0.0000
+predictor loss: 0.25330569776590534
+[session 197 started] 11:57:49
+[session 197 finished] 11:57:58;	 mean reward = 0.4196;	 mean loss = nan;	 total reward = 151.0399;	 epsilon = 0.0000
+predictor loss: 0.1068701731141331
+[session 198 started] 11:57:58
+[session 198 finished] 11:58:06;	 mean reward = 0.5974;	 mean loss = nan;	 total reward = 215.0627;	 epsilon = 0.0000
+predictor loss: 0.21277218896975467
+[session 199 started] 11:58:06
+[session 199 finished] 11:58:14;	 mean reward = 0.5726;	 mean loss = nan;	 total reward = 206.1525;	 epsilon = 0.0000
+predictor loss: 0.2776846977172187
+[session 200 started] 11:58:14
+[session 200 finished] 11:58:22;	 mean reward = 0.5666;	 mean loss = nan;	 total reward = 203.9902;	 epsilon = 0.0000
+predictor loss: 0.19713946981613334
+[session 201 started] 11:58:22
+[session 201 finished] 11:58:30;	 mean reward = 0.6812;	 mean loss = nan;	 total reward = 245.2444;	 epsilon = 0.0000
+predictor loss: 0.24686597724387344
+[session 202 started] 11:58:30
+[session 202 finished] 11:58:39;	 mean reward = 0.4983;	 mean loss = nan;	 total reward = 179.4026;	 epsilon = 0.0000
+predictor loss: 0.1772600092569359
+[session 203 started] 11:58:39
+[session 203 finished] 11:58:47;	 mean reward = 0.6647;	 mean loss = nan;	 total reward = 239.2765;	 epsilon = 0.0000
+predictor loss: 0.26718590972835166
+[session 204 started] 11:58:47
+[session 204 finished] 11:58:55;	 mean reward = 0.6062;	 mean loss = nan;	 total reward = 218.2351;	 epsilon = 0.0000
+predictor loss: 0.2187926287740649
+[session 205 started] 11:58:55
+[session 205 finished] 11:59:05;	 mean reward = 0.7271;	 mean loss = nan;	 total reward = 261.7467;	 epsilon = 0.0000
+predictor loss: 0.40450987945817385
+[session 206 started] 11:59:05
+[session 206 finished] 11:59:13;	 mean reward = 0.6411;	 mean loss = nan;	 total reward = 230.7795;	 epsilon = 0.0000
+predictor loss: 0.21457723402993925
+[session 207 started] 11:59:13
+[session 207 finished] 11:59:21;	 mean reward = 0.6382;	 mean loss = nan;	 total reward = 229.7478;	 epsilon = 0.0000
+predictor loss: 0.17168158837511538
+[session 208 started] 11:59:21
+[session 208 finished] 11:59:30;	 mean reward = 0.6066;	 mean loss = nan;	 total reward = 218.3845;	 epsilon = 0.0000
+predictor loss: 0.2332887803160615
+[session 209 started] 11:59:30
+[session 209 finished] 11:59:39;	 mean reward = 0.5262;	 mean loss = nan;	 total reward = 189.4267;	 epsilon = 0.0000
+predictor loss: 0.11586307262549597
+[session 210 started] 11:59:39
+[session 210 finished] 11:59:48;	 mean reward = 0.5864;	 mean loss = nan;	 total reward = 211.1127;	 epsilon = 0.0000
+predictor loss: 0.241680101387539
+[session 211 started] 11:59:48
+[session 211 finished] 11:59:55;	 mean reward = 0.4348;	 mean loss = nan;	 total reward = 156.5115;	 epsilon = 0.0000
+predictor loss: 0.1478424053698943
+[session 212 started] 11:59:55
+[session 212 finished] 12:00:03;	 mean reward = 0.5219;	 mean loss = nan;	 total reward = 187.8753;	 epsilon = 0.0000
+predictor loss: 0.14191265839269607
+[session 213 started] 12:00:03
+[session 213 finished] 12:00:13;	 mean reward = 0.6233;	 mean loss = nan;	 total reward = 224.3825;	 epsilon = 0.0000
+predictor loss: 0.20709289246594453
+[session 214 started] 12:00:13
+[session 214 finished] 12:00:21;	 mean reward = 0.6647;	 mean loss = nan;	 total reward = 239.2802;	 epsilon = 0.0000
+predictor loss: 0.28263869850616946
+[session 215 started] 12:00:21
+[session 215 finished] 12:00:29;	 mean reward = 0.7776;	 mean loss = nan;	 total reward = 279.9329;	 epsilon = 0.0000
+predictor loss: 0.471133991132681
+[session 216 started] 12:00:29
+[session 216 finished] 12:00:37;	 mean reward = 0.4242;	 mean loss = nan;	 total reward = 152.7238;	 epsilon = 0.0000
+predictor loss: 0.11804335745658169
+[session 217 started] 12:00:37
+[session 217 finished] 12:00:47;	 mean reward = 0.7251;	 mean loss = nan;	 total reward = 261.0492;	 epsilon = 0.0000
+predictor loss: 0.25609569854134034
+[session 218 started] 12:00:47
+[session 218 finished] 12:00:56;	 mean reward = 0.5088;	 mean loss = nan;	 total reward = 183.1673;	 epsilon = 0.0000
+predictor loss: 0.20080662202839647
+[session 219 started] 12:00:56
+[session 219 finished] 12:01:04;	 mean reward = 0.5250;	 mean loss = nan;	 total reward = 188.9910;	 epsilon = 0.0000
+predictor loss: 0.22543946794641231
+[session 220 started] 12:01:04
+[session 220 finished] 12:01:12;	 mean reward = 0.4582;	 mean loss = nan;	 total reward = 164.9463;	 epsilon = 0.0000
+predictor loss: 0.11570983596423466
+[session 221 started] 12:01:12
+[session 221 finished] 12:01:20;	 mean reward = 0.3428;	 mean loss = nan;	 total reward = 123.3973;	 epsilon = 0.0000
+predictor loss: 0.10507075289463162
+[session 222 started] 12:01:20
+[session 222 finished] 12:01:29;	 mean reward = 0.3883;	 mean loss = nan;	 total reward = 139.7917;	 epsilon = 0.0000
+predictor loss: 0.1812232960536483
+[session 223 started] 12:01:29
+[session 223 finished] 12:01:37;	 mean reward = 0.4296;	 mean loss = nan;	 total reward = 154.6647;	 epsilon = 0.0000
+predictor loss: 0.11383547750065058
+[session 224 started] 12:01:37
+[session 224 finished] 12:01:45;	 mean reward = 0.5459;	 mean loss = nan;	 total reward = 196.5404;	 epsilon = 0.0000
+predictor loss: 0.2399448465681545
+[session 225 started] 12:01:45
+[session 225 finished] 12:01:53;	 mean reward = 0.4376;	 mean loss = nan;	 total reward = 157.5452;	 epsilon = 0.0000
+predictor loss: 0.14699896089649284
+[session 226 started] 12:01:53
+[session 226 finished] 12:02:03;	 mean reward = 0.6207;	 mean loss = nan;	 total reward = 223.4349;	 epsilon = 0.0000
+predictor loss: 0.31330595470753675
+[session 227 started] 12:02:03
+[session 227 finished] 12:02:12;	 mean reward = 0.2577;	 mean loss = nan;	 total reward = 92.7564;	 epsilon = 0.0000
+predictor loss: 0.15209941563419835
+[session 228 started] 12:02:12
+[session 228 finished] 12:02:20;	 mean reward = 0.5420;	 mean loss = nan;	 total reward = 195.1031;	 epsilon = 0.0000
+predictor loss: 0.11508901795201146
+[session 229 started] 12:02:20
+[session 229 finished] 12:02:29;	 mean reward = 0.4069;	 mean loss = nan;	 total reward = 146.4972;	 epsilon = 0.0000
+predictor loss: 0.08640118736582586
+[session 230 started] 12:02:29
+[session 230 finished] 12:02:38;	 mean reward = 0.6754;	 mean loss = nan;	 total reward = 243.1461;	 epsilon = 0.0000
+predictor loss: 0.30150383065397196
+[session 231 started] 12:02:38
+[session 231 finished] 12:02:47;	 mean reward = 0.6001;	 mean loss = nan;	 total reward = 216.0483;	 epsilon = 0.0000
+predictor loss: 0.27930400076075745
+[session 232 started] 12:02:47
+[session 232 finished] 12:02:55;	 mean reward = 0.5285;	 mean loss = nan;	 total reward = 190.2566;	 epsilon = 0.0000
+predictor loss: 0.2183786857544902
+[session 233 started] 12:02:55
+[session 233 finished] 12:03:04;	 mean reward = 0.5458;	 mean loss = nan;	 total reward = 196.4741;	 epsilon = 0.0000
+predictor loss: 0.17497373455117665
+[session 234 started] 12:03:04
+[session 234 finished] 12:03:12;	 mean reward = 0.4462;	 mean loss = nan;	 total reward = 160.6468;	 epsilon = 0.0000
+predictor loss: 0.0691146355051201
+[session 235 started] 12:03:12
+[session 235 finished] 12:03:21;	 mean reward = 0.5118;	 mean loss = nan;	 total reward = 184.2543;	 epsilon = 0.0000
+predictor loss: 0.22031985423030026
+[session 236 started] 12:03:21
+[session 236 finished] 12:03:31;	 mean reward = 0.7340;	 mean loss = nan;	 total reward = 264.2398;	 epsilon = 0.0000
+predictor loss: 0.32508005215539576
+[session 237 started] 12:03:31
+[session 237 finished] 12:03:39;	 mean reward = 0.7019;	 mean loss = nan;	 total reward = 252.6663;	 epsilon = 0.0000
+predictor loss: 0.33080317969427686
+[session 238 started] 12:03:39
+[session 238 finished] 12:03:48;	 mean reward = 0.3062;	 mean loss = nan;	 total reward = 110.2471;	 epsilon = 0.0000
+predictor loss: 0.1560199028667139
+[session 239 started] 12:03:48
+[session 239 finished] 12:03:56;	 mean reward = 0.5583;	 mean loss = nan;	 total reward = 200.9912;	 epsilon = 0.0000
+predictor loss: 0.2413671166986483
+[session 240 started] 12:03:56
+[session 240 finished] 12:04:04;	 mean reward = 0.4150;	 mean loss = nan;	 total reward = 149.3986;	 epsilon = 0.0000
+predictor loss: 0.11947021283906377
+[session 241 started] 12:04:04
+[session 241 finished] 12:04:12;	 mean reward = 0.4758;	 mean loss = nan;	 total reward = 171.3046;	 epsilon = 0.0000
+predictor loss: 0.1727665247571521
+[session 242 started] 12:04:12
+[session 242 finished] 12:04:21;	 mean reward = 0.7415;	 mean loss = nan;	 total reward = 266.9411;	 epsilon = 0.0000
+predictor loss: 0.24426187301493887
+[session 243 started] 12:04:21
+[session 243 finished] 12:04:31;	 mean reward = 0.4172;	 mean loss = nan;	 total reward = 150.1972;	 epsilon = 0.0000
+predictor loss: 0.07933162053487616
+[session 244 started] 12:04:31
+[session 244 finished] 12:04:40;	 mean reward = 0.5473;	 mean loss = nan;	 total reward = 197.0205;	 epsilon = 0.0000
+predictor loss: 0.16585413684251687
+[session 245 started] 12:04:40
+[session 245 finished] 12:04:49;	 mean reward = 0.5353;	 mean loss = nan;	 total reward = 192.7137;	 epsilon = 0.0000
+predictor loss: 0.17856643821153206
+[session 246 started] 12:04:49
+[session 246 finished] 12:04:57;	 mean reward = 0.3936;	 mean loss = nan;	 total reward = 141.6951;	 epsilon = 0.0000
+predictor loss: 0.07975568843249296
+[session 247 started] 12:04:57
+[session 247 finished] 12:05:06;	 mean reward = 0.7521;	 mean loss = nan;	 total reward = 270.7403;	 epsilon = 0.0000
+predictor loss: 0.3897363155769437
+[session 248 started] 12:05:06
+[session 248 finished] 12:05:14;	 mean reward = 0.5151;	 mean loss = nan;	 total reward = 185.4245;	 epsilon = 0.0000
+predictor loss: 0.1678106310393088
+[session 249 started] 12:05:14
+[session 249 finished] 12:05:23;	 mean reward = 0.4651;	 mean loss = nan;	 total reward = 167.4401;	 epsilon = 0.0000
+predictor loss: 0.1496852461649987
+[session 250 started] 12:05:23
+[session 250 finished] 12:05:31;	 mean reward = 0.6048;	 mean loss = nan;	 total reward = 217.7221;	 epsilon = 0.0000
+predictor loss: 0.18701969282191608
+[session 251 started] 12:05:31
+[session 251 finished] 12:05:40;	 mean reward = 0.6154;	 mean loss = nan;	 total reward = 221.5559;	 epsilon = 0.0000
+predictor loss: 0.2303940117790839
+[session 252 started] 12:05:40
+[session 252 finished] 12:05:48;	 mean reward = 0.3968;	 mean loss = nan;	 total reward = 142.8637;	 epsilon = 0.0000
+predictor loss: 0.10755183457952382
+[session 253 started] 12:05:48
+[session 253 finished] 12:05:56;	 mean reward = 0.5014;	 mean loss = nan;	 total reward = 180.4970;	 epsilon = 0.0000
+predictor loss: 0.11293639025140269
+[session 254 started] 12:05:56
+[session 254 finished] 12:06:04;	 mean reward = 0.4679;	 mean loss = nan;	 total reward = 168.4618;	 epsilon = 0.0000
+predictor loss: 0.13392947812661496
+[session 255 started] 12:06:04
+[session 255 finished] 12:06:13;	 mean reward = 0.5697;	 mean loss = nan;	 total reward = 205.0747;	 epsilon = 0.0000
+predictor loss: 0.17911086374289667
+[session 256 started] 12:06:13
+[session 256 finished] 12:06:22;	 mean reward = 0.5260;	 mean loss = nan;	 total reward = 189.3474;	 epsilon = 0.0000
+predictor loss: 0.12571831903693031
+[session 257 started] 12:06:22
+[session 257 finished] 12:06:30;	 mean reward = 0.6458;	 mean loss = nan;	 total reward = 232.5018;	 epsilon = 0.0000
+predictor loss: 0.19814782540545556
+[session 258 started] 12:06:30
+[session 258 finished] 12:06:39;	 mean reward = 0.4278;	 mean loss = nan;	 total reward = 154.0087;	 epsilon = 0.0000
+predictor loss: 0.07939064415162911
+[session 259 started] 12:06:39
+[session 259 finished] 12:06:49;	 mean reward = 0.4769;	 mean loss = nan;	 total reward = 171.6698;	 epsilon = 0.0000
+predictor loss: 0.15501355084823645
+[session 260 started] 12:06:49
+[session 260 finished] 12:06:58;	 mean reward = 0.4392;	 mean loss = nan;	 total reward = 158.1146;	 epsilon = 0.0000
+predictor loss: 0.11999660836284176
+[session 261 started] 12:06:58
+[session 261 finished] 12:07:06;	 mean reward = 0.6256;	 mean loss = nan;	 total reward = 225.2152;	 epsilon = 0.0000
+predictor loss: 0.18883523302769553
+[session 262 started] 12:07:06
+[session 262 finished] 12:07:14;	 mean reward = 0.3850;	 mean loss = nan;	 total reward = 138.6018;	 epsilon = 0.0000
+predictor loss: 0.10091592936812731
+[session 263 started] 12:07:14
+[session 263 finished] 12:07:23;	 mean reward = 0.4380;	 mean loss = nan;	 total reward = 157.6649;	 epsilon = 0.0000
+predictor loss: 0.11748798036679925
+[session 264 started] 12:07:23
+[session 264 finished] 12:07:32;	 mean reward = 0.5687;	 mean loss = nan;	 total reward = 204.7416;	 epsilon = 0.0000
+predictor loss: 0.2661511263852049
+[session 265 started] 12:07:32
+[session 265 finished] 12:07:40;	 mean reward = 0.6349;	 mean loss = nan;	 total reward = 228.5525;	 epsilon = 0.0000
+predictor loss: 0.28663968398189
+[session 266 started] 12:07:40
+[session 266 finished] 12:07:48;	 mean reward = 0.6105;	 mean loss = nan;	 total reward = 219.7712;	 epsilon = 0.0000
+predictor loss: 0.25838505996367445
+[session 267 started] 12:07:48
+[session 267 finished] 12:07:56;	 mean reward = 0.5575;	 mean loss = nan;	 total reward = 200.6998;	 epsilon = 0.0000
+predictor loss: 0.17853877901521503
+[session 268 started] 12:07:56
+[session 268 finished] 12:08:05;	 mean reward = 0.6588;	 mean loss = nan;	 total reward = 237.1781;	 epsilon = 0.0000
+predictor loss: 0.2608359470835918
+[session 269 started] 12:08:05
+[session 269 finished] 12:08:14;	 mean reward = 0.5341;	 mean loss = nan;	 total reward = 192.2805;	 epsilon = 0.0000
+predictor loss: 0.19946778581663116
+[session 270 started] 12:08:14
+[session 270 finished] 12:08:22;	 mean reward = 0.5508;	 mean loss = nan;	 total reward = 198.2878;	 epsilon = 0.0000
+predictor loss: 0.21765820178830092
+[session 271 started] 12:08:22
+[session 271 finished] 12:08:30;	 mean reward = 0.4681;	 mean loss = nan;	 total reward = 168.5053;	 epsilon = 0.0000
+predictor loss: 0.10621238636287503
+[session 272 started] 12:08:30
+[session 272 finished] 12:08:39;	 mean reward = 0.3118;	 mean loss = nan;	 total reward = 112.2382;	 epsilon = 0.0000
+predictor loss: 0.20717670501177315
+[session 273 started] 12:08:39
+[session 273 finished] 12:08:48;	 mean reward = 0.6704;	 mean loss = nan;	 total reward = 241.3548;	 epsilon = 0.0000
+predictor loss: 0.19692744309285584
+[session 274 started] 12:08:48
+[session 274 finished] 12:08:57;	 mean reward = 0.4072;	 mean loss = nan;	 total reward = 146.5825;	 epsilon = 0.0000
+predictor loss: 0.14572412518726224
+[session 275 started] 12:08:57
+[session 275 finished] 12:09:05;	 mean reward = 0.3735;	 mean loss = nan;	 total reward = 134.4607;	 epsilon = 0.0000
+predictor loss: 0.0569946216570773
+[session 276 started] 12:09:05
+[session 276 finished] 12:09:14;	 mean reward = 0.3952;	 mean loss = nan;	 total reward = 142.2693;	 epsilon = 0.0000
+predictor loss: 0.08854645843206375
+[session 277 started] 12:09:14
+[session 277 finished] 12:09:23;	 mean reward = 0.4654;	 mean loss = nan;	 total reward = 167.5362;	 epsilon = 0.0000
+predictor loss: 0.23767889638419554
+[session 278 started] 12:09:23
+[session 278 finished] 12:09:31;	 mean reward = 0.7819;	 mean loss = nan;	 total reward = 281.4904;	 epsilon = 0.0000
+predictor loss: 0.33400629769083995
+[session 279 started] 12:09:31
+[session 279 finished] 12:09:39;	 mean reward = 0.4428;	 mean loss = nan;	 total reward = 159.3904;	 epsilon = 0.0000
+predictor loss: 0.09196667688653895
+[session 280 started] 12:09:39
+[session 280 finished] 12:09:47;	 mean reward = 0.6776;	 mean loss = nan;	 total reward = 243.9413;	 epsilon = 0.0000
+predictor loss: 0.2576286861935794
+[session 281 started] 12:09:47
+[session 281 finished] 12:09:58;	 mean reward = 0.1966;	 mean loss = nan;	 total reward = 70.7930;	 epsilon = 0.0000
+predictor loss: 0.08536029321852841
+[session 282 started] 12:09:58
+[session 282 finished] 12:10:06;	 mean reward = 0.5137;	 mean loss = nan;	 total reward = 184.9426;	 epsilon = 0.0000
+predictor loss: 0.1782315681607631
+[session 283 started] 12:10:06
+[session 283 finished] 12:10:14;	 mean reward = 0.5097;	 mean loss = nan;	 total reward = 183.5052;	 epsilon = 0.0000
+predictor loss: 0.2072105987145522
+[session 284 started] 12:10:14
+[session 284 finished] 12:10:22;	 mean reward = 0.5932;	 mean loss = nan;	 total reward = 213.5583;	 epsilon = 0.0000
+predictor loss: 0.24556014778912183
+[session 285 started] 12:10:22
+[session 285 finished] 12:10:30;	 mean reward = 0.3298;	 mean loss = nan;	 total reward = 118.7392;	 epsilon = 0.0000
+predictor loss: 0.050224913210449695
+[session 286 started] 12:10:30
+[session 286 finished] 12:10:38;	 mean reward = 0.6357;	 mean loss = nan;	 total reward = 228.8653;	 epsilon = 0.0000
+predictor loss: 0.256918565118041
+[session 287 started] 12:10:38
+[session 287 finished] 12:10:47;	 mean reward = 0.5452;	 mean loss = nan;	 total reward = 196.2609;	 epsilon = 0.0000
+predictor loss: 0.22777745919233297
+[session 288 started] 12:10:47
+[session 288 finished] 12:10:56;	 mean reward = 0.6189;	 mean loss = nan;	 total reward = 222.8024;	 epsilon = 0.0000
+predictor loss: 0.22894764820564623
+[session 289 started] 12:10:56
+[session 289 finished] 12:11:04;	 mean reward = 0.7381;	 mean loss = nan;	 total reward = 265.7056;	 epsilon = 0.0000
+predictor loss: 0.326402467960157
+[session 290 started] 12:11:04
+[session 290 finished] 12:11:13;	 mean reward = 0.4966;	 mean loss = nan;	 total reward = 178.7935;	 epsilon = 0.0000
+predictor loss: 0.1568663610735142
+[session 291 started] 12:11:13
+[session 291 finished] 12:11:21;	 mean reward = 0.6020;	 mean loss = nan;	 total reward = 216.7343;	 epsilon = 0.0000
+predictor loss: 0.20464081281178023
+[session 292 started] 12:11:21
+[session 292 finished] 12:11:29;	 mean reward = 0.6743;	 mean loss = nan;	 total reward = 242.7543;	 epsilon = 0.0000
+predictor loss: 0.22932739055658022
+[session 293 started] 12:11:29
+[session 293 finished] 12:11:37;	 mean reward = 0.4459;	 mean loss = nan;	 total reward = 160.5130;	 epsilon = 0.0000
+predictor loss: 0.15765004636399674
+[session 294 started] 12:11:37
+[session 294 finished] 12:11:46;	 mean reward = 0.4953;	 mean loss = nan;	 total reward = 178.3194;	 epsilon = 0.0000
+predictor loss: 0.1619305614621898
+[session 295 started] 12:11:46
+[session 295 finished] 12:11:55;	 mean reward = 0.4139;	 mean loss = nan;	 total reward = 148.9894;	 epsilon = 0.0000
+predictor loss: 0.17322700371247413
+[session 296 started] 12:11:55
+[session 296 finished] 12:12:04;	 mean reward = 0.5246;	 mean loss = nan;	 total reward = 188.8587;	 epsilon = 0.0000
+predictor loss: 0.16188479684945176
+[session 297 started] 12:12:04
+[session 297 finished] 12:12:13;	 mean reward = 0.5172;	 mean loss = nan;	 total reward = 186.2028;	 epsilon = 0.0000
+predictor loss: 0.22069920223559852
+[session 298 started] 12:12:13
+[session 298 finished] 12:12:21;	 mean reward = 0.4312;	 mean loss = nan;	 total reward = 155.2252;	 epsilon = 0.0000
+predictor loss: 0.13093122136434113
+[session 299 started] 12:12:21
+[session 299 finished] 12:12:30;	 mean reward = 0.4449;	 mean loss = nan;	 total reward = 160.1600;	 epsilon = 0.0000
+predictor loss: 0.15573390613333654
+[session 300 started] 12:12:30
+[session 300 finished] 12:12:39;	 mean reward = 0.6752;	 mean loss = nan;	 total reward = 243.0874;	 epsilon = 0.0000
+predictor loss: 0.31493243150073025
+[session 301 started] 12:12:39
+[session 301 finished] 12:12:48;	 mean reward = 0.5892;	 mean loss = nan;	 total reward = 212.1079;	 epsilon = 0.0000
+predictor loss: 0.23374639320963037
+[session 302 started] 12:12:48
+[session 302 finished] 12:12:56;	 mean reward = 0.5099;	 mean loss = nan;	 total reward = 183.5760;	 epsilon = 0.0000
+predictor loss: 0.1557253713144545
+[session 303 started] 12:12:56
+[session 303 finished] 12:13:04;	 mean reward = 0.5620;	 mean loss = nan;	 total reward = 202.3276;	 epsilon = 0.0000
+predictor loss: 0.2714694496151645
+[session 304 started] 12:13:04
+[session 304 finished] 12:13:13;	 mean reward = 0.5099;	 mean loss = nan;	 total reward = 183.5740;	 epsilon = 0.0000
+predictor loss: 0.12501435351654822
+[session 305 started] 12:13:13
+[session 305 finished] 12:13:21;	 mean reward = 0.4831;	 mean loss = nan;	 total reward = 173.9076;	 epsilon = 0.0000
+predictor loss: 0.17105911536175064
+[session 306 started] 12:13:21
+[session 306 finished] 12:13:29;	 mean reward = 0.6104;	 mean loss = nan;	 total reward = 219.7563;	 epsilon = 0.0000
+predictor loss: 0.2949745134856473
+[session 307 started] 12:13:29
+[session 307 finished] 12:13:37;	 mean reward = 0.4503;	 mean loss = nan;	 total reward = 162.1194;	 epsilon = 0.0000
+predictor loss: 0.10744845851286754
+[session 308 started] 12:13:37
+[session 308 finished] 12:13:46;	 mean reward = 0.3739;	 mean loss = nan;	 total reward = 134.5939;	 epsilon = 0.0000
+predictor loss: 0.14222661576351786
+[session 309 started] 12:13:46
+[session 309 finished] 12:13:55;	 mean reward = 0.4821;	 mean loss = nan;	 total reward = 173.5589;	 epsilon = 0.0000
+predictor loss: 0.1860652301165959
+[session 310 started] 12:13:55
+[session 310 finished] 12:14:03;	 mean reward = 0.5048;	 mean loss = nan;	 total reward = 181.7166;	 epsilon = 0.0000
+predictor loss: 0.14964893659987155
+[session 311 started] 12:14:03
+[session 311 finished] 12:14:12;	 mean reward = 0.4267;	 mean loss = nan;	 total reward = 153.6100;	 epsilon = 0.0000
+predictor loss: 0.22391286147511144
+[session 312 started] 12:14:12
+[session 312 finished] 12:14:20;	 mean reward = 0.8382;	 mean loss = nan;	 total reward = 301.7634;	 epsilon = 0.0000
+predictor loss: 0.33313423904463396
+[session 313 started] 12:14:20
+[session 313 finished] 12:14:29;	 mean reward = 0.7339;	 mean loss = nan;	 total reward = 264.1910;	 epsilon = 0.0000
+predictor loss: 0.3231204011764696
+[session 314 started] 12:14:29
+[session 314 finished] 12:14:38;	 mean reward = 0.6725;	 mean loss = nan;	 total reward = 242.1128;	 epsilon = 0.0000
+predictor loss: 0.2877924489504124
+[session 315 started] 12:14:38
+[session 315 finished] 12:14:46;	 mean reward = 0.5100;	 mean loss = nan;	 total reward = 183.5848;	 epsilon = 0.0000
+predictor loss: 0.18258842929522495
+[session 316 started] 12:14:46
+[session 316 finished] 12:14:54;	 mean reward = 0.5905;	 mean loss = nan;	 total reward = 212.5825;	 epsilon = 0.0000
+predictor loss: 0.19659480182532402
+[session 317 started] 12:14:54
+[session 317 finished] 12:15:02;	 mean reward = 0.4618;	 mean loss = nan;	 total reward = 166.2646;	 epsilon = 0.0000
+predictor loss: 0.11639001489942592
+[session 318 started] 12:15:02
+[session 318 finished] 12:15:10;	 mean reward = 0.6316;	 mean loss = nan;	 total reward = 227.3710;	 epsilon = 0.0000
+predictor loss: 0.2652751341241609
+[session 319 started] 12:15:10
+[session 319 finished] 12:15:20;	 mean reward = 0.2781;	 mean loss = nan;	 total reward = 100.0982;	 epsilon = 0.0000
+predictor loss: 0.1454215219546489
+[session 320 started] 12:15:20
+[session 320 finished] 12:15:28;	 mean reward = 0.3793;	 mean loss = nan;	 total reward = 136.5573;	 epsilon = 0.0000
+predictor loss: 0.05687327746154968
+[session 321 started] 12:15:28
+[session 321 finished] 12:15:37;	 mean reward = 0.6022;	 mean loss = nan;	 total reward = 216.7778;	 epsilon = 0.0000
+predictor loss: 0.213541464018991
+[session 322 started] 12:15:37
+[session 322 finished] 12:15:47;	 mean reward = 0.5595;	 mean loss = nan;	 total reward = 201.4027;	 epsilon = 0.0000
+predictor loss: 0.10623543304981271
+[session 323 started] 12:15:47
+[session 323 finished] 12:15:55;	 mean reward = 0.3643;	 mean loss = nan;	 total reward = 131.1477;	 epsilon = 0.0000
+predictor loss: 0.0772318595925819
+[session 324 started] 12:15:55
+[session 324 finished] 12:16:03;	 mean reward = 0.5534;	 mean loss = nan;	 total reward = 199.2312;	 epsilon = 0.0000
+predictor loss: 0.27273035280953956
+[session 325 started] 12:16:03
+[session 325 finished] 12:16:12;	 mean reward = 0.2138;	 mean loss = nan;	 total reward = 76.9680;	 epsilon = 0.0000
+predictor loss: 0.08474721188029405
+[session 326 started] 12:16:12
+[session 326 finished] 12:16:20;	 mean reward = 0.4944;	 mean loss = nan;	 total reward = 177.9755;	 epsilon = 0.0000
+predictor loss: 0.2286218090894241
+[session 327 started] 12:16:20
+[session 327 finished] 12:16:29;	 mean reward = 0.5875;	 mean loss = nan;	 total reward = 211.4925;	 epsilon = 0.0000
+predictor loss: 0.18939645258054505
+[session 328 started] 12:16:29
+[session 328 finished] 12:16:38;	 mean reward = 0.5290;	 mean loss = nan;	 total reward = 190.4482;	 epsilon = 0.0000
+predictor loss: 0.14593753928925615
+[session 329 started] 12:16:38
+[session 329 finished] 12:16:47;	 mean reward = 0.4681;	 mean loss = nan;	 total reward = 168.5033;	 epsilon = 0.0000
+predictor loss: 0.0677882236343567
+[session 330 started] 12:16:47
+[session 330 finished] 12:16:55;	 mean reward = 0.4777;	 mean loss = nan;	 total reward = 171.9892;	 epsilon = 0.0000
+predictor loss: 0.16071385268626706
+[session 331 started] 12:16:55
+[session 331 finished] 12:17:04;	 mean reward = 0.4588;	 mean loss = nan;	 total reward = 165.1747;	 epsilon = 0.0000
+predictor loss: 0.09618331850597263
+[session 332 started] 12:17:04
+[session 332 finished] 12:17:12;	 mean reward = 0.6758;	 mean loss = nan;	 total reward = 243.2773;	 epsilon = 0.0000
+predictor loss: 0.2678857229107191
+[session 333 started] 12:17:12
+[session 333 finished] 12:17:21;	 mean reward = 0.5063;	 mean loss = nan;	 total reward = 182.2811;	 epsilon = 0.0000
+predictor loss: 0.19699494988019567
+[session 334 started] 12:17:21
+[session 334 finished] 12:17:30;	 mean reward = 0.5878;	 mean loss = nan;	 total reward = 211.6014;	 epsilon = 0.0000
+predictor loss: 0.20819958247443304
+[session 335 started] 12:17:30
+[session 335 finished] 12:17:37;	 mean reward = 0.3573;	 mean loss = nan;	 total reward = 128.6355;	 epsilon = 0.0000
+predictor loss: 0.05750120210946662
+[session 336 started] 12:17:37
+[session 336 finished] 12:17:48;	 mean reward = 0.3673;	 mean loss = nan;	 total reward = 132.2226;	 epsilon = 0.0000
+predictor loss: 0.16078399096500398
+[session 337 started] 12:17:48
+[session 337 finished] 12:17:55;	 mean reward = 0.5870;	 mean loss = nan;	 total reward = 211.3218;	 epsilon = 0.0000
+predictor loss: 0.15799581305117805
+[session 338 started] 12:17:55
+[session 338 finished] 12:18:04;	 mean reward = 0.4716;	 mean loss = nan;	 total reward = 169.7767;	 epsilon = 0.0000
+predictor loss: 0.14753886692231474
+[session 339 started] 12:18:04
+[session 339 finished] 12:18:12;	 mean reward = 0.4244;	 mean loss = nan;	 total reward = 152.7894;	 epsilon = 0.0000
+predictor loss: 0.16558148871464295
+[session 340 started] 12:18:12
+[session 340 finished] 12:18:21;	 mean reward = 0.4856;	 mean loss = nan;	 total reward = 174.7997;	 epsilon = 0.0000
+predictor loss: 0.14080820306790842
+[session 341 started] 12:18:21
+[session 341 finished] 12:18:28;	 mean reward = 0.9185;	 mean loss = nan;	 total reward = 330.6628;	 epsilon = 0.0000
+predictor loss: 0.41191419919096095
+[session 342 started] 12:18:28
+[session 342 finished] 12:18:37;	 mean reward = 0.4237;	 mean loss = nan;	 total reward = 152.5439;	 epsilon = 0.0000
+predictor loss: 0.19464036385124817
+[session 343 started] 12:18:37
+[session 343 finished] 12:18:45;	 mean reward = 0.6018;	 mean loss = nan;	 total reward = 216.6425;	 epsilon = 0.0000
+predictor loss: 0.2725780984275074
+[session 344 started] 12:18:45
+[session 344 finished] 12:18:54;	 mean reward = 0.6222;	 mean loss = nan;	 total reward = 224.0057;	 epsilon = 0.0000
+predictor loss: 0.19240052984100145
+[session 345 started] 12:18:54
+[session 345 finished] 12:19:02;	 mean reward = 0.4530;	 mean loss = nan;	 total reward = 163.0796;	 epsilon = 0.0000
+predictor loss: 0.13447027718804455
+[session 346 started] 12:19:02
+[session 346 finished] 12:19:10;	 mean reward = 0.7172;	 mean loss = nan;	 total reward = 258.2036;	 epsilon = 0.0000
+predictor loss: 0.2679795331066256
+[session 347 started] 12:19:10
+[session 347 finished] 12:19:18;	 mean reward = 0.5966;	 mean loss = nan;	 total reward = 214.7869;	 epsilon = 0.0000
+predictor loss: 0.20023349201043697
+[session 348 started] 12:19:18
+[session 348 finished] 12:19:26;	 mean reward = 0.5384;	 mean loss = nan;	 total reward = 193.8121;	 epsilon = 0.0000
+predictor loss: 0.1630571751174484
+[session 349 started] 12:19:26
+[session 349 finished] 12:19:34;	 mean reward = 0.3993;	 mean loss = nan;	 total reward = 143.7521;	 epsilon = 0.0000
+predictor loss: 0.12451016598559374
+[session 350 started] 12:19:34
+[session 350 finished] 12:19:42;	 mean reward = 0.4681;	 mean loss = nan;	 total reward = 168.5114;	 epsilon = 0.0000
+predictor loss: 0.1561306376429833
+[session 351 started] 12:19:42
+[session 351 finished] 12:19:51;	 mean reward = 0.6181;	 mean loss = nan;	 total reward = 222.5089;	 epsilon = 0.0000
+predictor loss: 0.2480183617283964
+[session 352 started] 12:19:51
+[session 352 finished] 12:19:58;	 mean reward = 0.3648;	 mean loss = nan;	 total reward = 131.3237;	 epsilon = 0.0000
+predictor loss: 0.11377884111046832
+[session 353 started] 12:19:58
+[session 353 finished] 12:20:07;	 mean reward = 0.5899;	 mean loss = nan;	 total reward = 212.3784;	 epsilon = 0.0000
+predictor loss: 0.140731275908793
+[session 354 started] 12:20:07
+[session 354 finished] 12:20:15;	 mean reward = 0.5179;	 mean loss = nan;	 total reward = 186.4485;	 epsilon = 0.0000
+predictor loss: 0.19616158198330147
+[session 355 started] 12:20:15
+[session 355 finished] 12:20:23;	 mean reward = 0.4440;	 mean loss = nan;	 total reward = 159.8400;	 epsilon = 0.0000
+predictor loss: 0.104848670464231
+[session 356 started] 12:20:23
+[session 356 finished] 12:20:31;	 mean reward = 0.5519;	 mean loss = nan;	 total reward = 198.6864;	 epsilon = 0.0000
+predictor loss: 0.13816497888865975
+[session 357 started] 12:20:31
+[session 357 finished] 12:20:40;	 mean reward = 0.6216;	 mean loss = nan;	 total reward = 223.7927;	 epsilon = 0.0000
+predictor loss: 0.23516427511346066
+[session 358 started] 12:20:40
+[session 358 finished] 12:20:49;	 mean reward = 0.4701;	 mean loss = nan;	 total reward = 169.2523;	 epsilon = 0.0000
+predictor loss: 0.11063084082078717
+[session 359 started] 12:20:49
+[session 359 finished] 12:20:57;	 mean reward = 0.8653;	 mean loss = nan;	 total reward = 311.4949;	 epsilon = 0.0000
+predictor loss: 0.3844516492804128
+[session 360 started] 12:20:57
+[session 360 finished] 12:21:06;	 mean reward = 0.5058;	 mean loss = nan;	 total reward = 182.0739;	 epsilon = 0.0000
+predictor loss: 0.1749168640424158
+[session 361 started] 12:21:06
+[session 361 finished] 12:21:15;	 mean reward = 0.5161;	 mean loss = nan;	 total reward = 185.8072;	 epsilon = 0.0000
+predictor loss: 0.15664798898350368
+[session 362 started] 12:21:15
+[session 362 finished] 12:21:23;	 mean reward = 0.5840;	 mean loss = nan;	 total reward = 210.2254;	 epsilon = 0.0000
+predictor loss: 0.20461645065268064
+[session 363 started] 12:21:23
+[session 363 finished] 12:21:32;	 mean reward = 0.5553;	 mean loss = nan;	 total reward = 199.8922;	 epsilon = 0.0000
+predictor loss: 0.18755187325780834
+[session 364 started] 12:21:32
+[session 364 finished] 12:21:41;	 mean reward = 0.4905;	 mean loss = nan;	 total reward = 176.5882;	 epsilon = 0.0000
+predictor loss: 0.15453221142734436
+[session 365 started] 12:21:41
+[session 365 finished] 12:21:50;	 mean reward = 0.4933;	 mean loss = nan;	 total reward = 177.5931;	 epsilon = 0.0000
+predictor loss: 0.1809369462835515
+[session 366 started] 12:21:50
+[session 366 finished] 12:21:58;	 mean reward = 0.5739;	 mean loss = nan;	 total reward = 206.5956;	 epsilon = 0.0000
+predictor loss: 0.26628547468139924
+[session 367 started] 12:21:58
+[session 367 finished] 12:22:06;	 mean reward = 0.4168;	 mean loss = nan;	 total reward = 150.0459;	 epsilon = 0.0000
+predictor loss: 0.09410438590676463
+[session 368 started] 12:22:06
+[session 368 finished] 12:22:15;	 mean reward = 0.3711;	 mean loss = nan;	 total reward = 133.6041;	 epsilon = 0.0000
+predictor loss: 0.25533703236377053
+[session 369 started] 12:22:15
+[session 369 finished] 12:22:25;	 mean reward = 0.7191;	 mean loss = nan;	 total reward = 258.8856;	 epsilon = 0.0000
+predictor loss: 0.29000285050682806
+[session 370 started] 12:22:25
+[session 370 finished] 12:22:33;	 mean reward = 0.5169;	 mean loss = nan;	 total reward = 186.0757;	 epsilon = 0.0000
+predictor loss: 0.18573862150171042
+[session 371 started] 12:22:33
+[session 371 finished] 12:22:42;	 mean reward = 0.4225;	 mean loss = nan;	 total reward = 152.0843;	 epsilon = 0.0000
+predictor loss: 0.06671753638463762
+[session 372 started] 12:22:42
+[session 372 finished] 12:22:50;	 mean reward = 0.6493;	 mean loss = nan;	 total reward = 233.7337;	 epsilon = 0.0000
+predictor loss: 0.1626850715267557
+[session 373 started] 12:22:50
+[session 373 finished] 12:22:58;	 mean reward = 0.5932;	 mean loss = nan;	 total reward = 213.5604;	 epsilon = 0.0000
+predictor loss: 0.3004473421862005
+[session 374 started] 12:22:58
+[session 374 finished] 12:23:06;	 mean reward = 0.6132;	 mean loss = nan;	 total reward = 220.7542;	 epsilon = 0.0000
+predictor loss: 0.2492919929256006
+[session 375 started] 12:23:06
+[session 375 finished] 12:23:15;	 mean reward = 0.5457;	 mean loss = nan;	 total reward = 196.4667;	 epsilon = 0.0000
+predictor loss: 0.16152977995909565
+[session 376 started] 12:23:15
+[session 376 finished] 12:23:23;	 mean reward = 0.5468;	 mean loss = nan;	 total reward = 196.8478;	 epsilon = 0.0000
+predictor loss: 0.19591707393568025
+[session 377 started] 12:23:23
+[session 377 finished] 12:23:32;	 mean reward = 0.5664;	 mean loss = nan;	 total reward = 203.9049;	 epsilon = 0.0000
+predictor loss: 0.1985250433953869
+[session 378 started] 12:23:32
+[session 378 finished] 12:23:40;	 mean reward = 0.5245;	 mean loss = nan;	 total reward = 188.8353;	 epsilon = 0.0000
+predictor loss: 0.1672872241542819
+[session 379 started] 12:23:40
+[session 379 finished] 12:23:48;	 mean reward = 0.4181;	 mean loss = nan;	 total reward = 150.5100;	 epsilon = 0.0000
+predictor loss: 0.12039613395194475
+[session 380 started] 12:23:48
+[session 380 finished] 12:23:56;	 mean reward = 0.4849;	 mean loss = nan;	 total reward = 174.5473;	 epsilon = 0.0000
+predictor loss: 0.14360328494123867
+[session 381 started] 12:23:56
+[session 381 finished] 12:24:04;	 mean reward = 0.4571;	 mean loss = nan;	 total reward = 164.5502;	 epsilon = 0.0000
+predictor loss: 0.10842191313337438
+[session 382 started] 12:24:04
+[session 382 finished] 12:24:13;	 mean reward = 0.4659;	 mean loss = nan;	 total reward = 167.7282;	 epsilon = 0.0000
+predictor loss: 0.12735008200411613
+[session 383 started] 12:24:13
+[session 383 finished] 12:24:21;	 mean reward = 0.4545;	 mean loss = nan;	 total reward = 163.6271;	 epsilon = 0.0000
+predictor loss: 0.10711700485136456
+[session 384 started] 12:24:21
+[session 384 finished] 12:24:29;	 mean reward = 0.3613;	 mean loss = nan;	 total reward = 130.0547;	 epsilon = 0.0000
+predictor loss: 0.06339885124285263
+[session 385 started] 12:24:29
+[session 385 finished] 12:24:37;	 mean reward = 0.4948;	 mean loss = nan;	 total reward = 178.1174;	 epsilon = 0.0000
+predictor loss: 0.1544704662499443
+[session 386 started] 12:24:37
+[session 386 finished] 12:24:46;	 mean reward = 0.4809;	 mean loss = nan;	 total reward = 173.1201;	 epsilon = 0.0000
+predictor loss: 0.10954522857536837
+[session 387 started] 12:24:46
+[session 387 finished] 12:24:54;	 mean reward = 0.9409;	 mean loss = nan;	 total reward = 338.7160;	 epsilon = 0.0000
+predictor loss: 0.3580870385728984
+[session 388 started] 12:24:54
+[session 388 finished] 12:25:02;	 mean reward = 0.5801;	 mean loss = nan;	 total reward = 208.8530;	 epsilon = 0.0000
+predictor loss: 0.17307958839946558
+[session 389 started] 12:25:02
+[session 389 finished] 12:25:11;	 mean reward = 0.4937;	 mean loss = nan;	 total reward = 177.7481;	 epsilon = 0.0000
+predictor loss: 0.07921607866492686
+[session 390 started] 12:25:11
+[session 390 finished] 12:25:21;	 mean reward = 0.5234;	 mean loss = nan;	 total reward = 188.4292;	 epsilon = 0.0000
+predictor loss: 0.20864031528693674
+[session 391 started] 12:25:21
+[session 391 finished] 12:25:30;	 mean reward = 0.6276;	 mean loss = nan;	 total reward = 225.9404;	 epsilon = 0.0000
+predictor loss: 0.25427988799350976
+[session 392 started] 12:25:30
+[session 392 finished] 12:25:38;	 mean reward = 0.7805;	 mean loss = nan;	 total reward = 280.9798;	 epsilon = 0.0000
+predictor loss: 0.4259912966607759
+[session 393 started] 12:25:38
+[session 393 finished] 12:25:47;	 mean reward = 0.6043;	 mean loss = nan;	 total reward = 217.5635;	 epsilon = 0.0000
+predictor loss: 0.294974018491719
+[session 394 started] 12:25:47
+[session 394 finished] 12:25:56;	 mean reward = 0.6155;	 mean loss = nan;	 total reward = 221.5965;	 epsilon = 0.0000
+predictor loss: 0.28315437005252975
+[session 395 started] 12:25:56
+[session 395 finished] 12:26:04;	 mean reward = 0.6760;	 mean loss = nan;	 total reward = 243.3605;	 epsilon = 0.0000
+predictor loss: 0.2774426596332213
+[session 396 started] 12:26:04
+[session 396 finished] 12:26:12;	 mean reward = 0.5713;	 mean loss = nan;	 total reward = 205.6517;	 epsilon = 0.0000
+predictor loss: 0.19994674913288296
+[session 397 started] 12:26:12
+[session 397 finished] 12:26:20;	 mean reward = 0.5285;	 mean loss = nan;	 total reward = 190.2665;	 epsilon = 0.0000
+predictor loss: 0.18309575944850004
+[session 398 started] 12:26:20
+[session 398 finished] 12:26:29;	 mean reward = 0.5600;	 mean loss = nan;	 total reward = 201.6009;	 epsilon = 0.0000
+predictor loss: 0.21286777021097056
+[session 399 started] 12:26:29
+[session 399 finished] 12:26:37;	 mean reward = 0.6292;	 mean loss = nan;	 total reward = 226.4949;	 epsilon = 0.0000
+predictor loss: 0.2118997858861598
+[session 400 started] 12:26:37
+[session 400 finished] 12:26:45;	 mean reward = 0.5175;	 mean loss = nan;	 total reward = 186.2883;	 epsilon = 0.0000
+predictor loss: 0.12481464471014818
+[session 401 started] 12:26:45
+[session 401 finished] 12:26:54;	 mean reward = 0.4607;	 mean loss = nan;	 total reward = 165.8399;	 epsilon = 0.0000
+predictor loss: 0.10526070316938282
+[session 402 started] 12:26:54
+[session 402 finished] 12:27:03;	 mean reward = 0.3874;	 mean loss = nan;	 total reward = 139.4523;	 epsilon = 0.0000
+predictor loss: 0.26478027359049233
+[session 403 started] 12:27:03
+[session 403 finished] 12:27:12;	 mean reward = 0.5045;	 mean loss = nan;	 total reward = 181.6261;	 epsilon = 0.0000
+predictor loss: 0.1628686150432586
+[session 404 started] 12:27:12
+[session 404 finished] 12:27:22;	 mean reward = 0.5497;	 mean loss = nan;	 total reward = 197.9028;	 epsilon = 0.0000
+predictor loss: 0.2633282382970845
+[session 405 started] 12:27:22
+[session 405 finished] 12:27:30;	 mean reward = 0.5941;	 mean loss = nan;	 total reward = 213.8909;	 epsilon = 0.0000
+predictor loss: 0.23965611585866725
+[session 406 started] 12:27:30
+[session 406 finished] 12:27:39;	 mean reward = 0.5682;	 mean loss = nan;	 total reward = 204.5604;	 epsilon = 0.0000
+predictor loss: 0.2243847239155978
+[session 407 started] 12:27:39
+[session 407 finished] 12:27:47;	 mean reward = 0.2766;	 mean loss = nan;	 total reward = 99.5694;	 epsilon = 0.0000
+predictor loss: 0.1286288869839086
+[session 408 started] 12:27:47
+[session 408 finished] 12:27:56;	 mean reward = 0.5749;	 mean loss = nan;	 total reward = 206.9622;	 epsilon = 0.0000
+predictor loss: 0.18574173044498934
+[session 409 started] 12:27:56
+[session 409 finished] 12:28:04;	 mean reward = 0.5131;	 mean loss = nan;	 total reward = 184.7219;	 epsilon = 0.0000
+predictor loss: 0.19406693141415796
+[session 410 started] 12:28:04
+[session 410 finished] 12:28:13;	 mean reward = 0.5938;	 mean loss = nan;	 total reward = 213.7852;	 epsilon = 0.0000
+predictor loss: 0.19995254870647533
+[session 411 started] 12:28:13
+[session 411 finished] 12:28:22;	 mean reward = 0.4804;	 mean loss = nan;	 total reward = 172.9612;	 epsilon = 0.0000
+predictor loss: 0.349361084536267
+[session 412 started] 12:28:22
+[session 412 finished] 12:28:30;	 mean reward = 0.9127;	 mean loss = nan;	 total reward = 328.5668;	 epsilon = 0.0000
+predictor loss: 0.48310831453063396
+[session 413 started] 12:28:30
+[session 413 finished] 12:28:39;	 mean reward = 0.7153;	 mean loss = nan;	 total reward = 257.5050;	 epsilon = 0.0000
+predictor loss: 0.4070899073423004
+[session 414 started] 12:28:39
+[session 414 finished] 12:28:47;	 mean reward = 0.7342;	 mean loss = nan;	 total reward = 264.3200;	 epsilon = 0.0000
+predictor loss: 0.3946866792827098
+[session 415 started] 12:28:47
+[session 415 finished] 12:28:56;	 mean reward = 0.9777;	 mean loss = nan;	 total reward = 351.9872;	 epsilon = 0.0000
+predictor loss: 0.4501467895685946
+[session 416 started] 12:28:56
+[session 416 finished] 12:29:04;	 mean reward = 0.8086;	 mean loss = nan;	 total reward = 291.1103;	 epsilon = 0.0000
+predictor loss: 0.3256143638788422
+[session 417 started] 12:29:04
+[session 417 finished] 12:29:12;	 mean reward = 0.5296;	 mean loss = nan;	 total reward = 190.6640;	 epsilon = 0.0000
+predictor loss: 0.16359357682401793
+[session 418 started] 12:29:12
+[session 418 finished] 12:29:20;	 mean reward = 0.3951;	 mean loss = nan;	 total reward = 142.2470;	 epsilon = 0.0000
+predictor loss: 0.09651297383292881
+[session 419 started] 12:29:20
+[session 419 finished] 12:29:29;	 mean reward = 0.4055;	 mean loss = nan;	 total reward = 145.9748;	 epsilon = 0.0000
+predictor loss: 0.14644411619501413
+[session 420 started] 12:29:29
+[session 420 finished] 12:29:38;	 mean reward = 0.4283;	 mean loss = nan;	 total reward = 154.2022;	 epsilon = 0.0000
+predictor loss: 0.16531571587003147
+[session 421 started] 12:29:38
+[session 421 finished] 12:29:46;	 mean reward = 0.5117;	 mean loss = nan;	 total reward = 184.1994;	 epsilon = 0.0000
+predictor loss: 0.12389460521175598
+[session 422 started] 12:29:46
+[session 422 finished] 12:29:54;	 mean reward = 0.5099;	 mean loss = nan;	 total reward = 183.5812;	 epsilon = 0.0000
+predictor loss: 0.17337488399262496
+[session 423 started] 12:29:54
+[session 423 finished] 12:30:03;	 mean reward = 0.4382;	 mean loss = nan;	 total reward = 157.7359;	 epsilon = 0.0000
+predictor loss: 0.10861512218958567
+[session 424 started] 12:30:03
+[session 424 finished] 12:30:11;	 mean reward = 0.4856;	 mean loss = nan;	 total reward = 174.8133;	 epsilon = 0.0000
+predictor loss: 0.16498565509425756
+[session 425 started] 12:30:11
+[session 425 finished] 12:30:20;	 mean reward = 0.4577;	 mean loss = nan;	 total reward = 164.7563;	 epsilon = 0.0000
+predictor loss: 0.1374896955986338
+[session 426 started] 12:30:20
+[session 426 finished] 12:30:29;	 mean reward = 0.5700;	 mean loss = nan;	 total reward = 205.2016;	 epsilon = 0.0000
+predictor loss: 0.20821479440448437
+[session 427 started] 12:30:29
+[session 427 finished] 12:30:37;	 mean reward = 0.4847;	 mean loss = nan;	 total reward = 174.5001;	 epsilon = 0.0000
+predictor loss: 0.13330063445213836
+[session 428 started] 12:30:37
+[session 428 finished] 12:30:46;	 mean reward = 0.3742;	 mean loss = nan;	 total reward = 134.7047;	 epsilon = 0.0000
+predictor loss: 0.20892259913307207
+[session 429 started] 12:30:46
+[session 429 finished] 12:30:55;	 mean reward = 0.4927;	 mean loss = nan;	 total reward = 177.3676;	 epsilon = 0.0000
+predictor loss: 0.1580090230669226
+[session 430 started] 12:30:55
+[session 430 finished] 12:31:03;	 mean reward = 0.4181;	 mean loss = nan;	 total reward = 150.5105;	 epsilon = 0.0000
+predictor loss: 0.09515829203498156
+[session 431 started] 12:31:03
+[session 431 finished] 12:31:12;	 mean reward = 0.4046;	 mean loss = nan;	 total reward = 145.6595;	 epsilon = 0.0000
+predictor loss: 0.09475950680976107
+[session 432 started] 12:31:12
+[session 432 finished] 12:31:20;	 mean reward = 0.5252;	 mean loss = nan;	 total reward = 189.0893;	 epsilon = 0.0000
+predictor loss: 0.3091913194887901
+[session 433 started] 12:31:20
+[session 433 finished] 12:31:29;	 mean reward = 0.4694;	 mean loss = nan;	 total reward = 168.9986;	 epsilon = 0.0000
+predictor loss: 0.0894848442466242
+[session 434 started] 12:31:29
+[session 434 finished] 12:31:39;	 mean reward = 0.5703;	 mean loss = nan;	 total reward = 205.2931;	 epsilon = 0.0000
+predictor loss: 0.16791849608939424
+[session 435 started] 12:31:39
+[session 435 finished] 12:31:48;	 mean reward = 0.5691;	 mean loss = nan;	 total reward = 204.8737;	 epsilon = 0.0000
+predictor loss: 0.3738716711550563
+[session 436 started] 12:31:48
+[session 436 finished] 12:31:56;	 mean reward = 0.4405;	 mean loss = nan;	 total reward = 158.5785;	 epsilon = 0.0000
+predictor loss: 0.15239905358632988
+[session 437 started] 12:31:56
+[session 437 finished] 12:32:05;	 mean reward = 0.2470;	 mean loss = nan;	 total reward = 88.9031;	 epsilon = 0.0000
+predictor loss: 0.13193666133504942
+[session 438 started] 12:32:05
+[session 438 finished] 12:32:15;	 mean reward = 0.5223;	 mean loss = nan;	 total reward = 188.0370;	 epsilon = 0.0000
+predictor loss: 0.11629940135012465
+[session 439 started] 12:32:15
+[session 439 finished] 12:32:23;	 mean reward = 0.5465;	 mean loss = nan;	 total reward = 196.7242;	 epsilon = 0.0000
+predictor loss: 0.2072321028886321
+[session 440 started] 12:32:23
+[session 440 finished] 12:32:32;	 mean reward = 0.9673;	 mean loss = nan;	 total reward = 348.2414;	 epsilon = 0.0000
+predictor loss: 0.3899466096376169
+[session 441 started] 12:32:32
+[session 441 finished] 12:32:40;	 mean reward = 0.5713;	 mean loss = nan;	 total reward = 205.6747;	 epsilon = 0.0000
+predictor loss: 0.2282930503422823
+[session 442 started] 12:32:40
+[session 442 finished] 12:32:50;	 mean reward = 0.5936;	 mean loss = nan;	 total reward = 213.6890;	 epsilon = 0.0000
+predictor loss: 0.15610289912094658
+[session 443 started] 12:32:50
+[session 443 finished] 12:33:00;	 mean reward = 0.3795;	 mean loss = nan;	 total reward = 136.6133;	 epsilon = 0.0000
+predictor loss: 0.04820855011619671
+[session 444 started] 12:33:00
+[session 444 finished] 12:33:09;	 mean reward = 0.4722;	 mean loss = nan;	 total reward = 169.9907;	 epsilon = 0.0000
+predictor loss: 0.1382452292212372
+[session 445 started] 12:33:09
+[session 445 finished] 12:33:19;	 mean reward = 0.5212;	 mean loss = nan;	 total reward = 187.6280;	 epsilon = 0.0000
+predictor loss: 0.15994401084694215
+[session 446 started] 12:33:19
+[session 446 finished] 12:33:28;	 mean reward = 0.4598;	 mean loss = nan;	 total reward = 165.5441;	 epsilon = 0.0000
+predictor loss: 0.1460098945208892
+[session 447 started] 12:33:28
+[session 447 finished] 12:33:36;	 mean reward = 0.7698;	 mean loss = nan;	 total reward = 277.1226;	 epsilon = 0.0000
+predictor loss: 0.428102779665401
+[session 448 started] 12:33:36
+[session 448 finished] 12:33:44;	 mean reward = 0.4575;	 mean loss = nan;	 total reward = 164.6852;	 epsilon = 0.0000
+predictor loss: 0.23063392609388703
+[session 449 started] 12:33:44
+[session 449 finished] 12:33:52;	 mean reward = 0.4525;	 mean loss = nan;	 total reward = 162.8988;	 epsilon = 0.0000
+predictor loss: 0.14154586998084345
+[session 450 started] 12:33:52
+[session 450 finished] 12:34:00;	 mean reward = 0.6524;	 mean loss = nan;	 total reward = 234.8745;	 epsilon = 0.0000
+predictor loss: 0.27563927794667775
+[session 451 started] 12:34:00
+[session 451 finished] 12:34:09;	 mean reward = 0.5063;	 mean loss = nan;	 total reward = 182.2849;	 epsilon = 0.0000
+predictor loss: 0.16306658667941856
+[session 452 started] 12:34:09
+[session 452 finished] 12:34:18;	 mean reward = 0.6576;	 mean loss = nan;	 total reward = 236.7371;	 epsilon = 0.0000
+predictor loss: 0.2225857702523853
+[session 453 started] 12:34:18
+[session 453 finished] 12:34:26;	 mean reward = 0.6922;	 mean loss = nan;	 total reward = 249.2006;	 epsilon = 0.0000
+predictor loss: 0.22568406416905246
+[session 454 started] 12:34:26
+[session 454 finished] 12:34:36;	 mean reward = 0.5130;	 mean loss = nan;	 total reward = 184.6640;	 epsilon = 0.0000
+predictor loss: 0.12846174060252905
+[session 455 started] 12:34:36
+[session 455 finished] 12:34:46;	 mean reward = 0.3993;	 mean loss = nan;	 total reward = 143.7530;	 epsilon = 0.0000
+predictor loss: 0.0955215125376747
+[session 456 started] 12:34:46
+[session 456 finished] 12:34:57;	 mean reward = 0.7177;	 mean loss = nan;	 total reward = 258.3762;	 epsilon = 0.0000
+predictor loss: 0.27667138267673863
+[session 457 started] 12:34:57
+[session 457 finished] 12:35:07;	 mean reward = 0.7261;	 mean loss = nan;	 total reward = 261.3857;	 epsilon = 0.0000
+predictor loss: 0.35664969598930296
+[session 458 started] 12:35:07
+[session 458 finished] 12:35:17;	 mean reward = 0.4133;	 mean loss = nan;	 total reward = 148.7875;	 epsilon = 0.0000
+predictor loss: 0.04646570870726913
+[session 459 started] 12:35:17
+[session 459 finished] 12:35:27;	 mean reward = 0.4811;	 mean loss = nan;	 total reward = 173.2105;	 epsilon = 0.0000
+predictor loss: 0.18621932926305412
+[session 460 started] 12:35:27
+[session 460 finished] 12:35:36;	 mean reward = 0.5470;	 mean loss = nan;	 total reward = 196.9209;	 epsilon = 0.0000
+predictor loss: 0.20741487752640683
+[session 461 started] 12:35:36
+[session 461 finished] 12:35:46;	 mean reward = 0.4594;	 mean loss = nan;	 total reward = 165.3666;	 epsilon = 0.0000
+predictor loss: 0.12980536855041488
+[session 462 started] 12:35:46
+[session 462 finished] 12:35:55;	 mean reward = 0.5710;	 mean loss = nan;	 total reward = 205.5596;	 epsilon = 0.0000
+predictor loss: 0.22540213874413048
+[session 463 started] 12:35:55
+[session 463 finished] 12:36:04;	 mean reward = 0.5694;	 mean loss = nan;	 total reward = 204.9993;	 epsilon = 0.0000
+predictor loss: 0.21034883414186972
+[session 464 started] 12:36:04
+[session 464 finished] 12:36:14;	 mean reward = 0.5152;	 mean loss = nan;	 total reward = 185.4778;	 epsilon = 0.0000
+predictor loss: 0.171711999087482
+[session 465 started] 12:36:14
+[session 465 finished] 12:36:22;	 mean reward = 0.3628;	 mean loss = nan;	 total reward = 130.5999;	 epsilon = 0.0000
+predictor loss: 0.10383025344368285
+[session 466 started] 12:36:22
+[session 466 finished] 12:36:31;	 mean reward = 0.3708;	 mean loss = nan;	 total reward = 133.4850;	 epsilon = 0.0000
+predictor loss: 0.19138899407078994
+[session 467 started] 12:36:31
+[session 467 finished] 12:36:40;	 mean reward = 0.4703;	 mean loss = nan;	 total reward = 169.3028;	 epsilon = 0.0000
+predictor loss: 0.0728547707933819
+[session 468 started] 12:36:40
+[session 468 finished] 12:36:49;	 mean reward = 0.5479;	 mean loss = nan;	 total reward = 197.2379;	 epsilon = 0.0000
+predictor loss: 0.15328985392295377
+[session 469 started] 12:36:49
+[session 469 finished] 12:36:57;	 mean reward = 0.3992;	 mean loss = nan;	 total reward = 143.7261;	 epsilon = 0.0000
+predictor loss: 0.12990579156741894
+[session 470 started] 12:36:57
+[session 470 finished] 12:37:06;	 mean reward = 0.5350;	 mean loss = nan;	 total reward = 192.5890;	 epsilon = 0.0000
+predictor loss: 0.23602287084364945
+[session 471 started] 12:37:06
+[session 471 finished] 12:37:16;	 mean reward = 0.5355;	 mean loss = nan;	 total reward = 192.7966;	 epsilon = 0.0000
+predictor loss: 0.16877347255415232
+[session 472 started] 12:37:16
+[session 472 finished] 12:37:24;	 mean reward = 0.6901;	 mean loss = nan;	 total reward = 248.4453;	 epsilon = 0.0000
+predictor loss: 0.25516432222072705
+[session 473 started] 12:37:24
+[session 473 finished] 12:37:33;	 mean reward = 0.9191;	 mean loss = nan;	 total reward = 330.8715;	 epsilon = 0.0000
+predictor loss: 0.47334312475176576
+[session 474 started] 12:37:33
+[session 474 finished] 12:37:42;	 mean reward = 0.5805;	 mean loss = nan;	 total reward = 208.9931;	 epsilon = 0.0000
+predictor loss: 0.2002132866996406
+[session 475 started] 12:37:42
+[session 475 finished] 12:37:51;	 mean reward = 0.6630;	 mean loss = nan;	 total reward = 238.6671;	 epsilon = 0.0000
+predictor loss: 0.2466622116314576
+[session 476 started] 12:37:51
+[session 476 finished] 12:37:59;	 mean reward = 0.5953;	 mean loss = nan;	 total reward = 214.2989;	 epsilon = 0.0000
+predictor loss: 0.287827997666222
+[session 477 started] 12:37:59
+[session 477 finished] 12:38:07;	 mean reward = 0.4952;	 mean loss = nan;	 total reward = 178.2686;	 epsilon = 0.0000
+predictor loss: 0.19112176836767333
+[session 478 started] 12:38:07
+[session 478 finished] 12:38:16;	 mean reward = 0.6017;	 mean loss = nan;	 total reward = 216.6224;	 epsilon = 0.0000
+predictor loss: 0.3500559030957934
+[session 479 started] 12:38:16
+[session 479 finished] 12:38:24;	 mean reward = 0.5595;	 mean loss = nan;	 total reward = 201.4159;	 epsilon = 0.0000
+predictor loss: 0.1806665650212063
+[session 480 started] 12:38:24
+[session 480 finished] 12:38:35;	 mean reward = 0.4556;	 mean loss = nan;	 total reward = 164.0264;	 epsilon = 0.0000
+predictor loss: 0.13568714267764176
+[session 481 started] 12:38:35
+[session 481 finished] 12:38:44;	 mean reward = 0.9371;	 mean loss = nan;	 total reward = 337.3478;	 epsilon = 0.0000
+predictor loss: 0.42805845834145917
+[session 482 started] 12:38:44
+[session 482 finished] 12:38:52;	 mean reward = 0.5248;	 mean loss = nan;	 total reward = 188.9272;	 epsilon = 0.0000
+predictor loss: 0.1620865975483959
+[session 483 started] 12:38:52
+[session 483 finished] 12:39:00;	 mean reward = 0.6322;	 mean loss = nan;	 total reward = 227.5926;	 epsilon = 0.0000
+predictor loss: 0.2608859387763829
+[session 484 started] 12:39:00
+[session 484 finished] 12:39:09;	 mean reward = 0.6573;	 mean loss = nan;	 total reward = 236.6300;	 epsilon = 0.0000
+predictor loss: 0.31558881699630154
+[session 485 started] 12:39:09
+[session 485 finished] 12:39:18;	 mean reward = 0.5063;	 mean loss = nan;	 total reward = 182.2607;	 epsilon = 0.0000
+predictor loss: 0.15989625351870804
+[session 486 started] 12:39:18
+[session 486 finished] 12:39:26;	 mean reward = 0.6776;	 mean loss = nan;	 total reward = 243.9258;	 epsilon = 0.0000
+predictor loss: 0.28120892213476556
+[session 487 started] 12:39:26
+[session 487 finished] 12:39:34;	 mean reward = 0.4412;	 mean loss = nan;	 total reward = 158.8268;	 epsilon = 0.0000
+predictor loss: 0.12462036252344423
+[session 488 started] 12:39:34
+[session 488 finished] 12:39:43;	 mean reward = 0.6258;	 mean loss = nan;	 total reward = 225.2779;	 epsilon = 0.0000
+predictor loss: 0.17682696542010612
+[session 489 started] 12:39:43
+[session 489 finished] 12:39:51;	 mean reward = 0.6910;	 mean loss = nan;	 total reward = 248.7714;	 epsilon = 0.0000
+predictor loss: 0.2866357890835869
+[session 490 started] 12:39:51
+[session 490 finished] 12:40:00;	 mean reward = 0.7733;	 mean loss = nan;	 total reward = 278.3718;	 epsilon = 0.0000
+predictor loss: 0.3139420466256771
+[session 491 started] 12:40:00
+[session 491 finished] 12:40:08;	 mean reward = 0.5131;	 mean loss = nan;	 total reward = 184.7027;	 epsilon = 0.0000
+predictor loss: 0.11367071817240984
+[session 492 started] 12:40:08
+[session 492 finished] 12:40:17;	 mean reward = 0.6780;	 mean loss = nan;	 total reward = 244.0768;	 epsilon = 0.0000
+predictor loss: 0.2547972954158111
+[session 493 started] 12:40:17
+[session 493 finished] 12:40:26;	 mean reward = 0.5031;	 mean loss = nan;	 total reward = 181.1193;	 epsilon = 0.0000
+predictor loss: 0.14770180800965146
+[session 494 started] 12:40:26
+[session 494 finished] 12:40:36;	 mean reward = 0.2589;	 mean loss = nan;	 total reward = 93.1877;	 epsilon = 0.0000
+predictor loss: 0.0873892402230262
+[session 495 started] 12:40:36
+[session 495 finished] 12:40:46;	 mean reward = 0.6774;	 mean loss = nan;	 total reward = 243.8514;	 epsilon = 0.0000
+predictor loss: 0.24574426747675993
+[session 496 started] 12:40:46
+[session 496 finished] 12:40:55;	 mean reward = 0.5907;	 mean loss = nan;	 total reward = 212.6598;	 epsilon = 0.0000
+predictor loss: 0.23732292653304804
+[session 497 started] 12:40:55
+[session 497 finished] 12:41:03;	 mean reward = 0.4339;	 mean loss = nan;	 total reward = 156.1864;	 epsilon = 0.0000
+predictor loss: 0.09928734284864549
+[session 498 started] 12:41:03
+[session 498 finished] 12:41:11;	 mean reward = 0.4693;	 mean loss = nan;	 total reward = 168.9375;	 epsilon = 0.0000
+predictor loss: 0.16471776071130875
+[session 499 started] 12:41:11
+[session 499 finished] 12:41:19;	 mean reward = 0.5366;	 mean loss = nan;	 total reward = 193.1794;	 epsilon = 0.0000
+predictor loss: 0.21534419524958043

@@ -1,0 +1,25 @@
+Begin predictor model testing...
+Model trained with 10 epochs successfully loaded
+[End of testing model trained with 10 epochs] 23:27:27, Mean squared loss for [x,y,xv,yv]:
+[3.39255260e-04 3.40811229e-04 5.23326303e-01 7.08829789e-01]
+ Weighted average loss:0.3496433286781345/n
+
+Model trained with 20 epochs successfully loaded
+[End of testing model trained with 20 epochs] 23:31:10, Mean squared loss for [x,y,xv,yv]:
+[3.95364310e-04 4.31428881e-04 5.14200283e-01 6.92762736e-01]
+ Weighted average loss:0.3425204561160018/n
+
+Model trained with 30 epochs successfully loaded
+[End of testing model trained with 30 epochs] 23:35:01, Mean squared loss for [x,y,xv,yv]:
+[4.25991577e-04 4.66003803e-04 5.02793938e-01 6.67528309e-01]
+ Weighted average loss:0.3321229027424641/n
+
+Model trained with 40 epochs successfully loaded
+[End of testing model trained with 40 epochs] 23:38:43, Mean squared loss for [x,y,xv,yv]:
+[4.50049549e-04 5.02501276e-04 4.91616647e-01 6.42091329e-01]
+ Weighted average loss:0.32173045864518/n
+
+Model trained with 50 epochs successfully loaded
+[End of testing model trained with 50 epochs] 23:42:27, Mean squared loss for [x,y,xv,yv]:
+[4.96224076e-04 4.90603680e-04 4.83038270e-01 6.19006706e-01]
+ Weighted average loss:0.3127381116870811/n
