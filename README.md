@@ -8,8 +8,6 @@ Reinforcement learning agent that actively learns physical properties (motion me
 
 * **loss_reduction**:   Concurrent training framework. Train active agent & predictor together, reward agent for predictor's **mean of training loss reduction over 5 frames** during each action (5 frames).
 
-
-
 Model predictor was pretrained on human experiment data with `weighted average loss` and `learning rate = 1e-05` for 20 epochs.
 
 Active agent was pretrained with reward only for catching & approaching pucks for 10000 episodes.

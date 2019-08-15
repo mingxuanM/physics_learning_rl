@@ -75,7 +75,6 @@ class Interaction_env:
         
         self.trajectory_history = []
 
-
     def reset(self):
         if self.world_setup_idx is None:
             world_setup = rd.sample(self.world_setup, 1)[0]

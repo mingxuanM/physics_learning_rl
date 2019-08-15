@@ -28,7 +28,7 @@ import time
 import sys
 import json
 
-from config import n_actions, RQN_num_feats, action_length, qlearning_gamma, epsilon_decay
+from config import n_actions, RQN_num_feats, action_length, qlearning_gamma
 
 # n_actions = 6 # 1 no action + 4 directions acc + 1 click
 # qlearning_gamma = 0.9
@@ -165,6 +165,7 @@ def train_loop(learning_agent, target_agent, env, episode, train, timeout, conti
         session_reward, td_loss, is_done, session_predictor_loss, trajectory_history = train_iteration(learning_agent, target_agent, env, timeout, train)
         if not train:
             data.append(trajectory_history)
+
         session_reward_mean = np.mean(session_reward)
         session_predictor_loss_mean = np.mean(session_predictor_loss)
         td_loss_mean = np.mean(td_loss) 
@@ -207,6 +208,7 @@ def train_loop(learning_agent, target_agent, env, episode, train, timeout, conti
         # np.savetxt('{}.txt'.format(exp_name), (rewards, loss))
         # print("Training details saved!")
     return None
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
@@ -258,12 +260,12 @@ if __name__ == "__main__":
 
     # tf.reset_default_graph()
     # sess = tf.InteractiveSession()
+
     # keras.backend.set_session(sess)
     # initialize interaction_env
     environment = Interaction_env()
+
     # initialize learning_agent and target_agent
-    
-    # n_actions = 4*2
     if not args.active_learning:
         # train for catching pucks
         if args.train:
@@ -272,7 +274,9 @@ if __name__ == "__main__":
                 learning_agent = Q_agent("learning_agent", n_actions, qlearning_gamma, epsilon=args.epsilon)
                 target_agent = Q_agent("target_agent", n_actions, qlearning_gamma, epsilon=args.epsilon)
             sess = tf.InteractiveSession(graph = rqn_agent_graph)
+
             sess.run(tf.global_variables_initializer())
+            # environment.predictor.saver.restore(sess, "./model_predictor/checkpoints/pretrained_model_predictor_2.ckpt")
             if args.continue_from > 0:
                 learning_agent.saver.restore(sess, "./checkpoints/{}_{}_epochs.ckpt".format(exp_name,args.continue_from))
                 target_agent.saver.restore(sess, "./checkpoints/{}_target_{}_epochs.ckpt".format(exp_name,args.continue_from))
@@ -287,6 +291,7 @@ if __name__ == "__main__":
             learning_agent.saver.restore(sess, "./checkpoints/{}_{}_epochs.ckpt".format(exp_name,args.continue_from))
             target_agent = None
     else:
+
         # train for active learning
         if args.train:
             rqn_agent_graph = tf.Graph()
@@ -310,6 +315,7 @@ if __name__ == "__main__":
             # RQN agent trained on 10000 episodes with bonded reward "./checkpoints/RQN_bonded_1e-04_10000_epochs.ckpt"
             learning_agent.saver.restore(sess, "./checkpoints/active_learning_loss_reward_world-1_{}_epochs.ckpt".format(args.continue_from))
             target_agent = None
-    
+
+   
     # train
     _ = train_loop(learning_agent, target_agent, environment, args.episode, args.train, args.timeout, args.continue_from, args.save_model)
