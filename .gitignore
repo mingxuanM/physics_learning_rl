@@ -7,3 +7,4 @@
 model_predictor/general_ckpts/
 model_predictor/direct_ckpts/
 model_predictor/data/*.json
+*generated_trajectories_fullinput/
