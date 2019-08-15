@@ -5,14 +5,14 @@ Reinforcement learning agent that actively learns physical motion mechanisms in 
 Previous research paper: https://psyarxiv.com/6vr4g/
 
 
-### Training
+## Training
 To train an active learning agent with q-value function approximator in separate framework, simply execute the following command with dependencies ready:
 ```
 $ python learning_system.py --save_model True > exp_log/active_training_log.txt
 ```
 or use *active_learning_bash.sh* to do the same thing.
 
-### Branches:
+## Branches
 
 * **master** & **loss_reward**:    Separate training framework. Train active agent & predictor separately, reward agent for predictor's **mean evaluation loss over 5 frames** during each action (5 frames). Then generate new training data for model predicor with trained active agent. 
 
@@ -24,7 +24,7 @@ Model predictor was pretrained on human experiment data with `weighted average l
 Active agent was pretrained with reward only for catching & approaching pucks for 10000 episodes.
 
 
-## Package dependency:
+## Package dependency
 
 python 3.7+
 
@@ -33,7 +33,7 @@ tensorflow-gpu 1.13.1+
 pyduktape 0.0.6
 
 
-### File structures (master branch):
+## File structures (master branch)
 
 * **learning_system.py**
 An integreated launch script that runs *separate training framework* in loop. *active_learning_bash.sh* does the same thing but run scripts one by one.
