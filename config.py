@@ -1,3 +1,5 @@
+import numpy as np
+
 n_actions = 6 # 1 no action + 4 directions acc + 1 click
 # directions_tan = [(np.cos(i*np.pi/8.),np.sin(i*np.pi/8.)) for i in range(16)]
 acceleration = 1 # in meter/s/frame (speed meter/s change in each frame)
@@ -23,3 +25,8 @@ predictor_input_frames = 5
 # bonus rate of 'predictor loss drop reward' when agent is dragging
 # final reward will be (1 + dragging_bonus) * np.abs(pretrained_loss - trained_loss)
 dragging_bonus = 1.5 
+
+loss_weight = np.array([1.6973/6.3432, 1.0517/6.3432, 1.7830/6.3432, 1.8112/6.3432, 
+                                1.6973/6.3432, 1.0517/6.3432, 1.7830/6.3432, 1.8112/6.3432, 
+                                1.6973/6.3432, 1.0517/6.3432, 1.7830/6.3432, 1.8112/6.3432,
+                                1.6973/6.3432, 1.0517/6.3432, 1.7830/6.3432, 1.8112/6.3432])

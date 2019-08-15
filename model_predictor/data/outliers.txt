@@ -1,0 +1,5 @@
+trails_data.json
+
+Training sequence 685    finished, loss: 285.1089    lsclips[34][5]
+
+Training sequence 692    finished, loss: 276.0194    lsclips[34][12]

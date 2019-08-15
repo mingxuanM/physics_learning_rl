@@ -1,0 +1,167 @@
+[End of epoch 0	] 17:58:28, Mean squared loss for 4 elements:
+[1.8710548e-04 2.2024066e-04 1.9937073e-01 3.3766857e-01]
+Weighted average loss:0.15254327745538845
+Test loss: 0.17597507435098902
+[End of epoch 1	] 18:03:55, Mean squared loss for 4 elements:
+[1.8974833e-04 2.3048518e-04 1.9622737e-01 3.2863840e-01]
+Weighted average loss:0.14908370274620278
+[End of epoch 2	] 18:08:37, Mean squared loss for 4 elements:
+[1.9516761e-04 2.3531652e-04 1.9325858e-01 3.2056081e-01]
+Weighted average loss:0.1459450339328806
+[End of epoch 3	] 18:13:19, Mean squared loss for 4 elements:
+[1.9636318e-04 2.4399965e-04 1.9090360e-01 3.1406331e-01]
+Weighted average loss:0.14342957747523613
+[End of epoch 4	] 18:18:01, Mean squared loss for 4 elements:
+[2.0374462e-04 2.5473299e-04 1.8912403e-01 3.0823058e-01]
+Weighted average loss:0.14126767144715746
+[End of epoch 5	] 18:22:43, Mean squared loss for 4 elements:
+[2.1681210e-04 2.5570521e-04 1.8723251e-01 3.0275935e-01]
+Weighted average loss:0.13917742115648224
+Test loss: 0.17670534726180773
+[End of epoch 6	] 18:28:10, Mean squared loss for 4 elements:
+[2.3337145e-04 2.4850207e-04 1.8544275e-01 2.9729414e-01]
+Weighted average loss:0.13711707224477607
+[End of epoch 7	] 18:32:51, Mean squared loss for 4 elements:
+[2.5285638e-04 2.3802355e-04 1.8377422e-01 2.9197058e-01]
+Weighted average loss:0.13513148712070772
+[End of epoch 8	] 18:37:33, Mean squared loss for 4 elements:
+[2.7236014e-04 2.2752305e-04 1.8216743e-01 2.8702265e-01]
+Weighted average loss:0.13327051126938777
+[End of epoch 9	] 18:42:15, Mean squared loss for 4 elements:
+[2.8733275e-04 2.2226735e-04 1.8062173e-01 2.8253192e-01]
+Weighted average loss:0.13155691106171477
+[End of epoch 10	] 18:46:57, Mean squared loss for 4 elements:
+[2.9689344e-04 2.2043783e-04 1.7921959e-01 2.7853450e-01]
+Weighted average loss:0.13002364230744712
+Model saved in path: ./checkpoints/random_traning_world-1_10_epochs.ckpt
+Test loss: 0.17039661874149334
+[End of epoch 11	] 18:52:31, Mean squared loss for 4 elements:
+[3.0316709e-04 2.2032122e-04 1.7793745e-01 2.7493808e-01]
+Weighted average loss:0.12863800475227355
+[End of epoch 12	] 18:57:13, Mean squared loss for 4 elements:
+[3.0779498e-04 2.2210373e-04 1.7676620e-01 2.7172139e-01]
+Weighted average loss:0.12739184190674346
+[End of epoch 13	] 19:01:56, Mean squared loss for 4 elements:
+[3.1215241e-04 2.2512100e-04 1.7570338e-01 2.6882079e-01]
+Weighted average loss:0.12626653986102138
+[End of epoch 14	] 19:06:38, Mean squared loss for 4 elements:
+[3.1655779e-04 2.2947372e-04 1.7468756e-01 2.6604712e-01]
+Weighted average loss:0.12519092922318498
+[End of epoch 15	] 19:11:20, Mean squared loss for 4 elements:
+[3.2100361e-04 2.3583125e-04 1.7375325e-01 2.6336905e-01]
+Weighted average loss:0.12416586767510199
+Test loss: 0.1616505620807188
+[End of epoch 16	] 19:16:47, Mean squared loss for 4 elements:
+[3.2503338e-04 2.4405720e-04 1.7291184e-01 2.6080585e-01]
+Weighted average loss:0.12319991607813385
+[End of epoch 17	] 19:21:29, Mean squared loss for 4 elements:
+[3.2971540e-04 2.5320810e-04 1.7213140e-01 2.5831512e-01]
+Weighted average loss:0.12227212718268962
+[End of epoch 18	] 19:26:12, Mean squared loss for 4 elements:
+[0.0003338  0.00026294 0.17140467 0.25588223]
+Weighted average loss:0.12137588680971821
+[End of epoch 19	] 19:30:54, Mean squared loss for 4 elements:
+[0.00033721 0.00027298 0.17073822 0.25357834]
+Weighted average loss:0.12053328952790565
+[End of epoch 20	] 19:35:36, Mean squared loss for 4 elements:
+[0.00034105 0.00028346 0.17010753 0.25134903]
+Weighted average loss:0.11972223494595285
+Model saved in path: ./checkpoints/random_traning_world-1_20_epochs.ckpt
+Test loss: 0.15483417440284436
+[End of epoch 21	] 19:41:04, Mean squared loss for 4 elements:
+[0.00034457 0.0002944  0.16951323 0.24928075]
+Weighted average loss:0.11896737216420883
+[End of epoch 22	] 19:45:46, Mean squared loss for 4 elements:
+[0.00034742 0.00030487 0.16898002 0.24740027]
+Weighted average loss:0.11828304919390785
+[End of epoch 23	] 19:50:29, Mean squared loss for 4 elements:
+[0.00034904 0.00031524 0.1684947  0.24564387]
+Weighted average loss:0.11764727276021442
+[End of epoch 24	] 19:55:11, Mean squared loss for 4 elements:
+[0.00034981 0.00032549 0.16802663 0.24392213]
+Weighted average loss:0.11702599390636101
+[End of epoch 25	] 19:59:53, Mean squared loss for 4 elements:
+[0.00035078 0.00033403 0.1675723  0.24211982]
+Weighted average loss:0.11638534513247983
+Test loss: 0.14993256418258194
+[End of epoch 26	] 20:05:20, Mean squared loss for 4 elements:
+[0.00035283 0.00033987 0.16714911 0.24036205]
+Weighted average loss:0.11576600230151642
+[End of epoch 27	] 20:10:03, Mean squared loss for 4 elements:
+[0.00035542 0.00034335 0.16671509 0.23861869]
+Weighted average loss:0.11514748552346113
+[End of epoch 28	] 20:14:45, Mean squared loss for 4 elements:
+[0.00035832 0.00034585 0.1662544  0.23687619]
+Weighted average loss:0.11452163694462655
+[End of epoch 29	] 20:19:28, Mean squared loss for 4 elements:
+[0.00036095 0.00034907 0.16579878 0.23502626]
+Weighted average loss:0.11386658960748772
+[End of epoch 30	] 20:24:10, Mean squared loss for 4 elements:
+[0.00036172 0.00035109 0.16540766 0.23307998]
+Weighted average loss:0.11320146175912202
+Model saved in path: ./checkpoints/random_traning_world-1_30_epochs.ckpt
+Test loss: 0.14593185488098584
+[End of epoch 31	] 20:29:37, Mean squared loss for 4 elements:
+[0.00035641 0.00035069 0.16500978 0.23077492]
+Weighted average loss:0.11242996354231233
+[End of epoch 32	] 20:34:19, Mean squared loss for 4 elements:
+[0.00035101 0.00035404 0.16458417 0.22838283]
+Weighted average loss:0.11162641507177291
+[End of epoch 33	] 20:39:01, Mean squared loss for 4 elements:
+[0.00035049 0.00035852 0.1642642  0.22675295]
+Weighted average loss:0.11107169211991649
+[End of epoch 34	] 20:43:43, Mean squared loss for 4 elements:
+[0.0003509  0.00036289 0.16396339 0.2250307 ]
+Weighted average loss:0.11049621316323827
+[End of epoch 35	] 20:48:25, Mean squared loss for 4 elements:
+[0.00035153 0.00036802 0.16366616 0.22329818]
+Weighted average loss:0.10991898587991937
+Test loss: 0.14299912556437738
+[End of epoch 36	] 20:53:54, Mean squared loss for 4 elements:
+[0.0003518  0.00037263 0.16333945 0.22165863]
+Weighted average loss:0.10935984397968235
+[End of epoch 37	] 20:58:38, Mean squared loss for 4 elements:
+[0.000352   0.00037744 0.16301356 0.22010635]
+Weighted average loss:0.10882586028669128
+[End of epoch 38	] 21:03:20, Mean squared loss for 4 elements:
+[0.00035278 0.00038143 0.16270551 0.21859409]
+Weighted average loss:0.10830833896884814
+[End of epoch 39	] 21:08:02, Mean squared loss for 4 elements:
+[0.00035352 0.000385   0.1623885  0.21706384]
+Weighted average loss:0.1077830860796816
+[End of epoch 40	] 21:12:44, Mean squared loss for 4 elements:
+[0.00035438 0.00038848 0.16209076 0.21551582]
+Weighted average loss:0.10725818992679764
+Model saved in path: ./checkpoints/random_traning_world-1_40_epochs.ckpt
+Test loss: 0.13904095872710132
+[End of epoch 41	] 21:18:10, Mean squared loss for 4 elements:
+[0.00035531 0.00039158 0.16181387 0.21404387]
+Weighted average loss:0.106760826341053
+[End of epoch 42	] 21:22:52, Mean squared loss for 4 elements:
+[0.00035631 0.00039387 0.1615532  0.21260138]
+Weighted average loss:0.10627632428633046
+[End of epoch 43	] 21:27:33, Mean squared loss for 4 elements:
+[0.00035716 0.00039516 0.16132796 0.2112095 ]
+Weighted average loss:0.1058160237760909
+[End of epoch 44	] 21:32:15, Mean squared loss for 4 elements:
+[0.00035731 0.00039657 0.16109712 0.20992371]
+Weighted average loss:0.10538427758155973
+[End of epoch 45	] 21:36:57, Mean squared loss for 4 elements:
+[0.00035767 0.00039756 0.16087942 0.20861796]
+Weighted average loss:0.1049505031370565
+Test loss: 0.1362914794273346
+[End of epoch 46	] 21:42:24, Mean squared loss for 4 elements:
+[0.00035843 0.0003975  0.16068037 0.20735975]
+Weighted average loss:0.10453548386659328
+[End of epoch 47	] 21:47:07, Mean squared loss for 4 elements:
+[0.00035921 0.00039746 0.16048543 0.20607994]
+Weighted average loss:0.10411546504578671
+[End of epoch 48	] 21:51:50, Mean squared loss for 4 elements:
+[0.00036016 0.00039769 0.1602919  0.20476344]
+Weighted average loss:0.10368544946294764
+[End of epoch 49	] 21:56:33, Mean squared loss for 4 elements:
+[0.00036139 0.00039778 0.160112   0.2034493 ]
+Weighted average loss:0.10325999205240062
+Test loss: 0.1342469956274192
+Model saved in path: ./checkpoints/random_traning_world-1_50_epochs.ckpt
+Training details saved!

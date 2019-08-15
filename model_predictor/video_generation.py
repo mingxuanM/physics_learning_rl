@@ -8,11 +8,12 @@ import moviepy.editor as mpy
 import time
 from functools import partial
 import json
+import random
 
 
 
 def make_frame(this_data, t):
-    labels = ['A','B','C','D']
+    labels = ['1','2','3','4']
     centers = np.array(['o1','o2','o3','o4'])
     colors = [(0.97,0.46,0.44),(0.48,0.68,0),(0,0.75,0.75),(0.78,0.48,1)]
     RATIO = 100
@@ -44,10 +45,10 @@ def make_frame(this_data, t):
     wr.draw(surface)
 
     #Pucks
-    for i, (label, color, center) in enumerate(zip(labels, colors, centers)):
+    for i, (label, color) in enumerate(zip(labels, colors)):
 
         # xy = np.array([this_data[center]['x'][frame]*RATIO, this_data[center]['y'][frame]*RATIO])
-        xy = np.array([this_data[frame][i*4]*RATIO, this_data[frame][i*4+1]*RATIO])
+        xy = np.array([this_data[frame][6+i*4]*RATIO, this_data[frame][6+i*4+1]*RATIO])
 
         ball = gz.circle(r=RAD, fill=color).translate(xy)
         ball.draw(surface)
@@ -57,24 +58,25 @@ def make_frame(this_data, t):
         text.draw(surface)
 
     #Mouse cursor
-    # cursor_xy = np.array([this_data['mouse']['x'][frame]*RATIO, this_data['mouse']['y'][frame]*RATIO])
-    # cursor = gz.text('+', fontfamily="Helvetica",  fontsize=25, fill=(0,0,0), xy=cursor_xy) #, angle=Pi/12
-    # cursor.draw(surface)
+    cursor_xy = np.array([this_data[frame][4]*RATIO, this_data[frame][5]*RATIO])
+    cursor = gz.text('+', fontfamily="Helvetica",  fontsize=25, fill=(0,0,0), xy=cursor_xy) #, angle=Pi/12
+    cursor.draw(surface)
 
     #Control
-    # if this_data['co'][frame]!=0:
-    #     if this_data['co'][frame]==1:
-    #         xy = np.array([this_data['o1']['x'][frame]*RATIO, this_data['o1']['y'][frame]*RATIO])
-    #     elif this_data['co'][frame]==2:
-    #         xy = np.array([this_data['o2']['x'][frame]*RATIO, this_data['o2']['y'][frame]*RATIO])
-    #     elif this_data['co'][frame]==3:
-    #         xy = np.array([this_data['o3']['x'][frame]*RATIO, this_data['o3']['y'][frame]*RATIO])
-    #     elif this_data['co'][frame]==4:
-    #         xy = np.array([this_data['o4']['x'][frame]*RATIO, this_data['o4']['y'][frame]*RATIO])
+    control_obj = this_data[frame][:4]
+    if sum(control_obj)!=0:
+        if control_obj[0]==1:
+            xy = np.array([this_data[frame][6]*RATIO, this_data[frame][7]*RATIO])
+        elif control_obj[1]==1:
+            xy = np.array([this_data[frame][10]*RATIO, this_data[frame][11]*RATIO])
+        elif control_obj[2]==1:
+            xy = np.array([this_data[frame][14]*RATIO, this_data[frame][15]*RATIO])
+        elif control_obj[3]==1:
+            xy = np.array([this_data[frame][18]*RATIO, this_data[frame][19]*RATIO])
 
-    #     #control_border = gz.arc(r=RAD, a1=0, a2=np.pi, fill=(0,0,0)).translate(xy)
-    #     control_border = gz.circle(r=RAD,  stroke_width= 2).translate(xy)
-    #     control_border.draw(surface)
+        #control_border = gz.arc(r=RAD, a1=0, a2=np.pi, fill=(0,0,0)).translate(xy)
+        control_border = gz.circle(r=RAD,  stroke_width= 2).translate(xy)
+        control_border.draw(surface)
 
     return surface.get_npimage()
 
@@ -83,20 +85,22 @@ def make_frame(this_data, t):
 if __name__ == "__main__":
 
     # for i in range(1,6):
-    i = 4
-    for s_idx in range(4):
-        with open('generated_trajectories/{}0_epochs_case_{}.json'.format(i,s_idx)) as json_file:  
-            sequence = json.load(json_file)
+    # i = 4
+    # for s_idx in range(4):
+        # with open('generated_trajectories/{}0_epochs_case_{}.json'.format(i,s_idx)) as json_file:
+    with open('data/active_training_data.json') as json_file:   
+        sequence = json.load(json_file)
 
-        # with open('../data/test_data.json') as json_file:  
-        #     sequence = json.load(json_file)
+    # with open('../data/test_data.json') as json_file:  
+    #     sequence = json.load(json_file)
 
-        # data_ = test(args, new_env)
-
-        frame = partial(make_frame, sequence)
+    # data_ = test(args, new_env)
+    for i in range(10):
+        trial = random.randint(0, len(sequence)-1)
+        frame = partial(make_frame, sequence[trial])
         # duration = len(data_['co'])/60
         # 60 frames per second
-        duration = len(sequence)/60 # seconds
+        duration = len(sequence[trial])/60 # seconds
         clip = mpy.VideoClip(frame, duration=duration)
-        writename = 'generated_trajectories/{}0_epochs_case_{}.mp4'.format(i, s_idx)
+        writename = 'videos/active_learning_{}_.mp4'.format(i+5)
         clip.write_videofile(writename, fps=24)

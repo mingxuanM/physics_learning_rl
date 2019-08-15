@@ -1,6 +1,0 @@
-model_checkpoint_path: "predictor_extend_1e-05_0_200_epochs.ckpt"
-all_model_checkpoint_paths: "predictor_extend_1e-05_0_160_epochs.ckpt"
-all_model_checkpoint_paths: "predictor_extend_1e-05_0_170_epochs.ckpt"
-all_model_checkpoint_paths: "predictor_extend_1e-05_0_180_epochs.ckpt"
-all_model_checkpoint_paths: "predictor_extend_1e-05_0_190_epochs.ckpt"
-all_model_checkpoint_paths: "predictor_extend_1e-05_0_200_epochs.ckpt"

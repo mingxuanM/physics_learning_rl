@@ -1,6 +1,0 @@
-model_checkpoint_path: "RQN_20_1e-04_target_2000_epochs.ckpt"
-all_model_checkpoint_paths: "RQN_20_1e-04_target_1600_epochs.ckpt"
-all_model_checkpoint_paths: "RQN_20_1e-04_target_1700_epochs.ckpt"
-all_model_checkpoint_paths: "RQN_20_1e-04_target_1800_epochs.ckpt"
-all_model_checkpoint_paths: "RQN_20_1e-04_target_1900_epochs.ckpt"
-all_model_checkpoint_paths: "RQN_20_1e-04_target_2000_epochs.ckpt"

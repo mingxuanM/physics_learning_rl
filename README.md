@@ -4,11 +4,13 @@ Reinforcement learning agent that actively learns physical properties (motion me
 
 ### Branches:
 
-* **master**:   train active agent & predictor together, reward agent for predictor's **change of mean training loss over 5 frames** during each action (5 frames).
+* **master**:    Separate training framework. Train active agent & predictor in loop separately, reward agent for predictor's **mean evaluation loss over 5 frames** during each action (5 frames). Then generate new training data for model predicor with trained active agent. 
 
-* **loss_reward**:    train active agent & predictor separately, reward agent for predictor's **mean evaluation loss over 5 frames** during each action (5 frames). Then generate new training data for model predicor with trained active agent. 
+* **loss_reduction**:   Concurrent training framework. Train active agent & predictor together, reward agent for predictor's **mean of training loss reduction over 5 frames** during each action (5 frames).
 
 Model predictor was pretrained on human experiment data with `weighted average loss` and `learning rate = 1e-05` for 20 epochs.
+
+Active agent was pretrained with reward only for catching & approaching pucks for 10000 episodes.
 
 ## Package dependency:
 

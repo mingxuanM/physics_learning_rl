@@ -1,0 +1,6 @@
+model_checkpoint_path: "active_traning_world-1_50_epochs.ckpt"
+all_model_checkpoint_paths: "active_traning_world-1_10_epochs.ckpt"
+all_model_checkpoint_paths: "active_traning_world-1_20_epochs.ckpt"
+all_model_checkpoint_paths: "active_traning_world-1_30_epochs.ckpt"
+all_model_checkpoint_paths: "active_traning_world-1_40_epochs.ckpt"
+all_model_checkpoint_paths: "active_traning_world-1_50_epochs.ckpt"
