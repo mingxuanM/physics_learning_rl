@@ -1,4 +1,4 @@
-trails_data.json
+Outliers in human experiment 2 data
 
 Training sequence 685    finished, loss: 285.1089    lsclips[34][5]
 

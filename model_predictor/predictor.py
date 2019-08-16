@@ -352,11 +352,11 @@ def generate_trajectories(exp_name, trajectory_len=60):
 # Load data from json files, 
 # convert vx,vy into velocity magnitude & angle
 # [x,y,xv,yv] -> [x,y,r,theta]
-# data/trails_data.json and data/test_data.json use [x,y,xv,yv]
+# data/human_trails_data.json and data/test_data.json use [x,y,xv,yv]
 # data/trails_data_transformed.json and data/test_data_transformed.json use [x,y,r,theta]
 def Transform_data_loader(train):
     if train:
-        with open('data/trails_data.json') as json_file:  
+        with open('data/human_trails_data.json') as json_file:  
             data = json.load(json_file)
             # remove two outliers from training_data [685] & [692]
             data = data[:685]+data[686:692]+data[693:]
@@ -401,10 +401,10 @@ def Transform_data_loader(train):
 # data_type: 0:random training data; 1:active training data; 2: normal traning set
 def data_loader(train, data_type=2):
     if train:
-        # with open('data/trails_data.json') as json_file:  
+        # with open('data/human_trails_data.json') as json_file:  
         #     data = json.load(json_file)
         #     data = data[:685]+data[686:692]+data[693:] # 798 sequences
-        # with open('data/extend_training_data_js.json') as json_file: 
+        # with open('data/generated_training_data.json') as json_file: 
         #     # extent_data = json.load(json_file)
         #     data.extend(json.load(json_file)) # 500 sequences; 80% passive; 40% no local forces
         #     # extent_data = []
@@ -419,11 +419,11 @@ def data_loader(train, data_type=2):
                 data = json.load(json_file)
         else:
             # human axperiment data set + generated extended data set
-            with open('data/trails_data.json') as json_file:  
+            with open('data/human_trails_data.json') as json_file:  
                 data = json.load(json_file)
                 data = data[:685]+data[686:692]+data[693:] # 798 sequences
-            # with open('data/extend_training_data_js.json') as json_file: 
-            #     data.extend(json.load(json_file)) # 500 sequences; 80% passive; 40% no local forces
+            with open('data/generated_training_data.json') as json_file: 
+                data.extend(json.load(json_file)) # 500 sequences; 80% passive; 40% no local forces
     else:
         # with open('data/world_setup_4_test_set.json') as json_file:  # 4th world setup test
         with open('data/world_setup_-1_test_set.json') as json_file:  # world -1 
