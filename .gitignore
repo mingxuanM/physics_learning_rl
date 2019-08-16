@@ -6,5 +6,5 @@
 *archive/
 model_predictor/checkpoints/general_ckpts/
 model_predictor/checkpoints/direct_ckpts/
-model_predictor/data/*.json
+
 *generated_trajectories_fullinput/
