@@ -2,6 +2,10 @@
 
 Reinforcement learning agent that actively learns physical motion mechanisms in a 2D simulated domain. Sample videos of trained agent episodes are accessable in `./videos/`.
 
+Technical report: [Informatics_MSc_Dissertation.pdf][link].
+
+  [link]: https://github.com/mingxuanM/physics_learning_rl/blob/master/Informatics_MSc_Dissertation-Active_physics_learning-World_modelling_with_intrinsically_motivated_RL.pdf
+
 Previous research paper: https://psyarxiv.com/6vr4g/
 
 
